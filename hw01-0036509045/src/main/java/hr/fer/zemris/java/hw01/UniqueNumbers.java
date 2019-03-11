@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.hw01;
 
+import java.util.Scanner;
+
 public class UniqueNumbers {
 
     /**
@@ -108,14 +110,44 @@ public class UniqueNumbers {
     }
 
     public static void main(String[] args) {
-        TreeNode glava = null;
-        glava = addNode(glava, 42);
-        glava = addNode(glava, 76);
-        glava = addNode(glava, 21);
-        glava = addNode(glava, 76);
-        glava = addNode(glava, 35);
+        TreeNode head = null;
 
-        int[] values = treeValues(glava);
+        Scanner sc = new Scanner(System.in);
+        while(true) {
+            System.out.print("Unesite broj > ");
+            String input = sc.next();
+            if(input.equals("kraj")) {
+                break;
+            }
+
+            int val;
+            try {
+                val = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.format("'%s' nije cijeli broj!%n", input);
+                continue;
+            }
+
+            if(containsValue(head, val)){
+                System.out.println("Broj vec postoji. Preskacem");
+                continue;
+            }
+
+            head = addNode(head, val);
+            System.out.println("Dodano.");
+        }
+
+        int[] values = treeValues(head);
+        System.out.print("Ispis od najmanjeg:");
+        for(int a : values) {
+            System.out.format(" %d", a);
+        }
+
+        System.out.format("%nIspis od najveceg:");
+        for(int i = values.length - 1; i >= 0; i--) {
+            System.out.format(" %d", values[i]);
+        }
+
 
     }
 }
