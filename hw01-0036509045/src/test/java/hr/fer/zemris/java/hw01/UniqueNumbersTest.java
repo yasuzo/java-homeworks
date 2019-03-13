@@ -12,7 +12,7 @@ class UniqueNumbersTest {
     private TreeNode head;
 
     @BeforeEach
-    private void setup() {
+    private void setUp() {
         head = addNode(head, 76);
         head = addNode(head, 21);
         head = addNode(head, 42);
@@ -47,8 +47,14 @@ class UniqueNumbersTest {
     }
 
     @Test
+    public void addExistingValueTest() {
+        addNode(head, 35);
+        assertEquals(4, treeSize(head));
+    }
+
+    @Test
     public void addValueTest() {
-        head = addNode(head, 37);
+        addNode(head, 37);
         assertArrayEquals(new int[]{21, 35, 37, 42, 76}, treeValues(head));
     }
 

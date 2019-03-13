@@ -137,6 +137,8 @@ public class UniqueNumbers {
             System.out.println("Dodano.");
         }
 
+        sc.close();
+
         int[] values = treeValues(head);
         System.out.print("Ispis od najmanjeg:");
         for(int a : values) {

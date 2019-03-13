@@ -20,7 +20,9 @@ public class RectangleMain {
             return;
         }
 
-        System.out.println(requestInputAndCreateRectangle(new Scanner(System.in)));
+        Scanner sc = new Scanner(System.in);
+        System.out.println(requestInputAndCreateRectangle(sc));
+        sc.close();
     }
 
     /**

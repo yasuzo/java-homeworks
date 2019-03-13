@@ -49,6 +49,8 @@ public class Factorial {
             input = sc.next();
         }
 
+        sc.close();
+
         System.out.println("Doviđenja!");
     }
 }
