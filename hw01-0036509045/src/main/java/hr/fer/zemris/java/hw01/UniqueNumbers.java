@@ -2,6 +2,11 @@ package hr.fer.zemris.java.hw01;
 
 import java.util.Scanner;
 
+/**
+ * Program which builds a binary tree with unique numbers.
+ *
+ * @author Jan Capek
+ */
 public class UniqueNumbers {
 
     /**
