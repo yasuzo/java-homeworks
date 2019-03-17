@@ -3,7 +3,7 @@ package hr.fer.zemris.java.hw01;
 import java.util.Scanner;
 
 /**
- * Program which builds a binary tree with unique numbers.
+ * Program which builds a binary tree data structure with unique numbers.
  *
  * @author Jan Capek
  */
