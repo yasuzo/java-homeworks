@@ -2,15 +2,32 @@ package hr.fer.zemris.java.custom.collections;
 
 import java.util.Objects;
 
+/**
+ * Linked list implementation of {@code Collection}.
+ * This collection does not permit {@code null} values.
+ *
+ * @author Jan Capek
+ */
 public class LinkedListIndexedCollection extends Collection {
 
     private int size;
+    //    first element of the collection
     private ListNode first;
+    //    last element of the collection
     private ListNode last;
 
+    /**
+     * Constructs linked list collection.
+     */
     public LinkedListIndexedCollection() {
     }
 
+    /**
+     * Constructs linked list with elements from given collection in order they are returned by the collection.
+     *
+     * @param other Collection whose elements should be stored in a new collection
+     * @throws NullPointerException If given collection is {@code null}
+     */
     public LinkedListIndexedCollection(Collection other) {
         Objects.requireNonNull(other);
 
@@ -66,11 +83,11 @@ public class LinkedListIndexedCollection extends Collection {
      */
     private void insertFromLeft(Object value, int position) {
         ListNode temp = first;
-        for (int i = 0; i < position - 1; i++) {
+        for (int i = 0; i < position; i++) {
             temp = temp.next;
         }
 
-        insertAfter(temp, new ListNode(value));
+        insertBefore(temp, new ListNode(value));
     }
 
     /**
@@ -92,20 +109,49 @@ public class LinkedListIndexedCollection extends Collection {
      * This method will insert new node in front of the node given as the first argument.
      * This will also update first and last node in the collection if needed.
      *
-     * @param node             Node that should be before new node
-     * @param nodeToBeInserted New node that should be inserted
+     * @param node         Node that should be before new node
+     * @param nodeToInsert New node that should be inserted
      */
-    private void insertAfter(ListNode node, ListNode nodeToBeInserted) {
+    private void insertAfter(ListNode node, ListNode nodeToInsert) {
         if (node == null) {
-            first = nodeToBeInserted;
+            first = nodeToInsert;
             last = first;
         } else {
-            nodeToBeInserted.previous = node;
-            nodeToBeInserted.next = node.next;
-            node.next = nodeToBeInserted;
+            nodeToInsert.previous = node;
+            nodeToInsert.next = node.next;
+            node.next = nodeToInsert;
 
-            if (nodeToBeInserted.next == null) {
-                last = nodeToBeInserted;
+            if (nodeToInsert.next == null) {
+                last = nodeToInsert;
+            } else {
+//                update next node to point to the new node
+                nodeToInsert.next.previous = nodeToInsert;
+            }
+        }
+        size++;
+    }
+
+    /**
+     * This method will insert new node before node given as the first argument.
+     * This will also update first and last node in the collection if needed.
+     *
+     * @param node         Node that should be after new node
+     * @param nodeToInsert New node that should be inserted
+     */
+    private void insertBefore(ListNode node, ListNode nodeToInsert) {
+        if (node == null) {
+            first = nodeToInsert;
+            last = first;
+        } else {
+            nodeToInsert.next = node;
+            nodeToInsert.previous = node.previous;
+            node.previous = nodeToInsert;
+
+            if (nodeToInsert.previous == null) {
+                first = nodeToInsert;
+            } else {
+//                update previous node to point to the new node
+                nodeToInsert.previous.next = nodeToInsert;
             }
         }
         size++;

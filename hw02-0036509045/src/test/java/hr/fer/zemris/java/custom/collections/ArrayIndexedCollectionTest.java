@@ -232,7 +232,7 @@ class ArrayIndexedCollectionTest {
     }
 
     @Test
-    void cantainsAbsentObject() {
+    void containsAbsentObject() {
         assertFalse(c.contains("IWGEW#"));
     }
 

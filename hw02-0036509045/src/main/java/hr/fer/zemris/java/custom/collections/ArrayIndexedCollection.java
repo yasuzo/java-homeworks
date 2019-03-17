@@ -4,7 +4,9 @@ import java.util.Objects;
 
 /**
  * Resizable array implementation of {@code Collection}.
- * This does not permit {@code null} values.
+ * This collection does not permit {@code null} values.
+ *
+ * @author Jan Capek
  */
 public class ArrayIndexedCollection extends Collection {
 
