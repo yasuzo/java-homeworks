@@ -21,11 +21,6 @@ public class ArrayIndexedCollection extends Collection {
     }
 
     @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
     public int size() {
         return size;
     }
@@ -55,7 +50,7 @@ public class ArrayIndexedCollection extends Collection {
      * @throws NullPointerException If given collection is {@code null}
      */
     public ArrayIndexedCollection(Collection other) {
-        this(other, DEFAULT_CAPACITY);
+        this(other, 1);
     }
 
     /**
@@ -64,10 +59,11 @@ public class ArrayIndexedCollection extends Collection {
      * Collection's capacity will either be capacity of the given collection or default capacity for this type of collection
      * depending on whichever is larger.
      *
-     * @param other The collection whose elements are to be placed into this collection
+     * @param other           The collection whose elements are to be placed into this collection
      * @param initialCapacity Initial capacity of this collection
      * @throws NullPointerException If given collection is {@code null}
      */
+//    TODO: Might need to change this to expect IllegalArgumentException
     public ArrayIndexedCollection(Collection other, int initialCapacity) {
         Objects.requireNonNull(other);
 
@@ -182,7 +178,7 @@ public class ArrayIndexedCollection extends Collection {
     /**
      * Searches the collection and returns the index of the first occurrence of the given value or -1 if the value is
      * not found. Value can be null. Equality of the value is determined by the {@code Objects.equals(.)} method.
-     * Time commplexity of this method is O(n).
+     * Time complexity of this method is O(n).
      *
      * @param value Value to search for in the collection
      * @return Index of the first occurrence of the value in collection or -1 if the value is not in the collection.
@@ -210,12 +206,12 @@ public class ArrayIndexedCollection extends Collection {
      * @throws IndexOutOfBoundsException If index is less than 0 or equal or greater to the size of the collection
      */
     public void remove(int index) {
-        if(index < 0 || index >= size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index cannot be equal or greater to the size or smaller than 0!");
         }
 
 //        shift elements to the left by 1 spot
-        for(int i = index; i < size - 1; i++){
+        for (int i = index; i < size - 1; i++) {
             elements[index] = elements[index + 1];
         }
 
@@ -224,27 +220,17 @@ public class ArrayIndexedCollection extends Collection {
 
     @Override
     public boolean contains(Object value) {
-        if(value == null) {
-            return false;
-        }
-
-        for (int i = 0; i < size; i++) {
-            if(Objects.equals(value, elements[i])){
-                return true;
-            }
-        }
-
-        return false;
+        return indexOf(value) != -1;
     }
 
     @Override
     public boolean remove(Object value) {
-        if(value == null) {
+        if (value == null) {
             return false;
         }
 
-        for(int i = 0; i < size; i++) {
-            if(Objects.equals(value, elements[i])){
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(value, elements[i])) {
                 remove(i);
                 return true;
             }
@@ -255,9 +241,9 @@ public class ArrayIndexedCollection extends Collection {
 
     @Override
     public Object[] toArray() {
-        Object[] contents = new Objects[size];
+        Object[] contents = new Object[size];
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             contents[i] = elements[i];
         }
 
@@ -268,7 +254,7 @@ public class ArrayIndexedCollection extends Collection {
     public void forEach(Processor processor) {
         Objects.requireNonNull(processor);
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             processor.process(elements[i]);
         }
     }
