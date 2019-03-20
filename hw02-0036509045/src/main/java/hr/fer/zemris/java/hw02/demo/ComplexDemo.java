@@ -2,6 +2,12 @@ package hr.fer.zemris.java.hw02.demo;
 
 import hr.fer.zemris.java.hw02.ComplexNumber;
 
+/**
+ * Demo of the {@code ComplexNumber} class.
+ * Program creates two complex numbers, does some arithmetic with them and prints out a result.
+ *
+ * @author Jan Capek
+ */
 public class ComplexDemo {
 
     public static void main(String[] args) {
