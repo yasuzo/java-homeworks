@@ -16,6 +16,7 @@ public class StackDemo {
 //        check if number of arguments is valid
         if (args.length != 1) {
             System.out.println("Invalid number of arguments! Exiting...");
+            return;
         }
 
 //        split expression by spaces
