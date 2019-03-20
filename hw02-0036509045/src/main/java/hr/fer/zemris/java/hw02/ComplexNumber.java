@@ -90,7 +90,7 @@ public class ComplexNumber {
      *
      * @param expression String that should be parsed
      * @return Parsed complex number
-     * @throws NullPointerException If given string is {@code null}
+     * @throws NullPointerException     If given string is {@code null}
      * @throws IllegalArgumentException If the expression is invalid
      */
     public static ComplexNumber parse(String expression) {
@@ -111,7 +111,7 @@ public class ComplexNumber {
         for (String substring : substrings) {
 //            split before each '-'
             String[] bits = substring.split("(?=-)");
-            for(String s : bits) {
+            for (String s : bits) {
                 if (s.isEmpty()) {
                     continue;
                 }
@@ -190,13 +190,13 @@ public class ComplexNumber {
      * @param c Number to divide by
      * @return Result of division
      * @throws NullPointerException If given parameter is {@code null}
-     * @throws ArithmeticException  If {@code c} is equal to 0
      */
     public ComplexNumber div(ComplexNumber c) {
         Objects.requireNonNull(c);
 
+//        check if c is 0
         if (Math.abs(c.real) < DELTA && Math.abs(c.imaginary) < DELTA) {
-            throw new ArithmeticException("Division with 0!");
+            return new ComplexNumber(this.real / 0.0, this.imaginary / 0.0);
         }
 
         ComplexNumber conjugateOfC = c.conjugate();

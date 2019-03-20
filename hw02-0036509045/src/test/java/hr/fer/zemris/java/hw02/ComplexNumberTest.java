@@ -70,7 +70,7 @@ class ComplexNumberTest {
 
     @Test
     void parseFullNumber() {
-        assertEquals(new ComplexNumber(314.213, 330), ComplexNumber.parse("+314.213 + 332i - 2i"));
+        assertEquals(new ComplexNumber(314.213, 330), ComplexNumber.parse("+314.213 + 332i - i - i"));
     }
 
     //    fromReal()
@@ -169,10 +169,15 @@ class ComplexNumberTest {
 
     @Test
     void divWithZero() {
-        ComplexNumber a = new ComplexNumber(3, 3);
+        ComplexNumber a = new ComplexNumber(-3, 3);
         ComplexNumber b = new ComplexNumber(0, 0);
 
-        assertThrows(ArithmeticException.class, () -> a.div(b));
+        ComplexNumber result = a.div(b);
+
+        assertTrue(Double.isInfinite(result.getImaginary()));
+        assertTrue(Double.isInfinite(result.getReal()) && result.getReal() < 0);
+        assertEquals(3 * Math.PI / 4, result.getAngle());
+        assertTrue(Double.isInfinite(result.getMagnitude()));
     }
 
     //    power()
