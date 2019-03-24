@@ -5,12 +5,12 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * Resizable array implementation of {@link Collection}.
+ * Resizable array implementation of {@link List}.
  * This collection does not permit {@code null} values.
  *
  * @author Jan Capek
  */
-public class ArrayIndexedCollection implements Collection {
+public class ArrayIndexedCollection implements List {
 
     private static final int DEFAULT_CAPACITY = 16;
 
@@ -118,13 +118,13 @@ public class ArrayIndexedCollection implements Collection {
     }
 
     /**
-     * Returns the object that is stored in backing array at position {@code index}. Valid indexes are 0 to size-1.
+     * {@inheritDoc}
+     * Valid indexes are 0 to size-1.
      * Time complexity is O(1)
      *
-     * @param index Index of element which is to be retrieved
-     * @return Element at given index
      * @throws IndexOutOfBoundsException If given index is greater or equal to the size of the collection or is negative
      */
+    @Override
     public Object get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Invalid index!");
@@ -179,15 +179,13 @@ public class ArrayIndexedCollection implements Collection {
     }
 
     /**
-     * Inserts (does not overwrite) given value at the given position in array.
-     * Valid positions are from 0 to size of the collection.
+     * {@inheritDoc}
      * Time complexity is O(n) because other elements will need to be shifted.
      *
-     * @param value    Value to be inserted
-     * @param position Position where the value should be inserted
      * @throws NullPointerException      If given value is null
      * @throws IndexOutOfBoundsException If position is not in the interval [0, size]
      */
+    @Override
     public void insert(Object value, int position) {
 //        check if the value is null
         Objects.requireNonNull(value);
@@ -228,13 +226,14 @@ public class ArrayIndexedCollection implements Collection {
     }
 
     /**
-     * Searches the collection and returns the index of the first occurrence of the given value or -1 if the value is
-     * not found. Value can be null. Equality of the value is determined by the {@code Objects.equals(.)} method.
+     * {@inheritDoc}
+     * -1 if the value is not found.
+     * Value can be null. Equality of the value is determined by the {@link Objects#equals(Object, Object)} method.
      * Time complexity of this method is O(n).
      *
-     * @param value Value to search for in the collection
      * @return Index of the first occurrence of the value in collection or -1 if the value is not in the collection.
      */
+    @Override
     public int indexOf(Object value) {
         if (value == null) {
             return -1;
@@ -245,18 +244,17 @@ public class ArrayIndexedCollection implements Collection {
                 return i;
             }
         }
-
         return -1;
     }
 
     /**
-     * Removes element at specified index from collection. Element that was previously at location index+1
-     * after this operation is on location index, etc. Legal indexes are 0 to size-1.
+     * {@inheritDoc}
+     * Legal indexes are 0 to size-1.
      * Time complexity of this operation is O(n).
      *
-     * @param index Index of element that needs to be removes
-     * @throws IndexOutOfBoundsException If index is less than 0 or equal or greater to the size of the collection
+     * @throws IndexOutOfBoundsException If index is less than 0 or equal or greater to the size of the collection.
      */
+    @Override
     public void remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index cannot be equal or greater to the size or smaller than 0!");

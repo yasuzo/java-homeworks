@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @author Jan Capek
  */
-public class LinkedListIndexedCollection implements Collection {
+public class LinkedListIndexedCollection implements List {
 
     private int size;
     //    first element of the collection
@@ -94,14 +94,13 @@ public class LinkedListIndexedCollection implements Collection {
     }
 
     /**
-     * Inserts (does not overwrite) the given value at the given position in linked-list. Elements starting from
-     * this position are shifted one position. The legal positions are 0 to {@code size}.
+     * {@inheritDoc}
      *
-     * @param value    Value to be inserted. Must not be {@code null}
-     * @param position Position where the value should be inserted
-     * @throws IndexOutOfBoundsException If illegal position is given (legal position is in interval of [0, size])
-     * @throws NullPointerException      If the value is null
+     * @param value    Value to be inserted. Must not be {@code null}.
+     * @throws IndexOutOfBoundsException If illegal position is given (legal position is in interval of [0, size]).
+     * @throws NullPointerException      If the value is null.
      */
+    @Override
     public void insert(Object value, int position) {
         Objects.requireNonNull(value);
 
@@ -205,13 +204,12 @@ public class LinkedListIndexedCollection implements Collection {
     }
 
     /**
-     * Searches the collection and returns the index of the first occurrence of the given value or -1 if the value is
-     * not found. Value can be null. Equality of the value is determined by the {@code Objects.equals(.)} method.
+     * {@inheritDoc}
      * Time complexity of this method is O(n).
      *
-     * @param value Value to search for
-     * @return -1 if the value is not in the collection, index of the first occurrence otherwise
+     * @return -1 if the value is not in the collection, index of the first occurrence otherwise.
      */
+    @Override
     public int indexOf(Object value) {
         if (value == null) {
             return -1;
@@ -278,12 +276,13 @@ public class LinkedListIndexedCollection implements Collection {
     }
 
     /**
-     * Removes an element stored at given index. Index must not be less than 0 or greater than {@code size - 1}.
+     * {@inheritDoc}
+     * Index must not be less than 0 or greater than {@code size - 1}.
      * Time complexity of this is O(n)
      *
-     * @param index Index of the element that needs to be removed
      * @throws IndexOutOfBoundsException If given index is less than 0 or greater or equal to the size of the collection
      */
+    @Override
     public void remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Can't remove element at position that does not exist!");
@@ -323,13 +322,13 @@ public class LinkedListIndexedCollection implements Collection {
     }
 
     /**
-     * Returns the object at position {@code index} in linked list. Valid indexes are 0 to size-1.
+     * {@inheritDoc}
+     * Valid indexes are 0 to size-1.
      * Time complexity of this is O(n).
      *
-     * @param index Index of element which is to be retrieved
-     * @return Element at given index
-     * @throws IndexOutOfBoundsException If given index is greater or equal to the size of the collection or is negative
+     * @throws IndexOutOfBoundsException If given index is greater or equal to the size of the collection or is negative.
      */
+    @Override
     public Object get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Can't access element that is out of bounds!");
