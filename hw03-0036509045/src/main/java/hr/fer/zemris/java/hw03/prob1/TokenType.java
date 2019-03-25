@@ -6,5 +6,5 @@ package hr.fer.zemris.java.hw03.prob1;
  * @author Jan Capek
  */
 public enum TokenType {
-     EOF, WORD, NUMBER, SYMBOL;
+     EOF, WORD, NUMBER, SYMBOL
 }
