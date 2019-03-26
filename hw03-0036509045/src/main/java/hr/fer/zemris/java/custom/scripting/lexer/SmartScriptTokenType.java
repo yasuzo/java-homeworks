@@ -15,5 +15,6 @@ public enum SmartScriptTokenType {
     DOUBLE_CONSTANT,
     FUNCTION,
     OPERATOR, // '+', '-', '^', '/', '*'
+    NORMAL_TEXT, // text outside of tags
     EOF
 }

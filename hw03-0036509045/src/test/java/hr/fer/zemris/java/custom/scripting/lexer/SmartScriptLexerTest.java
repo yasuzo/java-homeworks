@@ -47,8 +47,14 @@ class SmartScriptLexerTest {
     void nextTokenNormalText() {
         String input = "Example { bla } blu \\{$=1$}. Nothing interesting {=here}.";
         lexer = new SmartScriptLexer(input);
-        assertEquals(SmartScriptTokenType.STRING, lexer.nextToken().getType());
-        assertEquals(SmartScriptTokenType.EOF, lexer.nextToken().getType());
+        assertEquals(
+                new SmartScriptToken(
+                        SmartScriptTokenType.STRING,
+                        "Example { bla } blu {$=1$}. Nothing interesting {=here}."
+                ),
+                lexer.nextToken()
+        );
+        assertEquals(new SmartScriptToken(SmartScriptTokenType.EOF, null), lexer.nextToken());
     }
 
     @Test
@@ -126,6 +132,48 @@ class SmartScriptLexerTest {
                 new SmartScriptToken(SmartScriptTokenType.STRING, "0.000"),
                 new SmartScriptToken(SmartScriptTokenType.FUNCTION, "decfmt"),
                 new SmartScriptToken(SmartScriptTokenType.CLOSED_TAG_BRACKET, "$}"),
+                new SmartScriptToken(SmartScriptTokenType.EOF, null)
+        };
+        test(lexer, tokens);
+    }
+
+    @Test
+    void nextTokenMixedStates() {
+        String input = "This is some king of \\{$ for test $}{$= i -.3 + i * @sin \"0.000\" @decfmt $}";
+        lexer = new SmartScriptLexer(input);
+        assertEquals(new SmartScriptToken(SmartScriptTokenType.STRING, "This is some king of {$ for test $}"), lexer.nextToken());
+        assertEquals(new SmartScriptToken(SmartScriptTokenType.OPEN_TAG_BRACKET, "{$"), lexer.nextToken());
+        lexer.setState(SmartScriptLexerState.TAG);
+        SmartScriptToken[] tokens = {
+                new SmartScriptToken(SmartScriptTokenType.KEYWORD, "="),
+                new SmartScriptToken(SmartScriptTokenType.IDENTIFIER, "i"),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, -.3),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "+"),
+                new SmartScriptToken(SmartScriptTokenType.IDENTIFIER, "i"),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "*"),
+                new SmartScriptToken(SmartScriptTokenType.FUNCTION, "sin"),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "0.000"),
+                new SmartScriptToken(SmartScriptTokenType.FUNCTION, "decfmt"),
+                new SmartScriptToken(SmartScriptTokenType.CLOSED_TAG_BRACKET, "$}"),
+                new SmartScriptToken(SmartScriptTokenType.EOF, null)
+        };
+        test(lexer, tokens);
+    }
+
+    @Test
+    void nextTokenTagStateNumbers() {
+        String input = "3.23 .23 -.13 324 323.34324 -23423 23. -23.";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        SmartScriptToken[] tokens = {
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, 3.23),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, .23),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, -.13),
+                new SmartScriptToken(SmartScriptTokenType.INTEGER_CONSTANT, 324),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, 323.34324),
+                new SmartScriptToken(SmartScriptTokenType.INTEGER_CONSTANT, -23423),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, 23.),
+                new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, -23.),
                 new SmartScriptToken(SmartScriptTokenType.EOF, null)
         };
         test(lexer, tokens);

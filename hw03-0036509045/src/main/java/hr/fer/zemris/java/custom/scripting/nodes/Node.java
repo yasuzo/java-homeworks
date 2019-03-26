@@ -30,7 +30,7 @@ public class Node {
      * @return Number of immediate children of this node.
      */
     public int numberOfChildren() {
-        return children.size();
+        return children == null ? 0 : children.size();
     }
 
     /**

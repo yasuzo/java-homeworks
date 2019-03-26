@@ -6,7 +6,7 @@ import java.util.Objects;
  * Class used to analyze text and returning tokens from it.
  * <p>
  * If lexer is in {@link SmartScriptLexerState#BASIC} state, it will only return tokens of type
- * {@link SmartScriptTokenType#STRING} in whole until EOF or "{$" and {@link SmartScriptTokenType#OPEN_TAG_BRACKET} if found "{$".
+ * {@link SmartScriptTokenType#NORMAL_TEXT} in whole until EOF or "{$" and {@link SmartScriptTokenType#OPEN_TAG_BRACKET} if found "{$".
  * <p>
  * If lexer is in {@link SmartScriptLexerState#TAG} state, it can return all token types enumerated in {@link SmartScriptTokenType}
  * except {@link SmartScriptTokenType#OPEN_TAG_BRACKET}.
@@ -119,7 +119,7 @@ public class SmartScriptLexer {
 //        number constants
         if ((data[currentPosition] == '-' && isNumberNext(currentPosition + 1)) || isNumberNext(currentPosition)) {
             int start = currentPosition++;
-            boolean isDecimal = false;
+            boolean isDecimal = data[currentPosition - 1] == '.' ? true : false;
             while (currentPosition < data.length && (data[currentPosition] == '.' || Character.isDigit(data[currentPosition]))) {
 //                found a second dot => stop & return 1 character back
                 if (data[currentPosition] == '.' && isDecimal) {
@@ -132,6 +132,7 @@ public class SmartScriptLexer {
                 currentPosition++;
             }
             String stringValue = String.copyValueOf(data, start, currentPosition - start);
+            stringValue = data[start] == '-' ? stringValue : "0" + stringValue;
 
             if (isDecimal) {
                 return currentToken = new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, Double.parseDouble(stringValue));
@@ -155,7 +156,12 @@ public class SmartScriptLexer {
                 sb.append(data[currentPosition]);
                 currentPosition++;
             }
-            if (data[currentPosition] != '"') {
+            /*
+            * if currentPosition is equal or greater than data.length
+            * that means while-loop didn't stop on a closing quote
+            * therefore closing quote is missing and an exception should be thrown.
+            * */
+            if (currentPosition >= data.length) {
                 throw new SmartScriptLexerException("Missing closing string quote.");
             }
             currentPosition++;
@@ -182,6 +188,7 @@ public class SmartScriptLexer {
             case '/':
             case '-':
             case '^':
+            case '+':
                 return true;
         }
         return false;
@@ -239,7 +246,8 @@ public class SmartScriptLexer {
             }
 //            check escaping
             if (data[currentPosition] == '\\') {
-                if (currentPosition + 1 < data.length && data[currentPosition] == '\\' || data[currentPosition] == '{') {
+                if ((currentPosition + 1 < data.length && data[currentPosition + 1] == '\\') ||
+                        (currentPosition + 2 < data.length && data[currentPosition + 1] == '{' && data[currentPosition + 2] == '$')) {
                     sb.append(data[currentPosition + 1]);
                     currentPosition += 2;
                     continue;
@@ -250,7 +258,7 @@ public class SmartScriptLexer {
             sb.append(data[currentPosition]);
             currentPosition++;
         }
-        return currentToken = new SmartScriptToken(SmartScriptTokenType.STRING, sb.toString());
+        return currentToken = new SmartScriptToken(SmartScriptTokenType.NORMAL_TEXT, sb.toString());
     }
 
     /**

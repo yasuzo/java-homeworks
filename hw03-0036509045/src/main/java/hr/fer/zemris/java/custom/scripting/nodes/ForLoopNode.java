@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.nodes;
 
 import hr.fer.zemris.java.custom.scripting.elems.Element;
+import hr.fer.zemris.java.custom.scripting.elems.ElementString;
 import hr.fer.zemris.java.custom.scripting.elems.ElementVariable;
 
 import java.util.Objects;
@@ -59,5 +60,37 @@ public class ForLoopNode extends Node {
      */
     public Element getStepExpression() {
         return stepExpression;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("{$ FOR %s ", variable.asText()));
+        if(startExpression instanceof ElementString) {
+            sb.append(String.format("\"%s\" ", startExpression.asText().replaceAll("\"", "\\\\\"")));
+        }else {
+            sb.append(String.format("%s ", startExpression.asText()));
+        }
+
+        if(endExpression instanceof ElementString) {
+            sb.append(String.format("\"%s\" ", endExpression.asText().replaceAll("\"", "\\\\\"")));
+        }else {
+            sb.append(String.format("%s ", endExpression.asText()));
+        }
+
+        if(stepExpression instanceof ElementString) {
+            sb.append(String.format("\"%s\" ", stepExpression.asText().replaceAll("\"", "\\\\\"")));
+        } else if (stepExpression != null) {
+            sb.append(String.format("%s ", stepExpression.asText()));
+        }
+
+        sb.append("$}");
+
+        int children = numberOfChildren();
+        for(int i = 0; i < children; i++){
+            sb.append(getChild(i).toString());
+        }
+        sb.append("{$ END $}");
+        return sb.toString();
     }
 }
