@@ -40,7 +40,12 @@ public class EchoNode extends Node {
         sb.append("{$= ");
         for(Element e : elements) {
             if(e instanceof ElementString) {
-                sb.append(String.format("\"%s\"", e.asText().replaceAll("\"", "\\\\\"")));
+                sb.append(String.format("\"%s\"", e.asText()
+                        .replaceAll("\"", "\\\\\"")
+                        .replaceAll("\n", "\\\\n")
+                        .replaceAll("\r", "\\\\r")
+                        .replaceAll("\t", "\\\\t")
+                ));
             } else if (e instanceof ElementFunction){
                 sb.append(String.format("@%s", e.asText()));
             } else {

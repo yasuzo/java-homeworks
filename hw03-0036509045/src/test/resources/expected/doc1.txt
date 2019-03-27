@@ -3,5 +3,5 @@ This is sample \\ text. \{$= $}
  This is {$= i $}-th time this message is generated.
 {$ END $}
 {$ FOR i 0 10 2 $}
- sin({$= i $}^2) = {$= i i * @sin "0.000\"" @decfmt $}
+ sin({$= i $}^2) = {$= i i * @sin "\n0.000\"\n" @decfmt $}
 {$ END $}

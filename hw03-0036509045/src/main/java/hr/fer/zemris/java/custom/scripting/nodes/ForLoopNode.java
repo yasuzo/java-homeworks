@@ -67,19 +67,34 @@ public class ForLoopNode extends Node {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("{$ FOR %s ", variable.asText()));
         if(startExpression instanceof ElementString) {
-            sb.append(String.format("\"%s\" ", startExpression.asText().replaceAll("\"", "\\\\\"")));
+            sb.append(String.format("\"%s\" ", startExpression.asText()
+                    .replaceAll("\"", "\\\\\"")
+                    .replaceAll("\n", "\\\\n")
+                    .replaceAll("\r", "\\\\r")
+                    .replaceAll("\t", "\\\\t")
+            ));
         }else {
             sb.append(String.format("%s ", startExpression.asText()));
         }
 
         if(endExpression instanceof ElementString) {
-            sb.append(String.format("\"%s\" ", endExpression.asText().replaceAll("\"", "\\\\\"")));
+            sb.append(String.format("\"%s\" ", endExpression.asText()
+                    .replaceAll("\"", "\\\\\"")
+                    .replaceAll("\n", "\\\\n")
+                    .replaceAll("\r", "\\\\r")
+                    .replaceAll("\t", "\\\\t")
+            ));
         }else {
             sb.append(String.format("%s ", endExpression.asText()));
         }
 
         if(stepExpression instanceof ElementString) {
-            sb.append(String.format("\"%s\" ", stepExpression.asText().replaceAll("\"", "\\\\\"")));
+            sb.append(String.format("\"%s\" ", stepExpression.asText()
+                    .replaceAll("\"", "\\\\\"")
+                    .replaceAll("\n", "\\\\n")
+                    .replaceAll("\r", "\\\\r")
+                    .replaceAll("\t", "\\\\t")
+            ));
         } else if (stepExpression != null) {
             sb.append(String.format("%s ", stepExpression.asText()));
         }

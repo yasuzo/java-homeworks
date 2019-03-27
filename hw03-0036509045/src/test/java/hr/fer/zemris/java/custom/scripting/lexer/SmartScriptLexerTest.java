@@ -232,13 +232,27 @@ class SmartScriptLexerTest {
 
     @Test
     void nextTokenTagStateStrings() {
-        String input = "\"aaaa\\\"\" \"\naaabbb\" \"$}\"";
+        String input = "\"aaaa\\\"\" \"\\taaabbb\" \"$}\"";
         lexer = new SmartScriptLexer(input);
         lexer.setState(SmartScriptLexerState.TAG);
         SmartScriptToken[] tokens = {
                 new SmartScriptToken(SmartScriptTokenType.STRING, "aaaa\""),
-                new SmartScriptToken(SmartScriptTokenType.STRING, "\naaabbb"),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "\taaabbb"),
                 new SmartScriptToken(SmartScriptTokenType.STRING, "$}"),
+                new SmartScriptToken(SmartScriptTokenType.EOF, null)
+        };
+        test(lexer, tokens);
+    }
+
+    @Test
+    void nextTokenTagStateStringsWithSpaces() {
+        String input = "\"\\raaaa\r\" \"\\taaabbb\t\" \"\n$}\\n\"";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        SmartScriptToken[] tokens = {
+                new SmartScriptToken(SmartScriptTokenType.STRING, "\raaaa\r"),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "\taaabbb\t"),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "\n$}\n"),
                 new SmartScriptToken(SmartScriptTokenType.EOF, null)
         };
         test(lexer, tokens);

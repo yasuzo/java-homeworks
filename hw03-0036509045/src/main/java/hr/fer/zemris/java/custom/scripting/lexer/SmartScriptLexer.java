@@ -79,7 +79,7 @@ public class SmartScriptLexer {
         skipSpaces();
 
 //        closing tag bracket
-        if(currentPosition + 1 < data.length && data[currentPosition] == '$' && data[currentPosition + 1] == '}'){
+        if (currentPosition + 1 < data.length && data[currentPosition] == '$' && data[currentPosition + 1] == '}') {
             currentPosition += 2;
             return currentToken = new SmartScriptToken(SmartScriptTokenType.CLOSED_TAG_BRACKET, "$}");
         }
@@ -146,10 +146,28 @@ public class SmartScriptLexer {
             StringBuilder sb = new StringBuilder();
             while (currentPosition < data.length && data[currentPosition] != '"') {
                 if (data[currentPosition] == '\\') {
-                    if (currentPosition + 1 < data.length && (data[currentPosition + 1] == '\\' || data[currentPosition + 1] == '"')) {
-                        sb.append(data[currentPosition + 1]);
-                        currentPosition += 2;
-                        continue;
+                    if (currentPosition + 1 < data.length) {
+                        if (data[currentPosition + 1] == '\\' || data[currentPosition + 1] == '"') {
+                            sb.append(data[currentPosition + 1]);
+                            currentPosition += 2;
+                            continue;
+                        } else {
+//                            special characters for spaces
+                            switch (data[currentPosition + 1]) {
+                                case 'n':
+                                    sb.append("\n");
+                                    currentPosition += 2;
+                                    continue;
+                                case 'r':
+                                    sb.append("\r");
+                                    currentPosition += 2;
+                                    continue;
+                                case 't':
+                                    sb.append("\t");
+                                    currentPosition += 2;
+                                    continue;
+                            }
+                        }
                     }
                     throw new SmartScriptLexerException("Wrong character escaping.");
                 }
@@ -157,10 +175,10 @@ public class SmartScriptLexer {
                 currentPosition++;
             }
             /*
-            * if currentPosition is equal or greater than data.length
-            * that means while-loop didn't stop on a closing quote
-            * therefore closing quote is missing and an exception should be thrown.
-            * */
+             * if currentPosition is equal or greater than data.length
+             * that means while-loop didn't stop on a closing quote
+             * therefore closing quote is missing and an exception should be thrown.
+             * */
             if (currentPosition >= data.length) {
                 throw new SmartScriptLexerException("Missing closing string quote.");
             }
