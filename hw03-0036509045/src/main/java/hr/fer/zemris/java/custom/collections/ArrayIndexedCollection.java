@@ -297,19 +297,37 @@ public class ArrayIndexedCollection implements List {
         return contents;
     }
 
+    /**
+     * Checks if {@code o} is equal to {@code this}.
+     * Two ArrayIndexedCollections are equal if they have the same element count
+     * and if elements on the same indexes are equal to one another determined by
+     * {@link Objects#equals(Object, Object)}.
+     *
+     * @param o Object to check for equality.
+     * @return {@code true} if collections are equal, {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ArrayIndexedCollection that = (ArrayIndexedCollection) o;
-        return size == that.size &&
-                Arrays.equals(elements, that.elements);
+
+        if(size != that.size) return false;
+        for(int i = 0; i < size; i++){
+            if(Objects.equals(elements[i], that.elements[i]) == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(size);
-        result = 31 * result + Arrays.hashCode(elements);
+        for(int i = 0; i < size; i++) {
+            result = 31 * result + Objects.hashCode(elements[i]);
+        }
         return result;
     }
 }
