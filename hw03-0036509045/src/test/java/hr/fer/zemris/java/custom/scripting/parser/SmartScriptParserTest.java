@@ -1,7 +1,6 @@
 package hr.fer.zemris.java.custom.scripting.parser;
 
 import hr.fer.zemris.java.custom.scripting.nodes.DocumentNode;
-import hr.fer.zemris.java.hw03.SmartScriptTester;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -69,6 +68,77 @@ class SmartScriptParserTest {
             assertEquals(originalDocumentBody, originalDocumentBody2);
             assertEquals(document, document2);
         }
+    }
+
+    @Test
+    void parseNull() {
+        assertThrows(NullPointerException.class, () -> new SmartScriptParser(null));
+    }
+
+    @Test
+    void parseEndWithoutForLoop() {
+        String input = "{$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseForLoopWithFunctionInIt() {
+        String input = "{$for i @sin 23 2$}{$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseForLoopWithTooFewArgs() {
+        String input = "{$for i 2$} {$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseForLoopWithTooManyArgs() {
+        String input = "{$for i 2 2 3 3$} {$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseForLoopWithOperators() {
+        String input = "{$for i 2 2 - 3$} {$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseForLoopWithoutEnd() {
+        String input = "{$for i 2 2 3$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseUnrecognizedKeyword() {
+        String input = "{$ aaa i 2 2 3$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseTagWithMultipleKeywords() {
+        String input = "{$ for for 2 2 3$}{$end$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseTagWithoutKeyword() {
+        String input = "{$ 2 2 3$}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseTagWithoutClosingBracket() {
+        String input = "{$= 2 2 3";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
+    }
+
+    @Test
+    void parseTagWithoutClosingStringQuote() {
+        String input = "{$= 2 2 3 \"dddd $}";
+        assertThrows(SmartScriptParserException.class, () -> new SmartScriptParser(input));
     }
 
 }
