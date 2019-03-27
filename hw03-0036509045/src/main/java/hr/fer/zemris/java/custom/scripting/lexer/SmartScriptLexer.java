@@ -84,106 +84,24 @@ public class SmartScriptLexer {
             return currentToken = new SmartScriptToken(SmartScriptTokenType.CLOSED_TAG_BRACKET, "$}");
         }
 
-//        keyword '='
-        if (data[currentPosition] == '=') {
-            return currentToken = new SmartScriptToken(SmartScriptTokenType.KEYWORD, String.valueOf(data[currentPosition++]));
-        }
-
 //        variable or keyword
-        if (Character.isLetter(data[currentPosition])) {
-            int start = currentPosition;
-            while (currentPosition < data.length && (Character.isLetter(data[currentPosition]) || Character.isDigit(data[currentPosition]) || data[currentPosition] == '_')) {
-                currentPosition++;
-            }
-            String stringValue = String.copyValueOf(data, start, currentPosition - start);
-            if (isKeyword(stringValue)) {
-                return currentToken = new SmartScriptToken(SmartScriptTokenType.KEYWORD, stringValue.toLowerCase());
-            }
-            return currentToken = new SmartScriptToken(SmartScriptTokenType.IDENTIFIER, stringValue);
+        if (Character.isLetter(data[currentPosition]) || data[currentPosition] == '=') {
+            return currentToken = extractVariableOrKeyword();
         }
 
 //        function
         if (data[currentPosition] == '@') {
-            currentPosition++;
-            if (currentPosition < data.length && Character.isLetter(data[currentPosition])) {
-                int start = currentPosition;
-                while (currentPosition < data.length && (Character.isLetter(data[currentPosition]) || Character.isDigit(data[currentPosition]) || data[currentPosition] == '_')) {
-                    currentPosition++;
-                }
-                return currentToken = new SmartScriptToken(SmartScriptTokenType.FUNCTION, String.copyValueOf(data, start, currentPosition - start));
-            }
-
-            throw new SmartScriptLexerException("Syntax error, unrecognized symbols.");
+            return currentToken = extractFunction();
         }
 
 //        number constants
         if ((data[currentPosition] == '-' && isNumberNext(currentPosition + 1)) || isNumberNext(currentPosition)) {
-            int start = currentPosition++;
-            boolean isDecimal = data[currentPosition - 1] == '.' ? true : false;
-            while (currentPosition < data.length && (data[currentPosition] == '.' || Character.isDigit(data[currentPosition]))) {
-//                found a second dot => stop & return 1 character back
-                if (data[currentPosition] == '.' && isDecimal) {
-                    currentPosition--;
-                    break;
-                }
-                if (data[currentPosition] == '.') {
-                    isDecimal = true;
-                }
-                currentPosition++;
-            }
-            String stringValue = String.copyValueOf(data, start, currentPosition - start);
-            stringValue = data[start] == '-' ? stringValue : "0" + stringValue;
-
-            if (isDecimal) {
-                return currentToken = new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, Double.parseDouble(stringValue));
-            }
-            return currentToken = new SmartScriptToken(SmartScriptTokenType.INTEGER_CONSTANT, Integer.parseInt(stringValue));
+            return currentToken = extractNumber();
         }
 
 //        string literal
         if (data[currentPosition] == '"') {
-            currentPosition++;
-            StringBuilder sb = new StringBuilder();
-            while (currentPosition < data.length && data[currentPosition] != '"') {
-                if (data[currentPosition] == '\\') {
-                    if (currentPosition + 1 < data.length) {
-                        if (data[currentPosition + 1] == '\\' || data[currentPosition + 1] == '"') {
-                            sb.append(data[currentPosition + 1]);
-                            currentPosition += 2;
-                            continue;
-                        } else {
-//                            special characters for spaces
-                            switch (data[currentPosition + 1]) {
-                                case 'n':
-                                    sb.append("\n");
-                                    currentPosition += 2;
-                                    continue;
-                                case 'r':
-                                    sb.append("\r");
-                                    currentPosition += 2;
-                                    continue;
-                                case 't':
-                                    sb.append("\t");
-                                    currentPosition += 2;
-                                    continue;
-                            }
-                        }
-                    }
-                    throw new SmartScriptLexerException("Wrong character escaping.");
-                }
-                sb.append(data[currentPosition]);
-                currentPosition++;
-            }
-            /*
-             * if currentPosition is equal or greater than data.length
-             * that means while-loop didn't stop on a closing quote
-             * therefore closing quote is missing and an exception should be thrown.
-             * */
-            if (currentPosition >= data.length) {
-                throw new SmartScriptLexerException("Missing closing string quote.");
-            }
-            currentPosition++;
-            return currentToken = new SmartScriptToken(SmartScriptTokenType.STRING, sb.toString());
+            return currentToken = extractStringLiteral();
         }
 
 //        operator
@@ -192,6 +110,127 @@ public class SmartScriptLexer {
         }
 
         throw new SmartScriptLexerException("Unrecognized character!");
+    }
+
+    /**
+     * Extracts number from current position.
+     *
+     * @return Token with type of a number.
+     * @throws SmartScriptLexerException If an error occurred.
+     */
+    private SmartScriptToken extractNumber() {
+        int start = currentPosition++;
+        boolean isDecimal = data[currentPosition - 1] == '.' ? true : false;
+        while (currentPosition < data.length && (data[currentPosition] == '.' || Character.isDigit(data[currentPosition]))) {
+//                found a second dot => stop & return 1 character back
+            if (data[currentPosition] == '.' && isDecimal) {
+                currentPosition--;
+                break;
+            }
+            if (data[currentPosition] == '.') {
+                isDecimal = true;
+            }
+            currentPosition++;
+        }
+        String stringValue = String.copyValueOf(data, start, currentPosition - start);
+        stringValue = data[start] == '-' ? stringValue : "0" + stringValue;
+
+        if (isDecimal) {
+            return new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, Double.parseDouble(stringValue));
+        }
+        return new SmartScriptToken(SmartScriptTokenType.INTEGER_CONSTANT, Integer.parseInt(stringValue));
+    }
+
+    /**
+     * Extracts a string literal from current position.
+     *
+     * @return Token with type string.
+     * @throws SmartScriptLexerException If an error occurred.
+     */
+    private SmartScriptToken extractStringLiteral() {
+        currentPosition++;
+        StringBuilder sb = new StringBuilder();
+        while (currentPosition < data.length && data[currentPosition] != '"') {
+            if (data[currentPosition] == '\\') {
+                if (currentPosition + 1 < data.length) {
+                    if (data[currentPosition + 1] == '\\' || data[currentPosition + 1] == '"') {
+                        sb.append(data[currentPosition + 1]);
+                        currentPosition += 2;
+                        continue;
+                    } else {
+//                            special characters for spaces
+                        switch (data[currentPosition + 1]) {
+                            case 'n':
+                                sb.append("\n");
+                                currentPosition += 2;
+                                continue;
+                            case 'r':
+                                sb.append("\r");
+                                currentPosition += 2;
+                                continue;
+                            case 't':
+                                sb.append("\t");
+                                currentPosition += 2;
+                                continue;
+                        }
+                    }
+                }
+                throw new SmartScriptLexerException("Wrong character escaping.");
+            }
+            sb.append(data[currentPosition]);
+            currentPosition++;
+        }
+        /*
+         * if currentPosition is equal or greater than data.length
+         * that means while-loop didn't stop on a closing quote
+         * therefore closing quote is missing and an exception should be thrown.
+         * */
+        if (currentPosition >= data.length) {
+            throw new SmartScriptLexerException("Missing closing string quote.");
+        }
+        currentPosition++;
+        return new SmartScriptToken(SmartScriptTokenType.STRING, sb.toString());
+    }
+
+    /**
+     * Extracts a function token from current position.
+     *
+     * @return Token of type function.
+     * @throws SmartScriptLexerException If an error occurred.
+     */
+    private SmartScriptToken extractFunction() {
+        currentPosition++;
+        if (currentPosition < data.length && Character.isLetter(data[currentPosition])) {
+            int start = currentPosition;
+            while (currentPosition < data.length && (Character.isLetter(data[currentPosition]) || Character.isDigit(data[currentPosition]) || data[currentPosition] == '_')) {
+                currentPosition++;
+            }
+            return new SmartScriptToken(SmartScriptTokenType.FUNCTION, String.copyValueOf(data, start, currentPosition - start));
+        }
+
+        throw new SmartScriptLexerException("Syntax error, unrecognized symbols.");
+    }
+
+    /**
+     * Extracts a variable (identifier) or keyword token from current position.
+     *
+     * @return Token of type identifier or keyword.
+     * @throws SmartScriptLexerException If an error occurred.
+     */
+    private SmartScriptToken extractVariableOrKeyword() {
+        if (data[currentPosition] == '=') {
+            return new SmartScriptToken(SmartScriptTokenType.KEYWORD, String.valueOf(data[currentPosition++]));
+        }
+
+        int start = currentPosition;
+        while (currentPosition < data.length && (Character.isLetter(data[currentPosition]) || Character.isDigit(data[currentPosition]) || data[currentPosition] == '_')) {
+            currentPosition++;
+        }
+        String stringValue = String.copyValueOf(data, start, currentPosition - start);
+        if (isKeyword(stringValue)) {
+            return new SmartScriptToken(SmartScriptTokenType.KEYWORD, stringValue.toLowerCase());
+        }
+        return new SmartScriptToken(SmartScriptTokenType.IDENTIFIER, stringValue);
     }
 
     /**
@@ -248,7 +287,8 @@ public class SmartScriptLexer {
     }
 
     /**
-     * @return Next token in basic state.
+     * @return Next token in basic state of type text.
+     * @throws SmartScriptLexerException If wrong escaping occurred.
      */
     private SmartScriptToken nextTokenBasic() {
         if (currentPosition + 1 < data.length && data[currentPosition] == '{' && data[currentPosition + 1] == '$') {
