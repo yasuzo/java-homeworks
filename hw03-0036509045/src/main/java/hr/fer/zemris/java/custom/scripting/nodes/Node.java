@@ -2,6 +2,7 @@ package hr.fer.zemris.java.custom.scripting.nodes;
 
 import hr.fer.zemris.java.custom.collections.ArrayIndexedCollection;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -45,5 +46,18 @@ public class Node {
             throw new IndexOutOfBoundsException("There are no children.");
         }
         return (Node)children.get(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(children, node.children);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(children);
     }
 }

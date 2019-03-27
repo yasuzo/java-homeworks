@@ -93,4 +93,21 @@ public class ForLoopNode extends Node {
         sb.append("{$ END $}");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ForLoopNode that = (ForLoopNode) o;
+        return Objects.equals(variable, that.variable) &&
+                Objects.equals(startExpression, that.startExpression) &&
+                Objects.equals(endExpression, that.endExpression) &&
+                Objects.equals(stepExpression, that.stepExpression);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), variable, startExpression, endExpression, stepExpression);
+    }
 }

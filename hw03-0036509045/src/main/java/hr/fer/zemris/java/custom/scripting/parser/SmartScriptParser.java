@@ -161,7 +161,7 @@ public class SmartScriptParser {
         Objects.requireNonNull(stack);
 //        check if there is garbage around end tag
         if (lexer.nextToken().getType() != SmartScriptTokenType.CLOSED_TAG_BRACKET) {
-            throw new SmartScriptParserException("End statement must be alone in a tag.");
+            throw new SmartScriptParserException("End statement must be alone in a tag and have a closing tag bracket.");
         }
 //        check if there is a for-loop to close, if not throw
         if (stack.pop() instanceof ForLoopNode == false) {

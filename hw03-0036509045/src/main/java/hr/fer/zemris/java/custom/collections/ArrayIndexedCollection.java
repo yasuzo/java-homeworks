@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.custom.collections;
 
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -265,6 +266,7 @@ public class ArrayIndexedCollection implements List {
             elements[index] = elements[index + 1];
         }
 
+        elements[size - 1] = null;
         size--;
         modificationCount++;
     }
@@ -293,5 +295,21 @@ public class ArrayIndexedCollection implements List {
         }
 
         return contents;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayIndexedCollection that = (ArrayIndexedCollection) o;
+        return size == that.size &&
+                Arrays.equals(elements, that.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size);
+        result = 31 * result + Arrays.hashCode(elements);
+        return result;
     }
 }

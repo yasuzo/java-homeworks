@@ -1,6 +1,5 @@
 package hr.fer.zemris.java.hw03;
 
-import hr.fer.zemris.java.custom.scripting.elems.Element;
 import hr.fer.zemris.java.custom.scripting.nodes.DocumentNode;
 import hr.fer.zemris.java.custom.scripting.parser.SmartScriptParser;
 import hr.fer.zemris.java.custom.scripting.parser.SmartScriptParserException;
@@ -8,19 +7,24 @@ import hr.fer.zemris.java.custom.scripting.parser.SmartScriptParserException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * This program takes a file path from the command line,
+ * parses it and reconstructs original document body which is then outputted to the console.
+ *
+ * @author Jan Capek
+ */
 public class SmartScriptTester {
 
     public static void main(String[] args) {
 
-//        if(args.length != 1) {
-//            System.out.println("Wrong argument count.");
-//            return;
-//        }
+        if(args.length != 1) {
+            System.out.println("Wrong argument count.");
+            return;
+        }
 
-        String filepath = "src/main/resources/doc1.txt";
+        String filepath = args[0];
 
         String docBody;
         try {
@@ -49,6 +53,12 @@ public class SmartScriptTester {
         // content of docBody
     }
 
+    /**
+     * Creates original document body from root node of the document.
+     *
+     * @param node Root node of a document produced by a parser.
+     * @return Original document.
+     */
     public static String createOriginalDocumentBody(DocumentNode node) {
         return node.toString();
     }

@@ -49,7 +49,7 @@ class SmartScriptLexerTest {
         lexer = new SmartScriptLexer(input);
         assertEquals(
                 new SmartScriptToken(
-                        SmartScriptTokenType.STRING,
+                        SmartScriptTokenType.NORMAL_TEXT,
                         "Example { bla } blu {$=1$}. Nothing interesting {=here}."
                 ),
                 lexer.nextToken()
@@ -141,7 +141,7 @@ class SmartScriptLexerTest {
     void nextTokenMixedStates() {
         String input = "This is some king of \\{$ for test $}{$= i -.3 + i * @sin \"0.000\" @decfmt $}";
         lexer = new SmartScriptLexer(input);
-        assertEquals(new SmartScriptToken(SmartScriptTokenType.STRING, "This is some king of {$ for test $}"), lexer.nextToken());
+        assertEquals(new SmartScriptToken(SmartScriptTokenType.NORMAL_TEXT, "This is some king of {$ for test $}"), lexer.nextToken());
         assertEquals(new SmartScriptToken(SmartScriptTokenType.OPEN_TAG_BRACKET, "{$"), lexer.nextToken());
         lexer.setState(SmartScriptLexerState.TAG);
         SmartScriptToken[] tokens = {
@@ -174,6 +174,71 @@ class SmartScriptLexerTest {
                 new SmartScriptToken(SmartScriptTokenType.INTEGER_CONSTANT, -23423),
                 new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, 23.),
                 new SmartScriptToken(SmartScriptTokenType.DOUBLE_CONSTANT, -23.),
+                new SmartScriptToken(SmartScriptTokenType.EOF, null)
+        };
+        test(lexer, tokens);
+    }
+
+    @Test
+    void nextTokenTagStateInvalidFunction() {
+        String input = "@@adaa";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
+    }
+
+    @Test
+    void nextTokenTagStateInvalidFunction2() {
+        String input = "@Kad_21|aa";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        lexer.nextToken();
+        assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
+    }
+
+    @Test
+    void nextTokenTagStateInvalidFunction3() {
+        String input = "@Kad_21|)aa";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        lexer.nextToken();
+        assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
+    }
+
+    @Test
+    void nextTokenTagStateInvalidVariable() {
+        String input = "fdadsfaf{";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        lexer.nextToken();
+        assertThrows(SmartScriptLexerException.class, () -> lexer.nextToken());
+    }
+
+    @Test
+    void nextTokenTagStateOperators() {
+        String input = "*-+^/";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        SmartScriptToken[] tokens = {
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "*"),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "-"),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "+"),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "^"),
+                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "/"),
+                new SmartScriptToken(SmartScriptTokenType.EOF, null)
+        };
+        test(lexer, tokens);
+    }
+
+    @Test
+    void nextTokenTagStateStrings() {
+        String input = "\"aaaa\\\"\" \"\naaabbb\" \"$}\"";
+        lexer = new SmartScriptLexer(input);
+        lexer.setState(SmartScriptLexerState.TAG);
+        SmartScriptToken[] tokens = {
+                new SmartScriptToken(SmartScriptTokenType.STRING, "aaaa\""),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "\naaabbb"),
+                new SmartScriptToken(SmartScriptTokenType.STRING, "$}"),
                 new SmartScriptToken(SmartScriptTokenType.EOF, null)
         };
         test(lexer, tokens);

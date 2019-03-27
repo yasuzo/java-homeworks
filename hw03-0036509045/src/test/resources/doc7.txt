@@ -1,0 +1,6 @@
+{$For i 0 10 2 $}
+ sin({$   =   i$}^2) = {$= i i * @sin "0.000\"" @decfmt $}
+{$eND$}
+{$For karma 4 4-4$}
+ sin({$   =   i +32 $}^2) = {$= i i*@s_in"0.000\""@decfmt $}
+{$eND$}

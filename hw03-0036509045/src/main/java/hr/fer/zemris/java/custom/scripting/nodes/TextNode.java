@@ -32,4 +32,18 @@ public class TextNode extends Node {
     public String toString() {
         return text.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\{\\$", "\\\\\\{\\$");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TextNode textNode = (TextNode) o;
+        return Objects.equals(text, textNode.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), text);
+    }
 }

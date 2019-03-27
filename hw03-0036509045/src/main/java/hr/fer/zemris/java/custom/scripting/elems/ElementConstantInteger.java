@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.custom.scripting.elems;
 
+import java.util.Objects;
+
 /**
  * Class that represents an integer constant.
  *
@@ -22,5 +24,18 @@ public class ElementConstantInteger extends Element {
      */
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ElementConstantInteger that = (ElementConstantInteger) o;
+        return value == that.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

@@ -5,6 +5,7 @@ import hr.fer.zemris.java.custom.scripting.elems.ElementFunction;
 import hr.fer.zemris.java.custom.scripting.elems.ElementString;
 import hr.fer.zemris.java.custom.scripting.elems.ElementVariable;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -49,5 +50,21 @@ public class EchoNode extends Node {
         }
         sb.append("$}");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        EchoNode echoNode = (EchoNode) o;
+        return Arrays.equals(elements, echoNode.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + Arrays.hashCode(elements);
+        return result;
     }
 }
