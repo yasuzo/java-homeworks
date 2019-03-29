@@ -151,30 +151,31 @@ public class SmartScriptLexer {
         currentPosition++;
         StringBuilder sb = new StringBuilder();
         while (currentPosition < data.length && data[currentPosition] != '"') {
-            if (data[currentPosition] == '\\') {
-                if (currentPosition + 1 < data.length) {
-                    if (data[currentPosition + 1] == '\\' || data[currentPosition + 1] == '"') {
+            if (data[currentPosition] == '\\' && currentPosition + 1 < data.length) {
+//                special characters for spaces and backslash or quote escaping
+                switch (data[currentPosition + 1]) {
+                    case '"':
+                    case '\\':
                         sb.append(data[currentPosition + 1]);
                         currentPosition += 2;
                         continue;
-                    } else {
-//                            special characters for spaces
-                        switch (data[currentPosition + 1]) {
-                            case 'n':
-                                sb.append("\n");
-                                currentPosition += 2;
-                                continue;
-                            case 'r':
-                                sb.append("\r");
-                                currentPosition += 2;
-                                continue;
-                            case 't':
-                                sb.append("\t");
-                                currentPosition += 2;
-                                continue;
-                        }
-                    }
+                    case 'n':
+                        sb.append("\n");
+                        currentPosition += 2;
+                        continue;
+                    case 'r':
+                        sb.append("\r");
+                        currentPosition += 2;
+                        continue;
+                    case 't':
+                        sb.append("\t");
+                        currentPosition += 2;
+                        continue;
+                    default:
+                        throw new SmartScriptLexerException("Wrong character escaping.");
                 }
+            } else if (data[currentPosition] == '\\') {
+//                there is no character to escape -> throw exception
                 throw new SmartScriptLexerException("Wrong character escaping.");
             }
             sb.append(data[currentPosition]);
@@ -323,27 +324,8 @@ public class SmartScriptLexer {
      * Positions {@link SmartScriptLexer#currentPosition} to the first character that is not a blank.
      */
     private void skipSpaces() {
-        while (currentPosition < data.length && isSpace(data[currentPosition])) {
+        while (currentPosition < data.length && Character.isWhitespace(data[currentPosition])) {
             currentPosition++;
         }
     }
-
-    /**
-     * Checks if given character is space.
-     *
-     * @param c Character to check.
-     * @return {@code true} if {@code c} is space, {@code false} otherwise.
-     */
-    private boolean isSpace(char c) {
-        switch (c) {
-            case '\n':
-            case '\r':
-            case '\t':
-            case ' ':
-                return true;
-        }
-        return false;
-    }
-
-
 }
