@@ -56,7 +56,7 @@ public class Vector2D {
         double length = Math.sqrt(x*x + y*y);
         double newAngle = Math.atan2(y, x) + angle;
         x = Math.cos(newAngle) * length;
-        y = Math.sin(newAngle);
+        y = Math.sin(newAngle) * length;
     }
 
     /**
