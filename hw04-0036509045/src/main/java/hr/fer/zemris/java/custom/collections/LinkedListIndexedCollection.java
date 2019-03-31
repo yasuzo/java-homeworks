@@ -8,6 +8,8 @@ import java.util.Objects;
  * Linked list implementation of {@link Collection}.
  * This collection does not permit {@code null} values.
  *
+ * @param <T> Type of objects stored in the collection.
+ *
  * @author Jan Capek
  */
 public class LinkedListIndexedCollection<T> implements List<T> {

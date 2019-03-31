@@ -5,6 +5,8 @@ import java.util.Objects;
 /**
  * Interface for collections.
  *
+ * @param <T> Type of objects stored in the collection.
+ *
  * @author Jan Capek
  */
 public interface Collection<T> {

@@ -4,6 +4,8 @@ package hr.fer.zemris.java.custom.collections;
  * Class representing stack data structure.
  * Uses {@code ArrayIndexedCollection} for it's internal storage.
  *
+ * @param <T> Type of objects stored on the stack.
+ *
  * @author Jan Capek
  */
 public class ObjectStack<T> {

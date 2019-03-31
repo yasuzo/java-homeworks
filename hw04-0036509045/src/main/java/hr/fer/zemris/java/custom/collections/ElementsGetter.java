@@ -5,6 +5,8 @@ import java.util.Objects;
 /**
  * Interface for fetching elements of collections.
  *
+ * @param <T> Type of objects which will be returned.
+ *
  * @author Jan Capek
  */
 public interface ElementsGetter<T> {

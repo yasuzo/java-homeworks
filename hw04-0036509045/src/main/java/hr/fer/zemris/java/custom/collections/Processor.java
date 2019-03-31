@@ -3,6 +3,8 @@ package hr.fer.zemris.java.custom.collections;
 /**
  * Processor interface whose method is meant to be called for an object that needs to be processed.
  *
+ * @param <T> Type of object that should be processed.
+ *
  * @author Jan Capek
  */
 public interface Processor<T> {

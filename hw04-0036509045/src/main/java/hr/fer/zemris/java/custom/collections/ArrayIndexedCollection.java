@@ -8,6 +8,8 @@ import java.util.Objects;
  * Resizable array implementation of {@link List}.
  * This collection does not permit {@code null} values.
  *
+ * @param <T> Type of objects in the collection.
+ *
  * @author Jan Capek
  */
 public class ArrayIndexedCollection<T> implements List<T> {
