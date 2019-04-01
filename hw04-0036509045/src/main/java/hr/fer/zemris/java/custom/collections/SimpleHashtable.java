@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * @param <K> Type of keys.
  * @param <V> Type of values that should be stored.
  */
-public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntry<K, V>>{
+public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntry<K, V>>{
 
     private static final int DEFAULT_TABLE_SIZE = 16;
     private static final double FILL_RATIO = 0.75;
@@ -26,20 +26,20 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
     private int numberOfFilledSlots;
 
     /**
-     * Constructs a new {@link SimpleHashTable} with default table capacity.
+     * Constructs a new {@link SimpleHashtable} with default table capacity.
      */
-    public SimpleHashTable() {
+    public SimpleHashtable() {
         this(DEFAULT_TABLE_SIZE);
     }
 
     /**
-     * Constructs a new {@link SimpleHashTable} with size of the closest power of 2
+     * Constructs a new {@link SimpleHashtable} with size of the closest power of 2
      * that is equal or greater than given initial capacity.
      *
      * @param capacity Wanted initial size.
      * @throws IllegalArgumentException If wanted size is less than 1 or is too large.
      */
-    public SimpleHashTable(int capacity) {
+    public SimpleHashtable(int capacity) {
         capacity = closestPowerOf2(capacity); // this will throw an exception if initialSize is less than 1
 
         table = (TableEntry<K, V>[]) new TableEntry[capacity];
@@ -318,7 +318,7 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
     }
 
     /**
-     * Class representing key-value pair for {@link SimpleHashTable} entries.
+     * Class representing key-value pair for {@link SimpleHashtable} entries.
      *
      * @param <K> Type of keys.
      * @param <V> Type of values.
@@ -372,7 +372,7 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
     }
 
     /**
-     * Iterator of a {@link SimpleHashTable.TableEntry} for {@link SimpleHashTable}.
+     * Iterator of a {@link SimpleHashtable.TableEntry} for {@link SimpleHashtable}.
      * If the collection is modified outside of the iterator, an instance of this class will
      * throw {@link ConcurrentModificationException}.
      *
@@ -390,8 +390,8 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
 
 
         private LocalIterator() {
-            modificationCount = SimpleHashTable.this.modificationCount;
-            numberOfElementsLeftToReturn = SimpleHashTable.this.size;
+            modificationCount = SimpleHashtable.this.modificationCount;
+            numberOfElementsLeftToReturn = SimpleHashtable.this.size;
             currentIndex = -1;
             removedCurrent = false;
         }
@@ -409,8 +409,8 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
 
             checkConcurrentModification();
 
-            SimpleHashTable.this.remove(currentEntry.key);
-            modificationCount = SimpleHashTable.this.modificationCount;
+            SimpleHashtable.this.remove(currentEntry.key);
+            modificationCount = SimpleHashtable.this.modificationCount;
             removedCurrent = true;
         }
 
@@ -452,7 +452,7 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
             }
 
             if(currentEntry == null) {
-                for(currentIndex += 1; currentIndex < size; currentIndex++) {
+                for(currentIndex += 1; ; currentIndex++) {
                     if(table[currentIndex] != null) {
                         currentEntry = table[currentIndex];
                         break;
@@ -469,7 +469,7 @@ public class SimpleHashTable<K, V> implements Iterable<SimpleHashTable.TableEntr
          * @throws ConcurrentModificationException If the table was modified in the meantime outside of this iterator.
          */
         private void checkConcurrentModification() {
-            if(modificationCount != SimpleHashTable.this.modificationCount) {
+            if(modificationCount != SimpleHashtable.this.modificationCount) {
                 throw new ConcurrentModificationException("Element structure was modified in the mean time.");
             }
         }

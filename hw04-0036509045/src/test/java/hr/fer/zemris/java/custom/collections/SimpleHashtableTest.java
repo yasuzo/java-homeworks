@@ -4,17 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimpleHashTableTest {
+class SimpleHashtableTest {
 
-    SimpleHashTable<String, Integer> table;
+    SimpleHashtable<String, Integer> table;
 
-    void test(Object[] expected, SimpleHashTable<?, ?> table) {
+    void test(Object[] expected, SimpleHashtable<?, ?> table) {
         assertEquals(expected.length, table.size());
         for (Object o : expected) {
             Pair p = (Pair) o;
@@ -24,7 +23,7 @@ class SimpleHashTableTest {
 
     @BeforeEach
     void setUp() {
-        table = new SimpleHashTable<>(1);
+        table = new SimpleHashtable<>(1);
         table.put("kruska", 0);
         table.put("jabuka", 2);
         table.put("sljiva", 4);
@@ -32,14 +31,14 @@ class SimpleHashTableTest {
 
     @Test
     void constructIllegalCapacity() {
-        assertThrows(IllegalArgumentException.class, () -> new SimpleHashTable<>(0));
+        assertThrows(IllegalArgumentException.class, () -> new SimpleHashtable<>(0));
     }
 
     @Test
     void constructCapacity() {
-        SimpleHashTable<?, ?> hashTable = new SimpleHashTable<>(128);
-        SimpleHashTable<?, ?> hashTable2 = new SimpleHashTable<>(97);
-        SimpleHashTable<?, ?> hashTable3 = new SimpleHashTable<>(1);
+        SimpleHashtable<?, ?> hashTable = new SimpleHashtable<>(128);
+        SimpleHashtable<?, ?> hashTable2 = new SimpleHashtable<>(97);
+        SimpleHashtable<?, ?> hashTable3 = new SimpleHashtable<>(1);
     }
 
     //    put()
@@ -141,14 +140,14 @@ class SimpleHashTableTest {
     @Test
     void isEmpty() {
         assertFalse(table.isEmpty());
-        assertTrue(new SimpleHashTable<>().isEmpty());
+        assertTrue(new SimpleHashtable<>().isEmpty());
     }
 
     //    size
     @Test
     void size() {
         assertEquals(3, table.size());
-        assertEquals(0, new SimpleHashTable<>().size());
+        assertEquals(0, new SimpleHashtable<>().size());
     }
 
     //    iterator test
@@ -162,7 +161,7 @@ class SimpleHashTableTest {
 
         Pair[] pairs = new Pair[table.size()];
         int i = 0;
-        for (SimpleHashTable.TableEntry<String, Integer> entry : table) {
+        for (SimpleHashtable.TableEntry<String, Integer> entry : table) {
             pairs[i++] = new Pair(entry.getKey(), entry.getValue());
         }
         test(pairs, table);
@@ -171,14 +170,14 @@ class SimpleHashTableTest {
 
     @Test
     void iteratorRemoveTest() {
-        Iterator<SimpleHashTable.TableEntry<String, Integer>> it = table.iterator();
+        Iterator<SimpleHashtable.TableEntry<String, Integer>> it = table.iterator();
         int oldSize = table.size();
 
 //        get next and remove it
         assertEquals("jabuka", it.next().getKey());
         it.remove();
 
-//        check if last returned was removed
+//        check if last was removed
         assertFalse(table.containsKey("jabuka"));
         assertNull(table.get("jabuka"));
         assertEquals(1, oldSize - table.size());
@@ -189,7 +188,7 @@ class SimpleHashTableTest {
         };
         Pair[] pairs = new Pair[table.size()];
         for (int i = 0; it.hasNext(); i++) {
-            SimpleHashTable.TableEntry<?, ?> entry = it.next();
+            SimpleHashtable.TableEntry<?, ?> entry = it.next();
             pairs[i] = new Pair(entry.getKey(), entry.getValue());
         }
         test(pairs, table);
@@ -198,7 +197,7 @@ class SimpleHashTableTest {
 
     @Test
     void iteratorRemoveIllegal() {
-        Iterator<SimpleHashTable.TableEntry<String, Integer>> it = table.iterator();
+        Iterator<SimpleHashtable.TableEntry<String, Integer>> it = table.iterator();
         assertThrows(IllegalStateException.class, () -> it.remove());
         it.next();
         it.remove();
@@ -207,7 +206,7 @@ class SimpleHashTableTest {
 
     @Test
     void iteratorConcurrentModification() {
-        Iterator<SimpleHashTable.TableEntry<String, Integer>> it = table.iterator();
+        Iterator<SimpleHashtable.TableEntry<String, Integer>> it = table.iterator();
         assertTrue(it.hasNext());
         it.next();
         table.remove("jabuka");
@@ -216,7 +215,7 @@ class SimpleHashTableTest {
 
     @Test
     void iteratorForEachRemaining() {
-        Iterator<SimpleHashTable.TableEntry<String, Integer>> it = table.iterator();
+        Iterator<SimpleHashtable.TableEntry<String, Integer>> it = table.iterator();
 
         assertEquals("jabuka", it.next().getKey());
         it.remove();
