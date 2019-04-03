@@ -306,12 +306,22 @@ public class ArrayIndexedCollection<T> implements List<T> {
         private int current;
         private ArrayIndexedCollection<E> c;
 
+        /**
+         * Creates a new instance of ElementGetter for given ArrayIndexedCollection.
+         *
+         * @param c ArrayIndexedCollection whose elements will need to be fetched.
+         */
         private ArrayElementsGetter(ArrayIndexedCollection<E> c) {
             Objects.requireNonNull(c);
             this.c = c;
             startingModificationCount = c.modificationCount;
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
+         */
         @Override
         public boolean hasNextElement() {
             if (startingModificationCount != c.modificationCount) {
@@ -324,6 +334,7 @@ public class ArrayIndexedCollection<T> implements List<T> {
          * {@inheritDoc}
          *
          * @throws NoSuchElementException If all elements have already been returned by this ElementsGetter.
+         * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
          */
         @Override
         public E getNextElement() {

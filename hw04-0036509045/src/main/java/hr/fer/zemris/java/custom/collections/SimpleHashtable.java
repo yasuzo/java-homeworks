@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * @param <K> Type of keys.
  * @param <V> Type of values that should be stored.
  */
-public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntry<K, V>>{
+public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntry<K, V>> {
 
     private static final int DEFAULT_TABLE_SIZE = 16;
     private static final double FILL_RATIO = 0.75;
@@ -98,11 +98,9 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
      * @return {@code true} if the value exists in the table, {@code false} otherwise.
      */
     public boolean containsValue(Object value) {
-        for (TableEntry<K, V> entry : table) {
-            for (; entry != null; entry = entry.next) {
-                if (Objects.equals(entry.value, value)) {
-                    return true;
-                }
+        for (TableEntry<K, V> entry : this) {
+            if (Objects.equals(entry.value, value)) {
+                return true;
             }
         }
         return false;
@@ -117,34 +115,38 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
         if (key == null) {
             return;
         }
-        for (int i = 0; i < table.length; i++) {
-            if (table[i] == null) {
+
+        int slot = calculatePosition(key);
+
+//        slot is already empty
+        if (table[slot] == null) {
+            return;
+        }
+
+//            check if the head of linked list has searched key
+        if (Objects.equals(table[slot].key, key)) {
+            TableEntry<K, V> temp = table[slot];
+            table[slot] = temp.next;
+            size--;
+            modificationCount++;
+//                slot has become empty -> decrease numberOfFilledSlots
+            if (table[slot] == null) {
+                numberOfFilledSlots--;
+            }
+            return;
+        }
+
+//            check if other entries in linked list have searched key
+        for (TableEntry<K, V> entry = table[slot]; entry.next != null; entry = entry.next) {
+            if (Objects.equals(entry.next.key, key) == false) {
                 continue;
             }
-//            check if the head of linked list has searched key
-            if (Objects.equals(table[i].key, key)) {
-                TableEntry<K, V> temp = table[i];
-                table[i] = temp.next;
-                size--;
-                modificationCount++;
-
-//                slot has become empty -> decrease numberOfFilledSlots
-                if (table[i] == null) {
-                    numberOfFilledSlots--;
-                }
-                return;
-            }
-//            check if other entries in linked list have searched key
-            for (TableEntry<K, V> entry = table[i]; entry.next != null; entry = entry.next) {
-                if (Objects.equals(entry.next.key, key) == false) {
-                    continue;
-                }
-                entry.next = entry.next.next;
-                size--;
-                modificationCount++;
-                return;
-            }
+            entry.next = entry.next.next;
+            size--;
+            modificationCount++;
+            return;
         }
+
     }
 
     /**
@@ -184,10 +186,8 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (TableEntry<K, V> entry : table) {
-            for (; entry != null; entry = entry.next) {
-                sb.append(String.format("%s, ", entry));
-            }
+        for (TableEntry<K, V> entry : this) {
+            sb.append(String.format("%s, ", entry));
         }
         sb.append("]");
         return sb.toString().replaceAll(", ]$", "]");
@@ -398,11 +398,12 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 
         /**
          * {@inheritDoc}
+         *
          * @throws ConcurrentModificationException If the collection was modified in the mean time outside of this iterator.
          */
         @Override
         public void remove() {
-            if(currentEntry == null || removedCurrent) {
+            if (currentEntry == null || removedCurrent) {
                 throw new IllegalStateException("There is no element to remove, next() has already been " +
                         "called or an element has already been removed.");
             }
@@ -416,12 +417,13 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 
         /**
          * {@inheritDoc}
+         *
          * @throws ConcurrentModificationException If the table was modified in the mean time outside of this iterator.
          */
         @Override
         public void forEachRemaining(Consumer<? super TableEntry<K, V>> action) {
             Objects.requireNonNull(action);
-            while(true) {
+            while (true) {
                 try {
                     action.accept(this.next());
                 } catch (NoSuchElementException e) {
@@ -437,23 +439,24 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 
         /**
          * {@inheritDoc}
+         *
          * @throws ConcurrentModificationException If the table was modified in the mean time outside of this iterator.
          */
         @Override
         public TableEntry<K, V> next() {
-            if(hasNext() == false) {
+            if (hasNext() == false) {
                 throw new NoSuchElementException("There are no elements to return.");
             }
 
             checkConcurrentModification();
 
-            if(currentEntry != null) {
+            if (currentEntry != null) {
                 currentEntry = currentEntry.next;
             }
 
-            if(currentEntry == null) {
-                for(currentIndex += 1; ; currentIndex++) {
-                    if(table[currentIndex] != null) {
+            if (currentEntry == null) {
+                for (currentIndex += 1; ; currentIndex++) {
+                    if (table[currentIndex] != null) {
                         currentEntry = table[currentIndex];
                         break;
                     }
@@ -469,7 +472,7 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
          * @throws ConcurrentModificationException If the table was modified in the meantime outside of this iterator.
          */
         private void checkConcurrentModification() {
-            if(modificationCount != SimpleHashtable.this.modificationCount) {
+            if (modificationCount != SimpleHashtable.this.modificationCount) {
                 throw new ConcurrentModificationException("Element structure was modified in the mean time.");
             }
         }

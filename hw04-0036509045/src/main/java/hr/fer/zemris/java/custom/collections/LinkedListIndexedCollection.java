@@ -30,6 +30,11 @@ public class LinkedListIndexedCollection<T> implements List<T> {
         private ListNode<E> currentNode;
         private LinkedListIndexedCollection c;
 
+        /**
+         * Creates a new instance of ElementGetter for given LinkedListIndexedCollection.
+         *
+         * @param c ArrayIndexedCollection whose elements will need to be fetched.
+         */
         private LinkedListElementsGetter(LinkedListIndexedCollection c) {
             Objects.requireNonNull(c);
             this.c = c;
@@ -37,6 +42,11 @@ public class LinkedListIndexedCollection<T> implements List<T> {
             startingModificationCount = c.modificationCount;
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
+         */
         @Override
         public boolean hasNextElement() {
             if(startingModificationCount != c.modificationCount) {
@@ -48,6 +58,7 @@ public class LinkedListIndexedCollection<T> implements List<T> {
         /**
          * {@inheritDoc}
          * @throws NoSuchElementException If all elements have already been returned by this ElementsGetter.
+         * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
          */
         @Override
         public E getNextElement() {
