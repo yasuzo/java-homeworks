@@ -9,7 +9,6 @@ import java.util.Objects;
  * This collection does not permit {@code null} values.
  *
  * @param <T> Type of objects stored in the collection.
- *
  * @author Jan Capek
  */
 public class LinkedListIndexedCollection<T> implements List<T> {
@@ -49,7 +48,7 @@ public class LinkedListIndexedCollection<T> implements List<T> {
          */
         @Override
         public boolean hasNextElement() {
-            if(startingModificationCount != c.modificationCount) {
+            if (startingModificationCount != c.modificationCount) {
                 throw new ConcurrentModificationException("Collection was modified in the mean time.");
             }
             return currentNode != null;
@@ -57,12 +56,13 @@ public class LinkedListIndexedCollection<T> implements List<T> {
 
         /**
          * {@inheritDoc}
-         * @throws NoSuchElementException If all elements have already been returned by this ElementsGetter.
+         *
+         * @throws NoSuchElementException          If all elements have already been returned by this ElementsGetter.
          * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
          */
         @Override
         public E getNextElement() {
-            if(hasNextElement() == false) {
+            if (hasNextElement() == false) {
                 throw new NoSuchElementException("All elements were already returned.");
             }
             E value = currentNode.value;
@@ -109,7 +109,7 @@ public class LinkedListIndexedCollection<T> implements List<T> {
     /**
      * {@inheritDoc}
      *
-     * @param value    Value to be inserted. Must not be {@code null}.
+     * @param value Value to be inserted. Must not be {@code null}.
      * @throws IndexOutOfBoundsException If illegal position is given (legal position is in interval of [0, size]).
      * @throws NullPointerException      If the value is null.
      */

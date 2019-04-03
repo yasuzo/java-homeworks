@@ -144,7 +144,7 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
             entry.next = entry.next.next;
             size--;
             modificationCount++;
-            return;
+            return; // "return" has to be here for early exit
         }
 
     }
@@ -214,6 +214,7 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
         while ((numberOfFilledSlots + 1.0) / newSize >= FILL_RATIO) {
             newSize *= 2;
         }
+//        TODO: Check if an overflow happened.
         table = (TableEntry<K, V>[]) new TableEntry[newSize];
 
         size = 0;
@@ -380,15 +381,30 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
      */
     private class LocalIterator implements Iterator<TableEntry<K, V>> {
 
+        /**
+         * Position of the iterator in the table.
+         */
         private int currentIndex;
+        /**
+         * Last element entry returned by the iterator.
+         */
         private TableEntry<K, V> currentEntry;
+        /**
+         * Modification count that
+         */
         private long modificationCount;
-
+        /**
+         * Holds how many elements are in the table that haven't yet been returned by the iterator.
+         */
         private int numberOfElementsLeftToReturn;
-
+        /**
+         * Flag that signalizes if the current entry was already removed.
+         */
         private boolean removedCurrent;
 
-
+        /**
+         * Creates a new iterator for the hash table.
+         */
         private LocalIterator() {
             modificationCount = SimpleHashtable.this.modificationCount;
             numberOfElementsLeftToReturn = SimpleHashtable.this.size;
@@ -450,10 +466,14 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
 
             checkConcurrentModification();
 
+//            if current entry isn't null then go to the next one it points to (that is in the same slot).
             if (currentEntry != null) {
                 currentEntry = currentEntry.next;
             }
 
+            /* if now current entry points to null that means the end of the linked list
+             * has been reached or no element has been returned yet by the iterator
+             * and we should go to another slot */
             if (currentEntry == null) {
                 for (currentIndex += 1; ; currentIndex++) {
                     if (table[currentIndex] != null) {
@@ -462,7 +482,6 @@ public class SimpleHashtable<K, V> implements Iterable<SimpleHashtable.TableEntr
                     }
                 }
             }
-
             numberOfElementsLeftToReturn--;
             removedCurrent = false;
             return currentEntry;

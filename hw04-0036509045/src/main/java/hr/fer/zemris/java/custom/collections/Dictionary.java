@@ -8,7 +8,6 @@ import java.util.Objects;
  *
  * @param <K> Type of keys.
  * @param <V> Type of values.
- *
  * @author Jan Capek
  */
 public class Dictionary<K, V> {
@@ -49,7 +48,7 @@ public class Dictionary<K, V> {
      * Adds an entry with given key and given value to the collection.
      * If an entry under given key already exists, old value will be replaced with new value.
      *
-     * @param key Key under which the value should be stored.
+     * @param key   Key under which the value should be stored.
      * @param value Value to store.
      * @throws NullPointerException If {@code key} is {@code null}.
      */
@@ -57,7 +56,7 @@ public class Dictionary<K, V> {
         Entry<K, V> newEntry = new Entry<>(key, value); // this will throw an exception if key is null.
 
         int index = entries.indexOf(newEntry);
-        if(index == -1) {
+        if (index == -1) {
             entries.add(newEntry);
             return;
         }
@@ -72,16 +71,16 @@ public class Dictionary<K, V> {
      * @return Value stored under the given key, or {@code null} if the key is not in the dictionary.
      */
     public V get(Object key) {
-        if(key == null) {
+        if (key == null) {
             return null;
         }
 
         ElementsGetter<Entry<K, V>> getter = entries.createElementsGetter();
 
         V value = null;
-        while (getter.hasNextElement()){
+        while (getter.hasNextElement()) {
             Entry<K, V> entry = getter.getNextElement();
-            if(Objects.equals(entry.key, key)) {
+            if (Objects.equals(entry.key, key)) {
                 value = entry.value;
                 break;
             }
@@ -102,7 +101,7 @@ public class Dictionary<K, V> {
         /**
          * Constructs a new entry.
          *
-         * @param key Key to store a value under.
+         * @param key   Key to store a value under.
          * @param value Value of the entry.
          * @throws NullPointerException If {@code key} is {@code null}.
          */

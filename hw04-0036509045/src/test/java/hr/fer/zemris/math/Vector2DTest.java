@@ -3,7 +3,8 @@ package hr.fer.zemris.math;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class Vector2DTest {
 
@@ -24,7 +25,7 @@ class Vector2DTest {
         this.vectors = vectors;
     }
 
-//    translate()
+    //    translate()
     @Test
     void translate() {
         Vector2D offset = new Vector2D(-3, 3);
@@ -38,14 +39,14 @@ class Vector2DTest {
                 new Vector2D(-1, 1),
                 new Vector2D(-5, 1)
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             vectors[i].translate(offset);
             assertEquals(expected[i], vectors[i]);
         }
 
     }
 
-//    translated()
+    //    translated()
     @Test
     void translated() {
         Vector2D offset = new Vector2D(-3, 3);
@@ -59,14 +60,14 @@ class Vector2DTest {
                 new Vector2D(-1, 1),
                 new Vector2D(-5, 1)
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             Vector2D old = vectors[i].copy();
             assertEquals(expected[i], vectors[i].translated(offset));
             assertEquals(old, vectors[i]);
         }
     }
 
-//    rotate
+    //    rotate
     @Test
     void rotate() {
         double angle = Math.PI / 4;
@@ -80,7 +81,7 @@ class Vector2DTest {
                 new Vector2D(Math.sqrt(8), 0),
                 new Vector2D(0, -Math.sqrt(8))
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             vectors[i].rotate(angle);
             assertEquals(expected[i], vectors[i]);
         }
@@ -99,14 +100,14 @@ class Vector2DTest {
                 new Vector2D(Math.sqrt(8), 0),
                 new Vector2D(0, -Math.sqrt(8))
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             vectors[i].rotate(angle);
             assertEquals(expected[i], vectors[i]);
         }
     }
 
     @Test
-    void rotateExceeding2PI(){
+    void rotateExceeding2PI() {
         double angle = Math.PI / 2;
         Vector2D vec = new Vector2D(2, -2);
         vec.rotate(angle);
@@ -115,7 +116,7 @@ class Vector2DTest {
         assertEquals(expected, vec);
     }
 
-//    rotated()
+    //    rotated()
     @Test
     void rotated() {
         double angle = Math.PI / 4;
@@ -129,14 +130,14 @@ class Vector2DTest {
                 new Vector2D(Math.sqrt(8), 0),
                 new Vector2D(0, -Math.sqrt(8))
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             Vector2D old = vectors[i].copy();
             assertEquals(expected[i], vectors[i].rotated(angle));
             assertEquals(old, vectors[i]);
         }
     }
 
-//    scale()
+    //    scale()
     @Test
     void scale() {
         double scalar = 0.5;
@@ -150,7 +151,7 @@ class Vector2DTest {
                 new Vector2D(1, -1),
                 new Vector2D(-1, -1)
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             vectors[i].scale(scalar);
             assertEquals(expected[i], vectors[i]);
         }
@@ -169,13 +170,13 @@ class Vector2DTest {
                 new Vector2D(-1, 1),
                 new Vector2D(1, 1)
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             vectors[i].scale(scalar);
             assertEquals(expected[i], vectors[i]);
         }
     }
 
-//    scaled()
+    //    scaled()
     @Test
     void scaled() {
         double scalar = 0.5;
@@ -189,14 +190,14 @@ class Vector2DTest {
                 new Vector2D(1, -1),
                 new Vector2D(-1, -1)
         };
-        for(int i = 0; i < vectors.length; i++) {
+        for (int i = 0; i < vectors.length; i++) {
             Vector2D old = vectors[i].copy();
             assertEquals(expected[i], vectors[i].scaled(scalar));
             assertEquals(old, vectors[i]);
         }
     }
 
-//    copy()
+    //    copy()
     @Test
     void copy() {
         Vector2D v = new Vector2D(2, 2);

@@ -19,6 +19,7 @@ class LinkedListIndexedCollectionTest {
         private A(int value) {
             i = value;
         }
+
         @Override
         public String toString() {
             return "A_" + i;
@@ -38,7 +39,7 @@ class LinkedListIndexedCollectionTest {
         }
     }
 
-    private static class B extends A{
+    private static class B extends A {
 
         private B(int i) {
             super(i);

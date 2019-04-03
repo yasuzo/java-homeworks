@@ -4,7 +4,6 @@ package hr.fer.zemris.java.custom.collections;
  * Interface for testing validity of an object.
  *
  * @param <T> Type of object that should be tested.
- *
  * @author Jan Capek
  */
 public interface Tester<T> {

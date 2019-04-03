@@ -16,8 +16,8 @@ public class SimpleHashTableDemo {
             System.out.printf("%s => %d%n", pair.getKey(), pair.getValue());
         }
 
-        for(SimpleHashtable.TableEntry<String,Integer> pair1 : examMarks) {
-            for(SimpleHashtable.TableEntry<String,Integer> pair2 : examMarks) {
+        for (SimpleHashtable.TableEntry<String, Integer> pair1 : examMarks) {
+            for (SimpleHashtable.TableEntry<String, Integer> pair2 : examMarks) {
                 System.out.printf(
                         "(%s => %d) - (%s => %d)%n",
                         pair1.getKey(), pair1.getValue(),

@@ -9,7 +9,6 @@ import java.util.Objects;
  * This collection does not permit {@code null} values.
  *
  * @param <T> Type of objects in the collection.
- *
  * @author Jan Capek
  */
 public class ArrayIndexedCollection<T> implements List<T> {
@@ -333,7 +332,7 @@ public class ArrayIndexedCollection<T> implements List<T> {
         /**
          * {@inheritDoc}
          *
-         * @throws NoSuchElementException If all elements have already been returned by this ElementsGetter.
+         * @throws NoSuchElementException          If all elements have already been returned by this ElementsGetter.
          * @throws ConcurrentModificationException If the underlying collection was modified in the mean time.
          */
         @Override

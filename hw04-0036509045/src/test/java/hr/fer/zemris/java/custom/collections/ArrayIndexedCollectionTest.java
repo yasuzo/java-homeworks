@@ -17,6 +17,7 @@ class ArrayIndexedCollectionTest {
         private A(int value) {
             i = value;
         }
+
         @Override
         public String toString() {
             return "A_" + i;
@@ -36,7 +37,7 @@ class ArrayIndexedCollectionTest {
         }
     }
 
-    private static class B extends A{
+    private static class B extends A {
 
         private B(int i) {
             super(i);
@@ -366,7 +367,7 @@ class ArrayIndexedCollectionTest {
     @Test
     void addAllSatisfyingTest() {
         Collection<A> b = new ArrayIndexedCollection<>();
-        b.addAllSatisfying(c, o -> ((A)o).i > 2);
+        b.addAllSatisfying(c, o -> ((A) o).i > 2);
         assertArrayEquals(new Object[]{new B(3), new A(4)}, b.toArray());
     }
 

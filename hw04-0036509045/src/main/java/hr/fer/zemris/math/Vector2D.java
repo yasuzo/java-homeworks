@@ -53,7 +53,7 @@ public class Vector2D {
      * @param angle Angle of rotation in radians.
      */
     public void rotate(double angle) {
-        double length = Math.sqrt(x*x + y*y);
+        double length = Math.sqrt(x * x + y * y);
         double newAngle = Math.atan2(y, x) + angle;
         x = Math.cos(newAngle) * length;
         y = Math.sin(newAngle) * length;
@@ -119,5 +119,19 @@ public class Vector2D {
     @Override
     public String toString() {
         return String.format("(%.2f, %.2f)", x, y);
+    }
+
+    /**
+     * @return x coordinate of the vector.
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * @return y coordinate of the vector.
+     */
+    public double getY() {
+        return y;
     }
 }
