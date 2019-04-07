@@ -1,11 +1,9 @@
 package hr.fer.zemris.lsystems.impl.commands;
 
 import hr.fer.zemris.collections.EmptyStackException;
-import hr.fer.zemris.collections.ObjectStack;
 import hr.fer.zemris.lsystems.Painter;
 import hr.fer.zemris.lsystems.impl.Command;
 import hr.fer.zemris.lsystems.impl.Context;
-import hr.fer.zemris.lsystems.impl.TurtleState;
 
 import java.util.Objects;
 
@@ -32,14 +30,14 @@ public class RotateCommand implements Command {
      * Rotates a turtle by an angle given in constructor.
      *
      * @param ctx Context of the turtle.
-     * @param p Painter used for drawing.
+     * @param p   Painter used for drawing.
      * @throws NullPointerException If given context is {@code null};
-     * @throws CommandException If the execution failed.
+     * @throws CommandException     If the execution failed.
      */
     @Override
     public void execute(Context ctx, Painter p) {
         Objects.requireNonNull(ctx);
-        try{
+        try {
             ctx.getCurrentState().rotate(angle);
         } catch (EmptyStackException e) {
             throw new CommandException("Rotation isn't possible.");

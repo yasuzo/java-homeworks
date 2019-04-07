@@ -32,6 +32,6 @@ public class PushCommand implements Command {
         } catch (EmptyStackException e) {
             throw new CommandException("There is no current state.");
         }
-        ctx.pushState(state);
+        ctx.pushState(state.copy());
     }
 }

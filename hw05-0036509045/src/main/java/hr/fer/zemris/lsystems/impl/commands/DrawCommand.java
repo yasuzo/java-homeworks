@@ -9,8 +9,16 @@ import hr.fer.zemris.math.Vector2D;
 
 import java.util.Objects;
 
+/**
+ * Command for drawing a line on the canvas.
+ *
+ * @author Jan Capek
+ */
 public class DrawCommand implements Command {
 
+    /**
+     * Scalar of turtle's step.
+     */
     private double step;
 
     /**
@@ -54,7 +62,7 @@ public class DrawCommand implements Command {
                 startPosition.getY(),
                 newPosition.getX(),
                 newPosition.getY(),
-                state.getDrawingColor(), // TODO: What if color is null.
+                state.getDrawingColor(),
                 1f
         );
     }

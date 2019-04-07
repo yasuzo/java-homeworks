@@ -22,7 +22,7 @@ public class SkipCommand implements Command {
      * @param step Scalar that will scale turtle's move.
      */
     public SkipCommand(double step) {
-        if(step < 0) {
+        if (step < 0) {
             throw new IllegalArgumentException("Step cannot be less than 0.");
         }
         this.step = step;
@@ -32,7 +32,7 @@ public class SkipCommand implements Command {
      * Moves a turtle forward without drawing.
      *
      * @param ctx Context of the turtle.
-     * @param p Painter used for drawing.
+     * @param p   Painter used for drawing.
      * @throws NullPointerException If {@code ctx} is {@code null}.
      * @throws CommandException     If an execution failed.
      */

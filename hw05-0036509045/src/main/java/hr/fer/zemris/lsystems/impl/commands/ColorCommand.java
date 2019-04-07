@@ -31,16 +31,16 @@ public class ColorCommand implements Command {
      * Changes drawing color of the current state in given context.
      *
      * @param ctx Context of the turtle.
-     * @param p Painter used for drawing.
+     * @param p   Painter used for drawing.
      * @throws NullPointerException If {@code ctx} is {@code null}.
-     * @throws CommandException If the execution failed.
+     * @throws CommandException     If the execution failed.
      */
     @Override
     public void execute(Context ctx, Painter p) {
         Objects.requireNonNull(ctx);
-        try{
+        try {
             ctx.getCurrentState().setDrawingColor(color);
-        }catch (EmptyStackException e) {
+        } catch (EmptyStackException e) {
             throw new CommandException("Current state is missing.");
         }
     }

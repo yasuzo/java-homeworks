@@ -25,11 +25,11 @@ public class TurtleState {
      * @param initialRotation     Rotation of the turtle in radians (0 radians means right).
      * @param drawingColor        Drawing color of the turtle.
      * @param translationDistance Distance that the turtle will travel in one drawing unit.
-     * @throws NullPointerException If either of the arguments are {@code null}.
+     * @throws NullPointerException     If either of the arguments are {@code null}.
      * @throws IllegalArgumentException If {@code translationDistance} is less than 0.
      */
     public TurtleState(Vector2D position, double initialRotation, Color drawingColor, double translationDistance) {
-        if(translationDistance <= 0) {
+        if (translationDistance <= 0) {
             throw new IllegalArgumentException("Translation distance must be positive.");
         }
         this.translationDistance = translationDistance;
@@ -42,7 +42,7 @@ public class TurtleState {
     /**
      * Returns current position of the turtle.
      * Modifications to the returning vector will not
-     * modify position in the state state.
+     * modify position in the state.
      *
      * @return Position of the turtle.
      */
@@ -57,7 +57,7 @@ public class TurtleState {
      * @throws IllegalArgumentException If {@code factor} is less than 0.
      */
     public void scaleTranslationDistance(double factor) {
-        if(factor < 0) {
+        if (factor < 0) {
             throw new IllegalArgumentException("Scaling factor must be greater or equal to 0.");
         }
         translationDistance *= factor;
@@ -110,7 +110,7 @@ public class TurtleState {
      * @return Copy of the state.
      */
     public TurtleState copy() {
-        TurtleState copy =  new TurtleState(position.copy(), 0, drawingColor, translationDistance);
+        TurtleState copy = new TurtleState(position.copy(), 0, drawingColor, translationDistance);
         copy.direction = direction.copy();
         return copy;
     }

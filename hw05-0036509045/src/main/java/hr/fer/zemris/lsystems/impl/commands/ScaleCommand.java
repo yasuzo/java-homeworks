@@ -31,7 +31,7 @@ public class ScaleCommand implements Command {
      * Scales turtle's unit distance.
      *
      * @param ctx Context of the turtle.
-     * @param p Painter used for drawing.
+     * @param p   Painter used for drawing.
      * @throws CommandException If the execution failed.
      */
     @Override

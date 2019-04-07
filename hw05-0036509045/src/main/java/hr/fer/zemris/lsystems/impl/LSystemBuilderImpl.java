@@ -1,25 +1,57 @@
 package hr.fer.zemris.lsystems.impl;
 
 import hr.fer.zemris.collections.Dictionary;
+import hr.fer.zemris.collections.ObjectStack;
 import hr.fer.zemris.lsystems.LSystem;
 import hr.fer.zemris.lsystems.LSystemBuilder;
 import hr.fer.zemris.lsystems.Painter;
 import hr.fer.zemris.lsystems.impl.commands.*;
+import hr.fer.zemris.lsystems.impl.util.SettingsParser;
 import hr.fer.zemris.math.Vector2D;
 
 import java.awt.*;
 import java.util.Objects;
 
+/**
+ * Instances of this class are meant to build LSystem from settings given to the instances.
+ */
 public class LSystemBuilderImpl implements LSystemBuilder {
 
+    /**
+     * Productions for characters in axiom.
+     */
     private Dictionary<Character, String> productions;
+
+    /**
+     * Actions for characters in axiom.
+     */
     private Dictionary<Character, Command> actions;
 
+    /**
+     * Turtle's unit length.
+     */
     private double unitLength;
+
+    /**
+     * Turtle's origin point.
+     */
     private Vector2D origin;
+    /**
+     * Turtle's starting angle.
+     */
     private double angle;
+
+    /**
+     * Starting axiom.
+     */
     private String axiom;
-    private double unitLengthDegreeScaler;
+
+    /**
+     * Degree scalar.
+     * This will scale turtle's unit length for each generation.<br>
+     * Formula: <br> {@code unitLength = unitLength * unitLengthScalar^generation}.
+     */
+    private double unitLengthDegreeScalar;
 
     public LSystemBuilderImpl() {
         productions = new Dictionary<>();
@@ -92,7 +124,7 @@ public class LSystemBuilderImpl implements LSystemBuilder {
         if (v <= 0) {
             throw new IllegalArgumentException("Scalar has to be greater than 0.");
         }
-        unitLengthDegreeScaler = v;
+        unitLengthDegreeScalar = v;
         return this;
     }
 
@@ -168,10 +200,19 @@ public class LSystemBuilderImpl implements LSystemBuilder {
         return this;
     }
 
-//    TODO: Don't forget.
+    /**
+     * Configures LSystemBuilder from text.
+     *
+     * @param strings Textual settings.
+     * @return {@code this} with updated config.
+     * @throws NullPointerException If settings are {@code null}.
+     */
     @Override
     public LSystemBuilder configureFromText(String[] strings) {
-        return null;
+        Objects.requireNonNull(strings);
+        SettingsParser parser = new SettingsParser(this);
+        parser.parse(strings);
+        return this;
     }
 
     /**
@@ -196,19 +237,20 @@ public class LSystemBuilderImpl implements LSystemBuilder {
          *
          * @param n Generation number.
          * @return New axiom.
+         * @throws IllegalArgumentException If {@code n} is less than 0.
          */
         @Override
         public String generate(int n) {
-            if(n < 0) {
+            if (n < 0) {
                 throw new IllegalArgumentException("Generation number cannot be less than 0.");
             }
             String currentAxiom = LSystemBuilderImpl.this.axiom;
-            for (int i = 0; i < n; i++){
+            for (int i = 0; i < n; i++) {
 
                 char[] seq = currentAxiom.toCharArray();
                 StringBuilder sb = new StringBuilder();
 
-                for(char c : seq) {
+                for (char c : seq) {
                     String temp = productions.get(c);
                     sb.append(temp == null ? c : temp);
                 }
@@ -222,7 +264,7 @@ public class LSystemBuilderImpl implements LSystemBuilder {
         /**
          * Draws {@code i}th generation axiom with given painter.
          *
-         * @param i Generation number.
+         * @param i       Generation number.
          * @param painter Painter to draw with.
          * @throws NullPointerException If {@code painter} is {@code null}.
          */
@@ -237,9 +279,9 @@ public class LSystemBuilderImpl implements LSystemBuilder {
 
             String axiom = generate(i);
             char[] seq = axiom.toCharArray();
-            for(char c : seq) {
+            for (char c : seq) {
                 Command command = actions.get(c);
-                if(command != null) {
+                if (command != null) {
                     command.execute(context, painter);
                 }
             }
@@ -253,7 +295,7 @@ public class LSystemBuilderImpl implements LSystemBuilder {
          * @return Calculated unit length.
          */
         private double calculateUnitLength(int i) {
-            return LSystemBuilderImpl.this.unitLength * Math.pow(unitLengthDegreeScaler, i);
+            return LSystemBuilderImpl.this.unitLength * Math.pow(unitLengthDegreeScalar, i);
         }
     }
 }

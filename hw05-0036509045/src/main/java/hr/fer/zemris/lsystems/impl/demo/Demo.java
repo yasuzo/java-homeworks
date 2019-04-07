@@ -19,5 +19,22 @@ public class Demo {
                 .build();
 
         LSystemViewer.showLSystem(system);
+
+        String[] data = new String[] {
+                "origin 0.05 0.4",
+                "angle 0",
+                "unitLength 0.9",
+                "unitLengthDegreeScaler 0.33",
+                "",
+                "command F draw 1",
+                "command + rotate 60",
+                "command - rotate -60",
+                "",
+                "axiom F+++",
+                "",
+                "production F F+F--F+F"
+        };
+        LSystem system1 = new LSystemBuilderImpl().configureFromText(data).build();
+        LSystemViewer.showLSystem(system1);
     }
 }
