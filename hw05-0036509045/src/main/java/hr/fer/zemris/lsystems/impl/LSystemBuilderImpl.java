@@ -160,7 +160,7 @@ public class LSystemBuilderImpl implements LSystemBuilder {
             throw new IllegalArgumentException("Illegal command.");
         }
 
-//        TODO: Break into a separate method.
+//        TODO: Break into a separate method and catch NumberFormatException.
         if (args.length == 1) {
             switch (args[0]) {
                 case "push":
