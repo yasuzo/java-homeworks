@@ -4,12 +4,12 @@ import hr.fer.zemris.lsystems.LSystem;
 import hr.fer.zemris.lsystems.LSystemBuilderProvider;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LSystemBuilderImplTest {
 
     private static LSystem createKochCurve2(LSystemBuilderProvider provider) {
-        String[] data = new String[] {
+        String[] data = new String[]{
                 "origin 0.05 0.4",
                 "angle 0",
                 "unitLength 0.9",

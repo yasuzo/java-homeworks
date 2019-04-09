@@ -77,12 +77,13 @@ public class QueryLexer {
         while (currentPosition < data.length &&
                 Character.isLetter(data[currentPosition]) == false &&
                 Character.isWhitespace(data[currentPosition]) == false &&
-                Character.isDigit(data[currentPosition]) == false) {
+                Character.isDigit(data[currentPosition]) == false &&
+                data[currentPosition] != '"') {
             currentPosition++;
         }
         String temp = String.copyValueOf(data, start, currentPosition - start);
-        if (RecognizedOperators.comparisonOperators.contains(temp) == false) {
-            throw new QueryLexerException("Unrecognized sequence.");
+        if (RecognizedOperators.COMPARISON_OPERATORS.contains(temp) == false) {
+            throw new QueryLexerException("Unrecognized sequence: " + temp);
         }
         return new Token(TokenType.COMPARISON_OPERATOR, temp);
     }
@@ -120,14 +121,17 @@ public class QueryLexer {
         }
         String temp = String.copyValueOf(data, start, currentPosition - start);
 
+
+        String lowerCaseTemp = temp.toLowerCase();
 //        check if temp is a comparison operator
-        if(RecognizedOperators.comparisonOperators.contains(temp.toLowerCase())) {
-            return new Token(TokenType.COMPARISON_OPERATOR, temp);
+        if (RecognizedOperators.COMPARISON_OPERATORS.contains(lowerCaseTemp)) {
+            return new Token(TokenType.COMPARISON_OPERATOR, lowerCaseTemp);
         }
 //        check if temp is a logical operator
-        if (RecognizedOperators.logicalOperators.contains(temp.toLowerCase())) {
-            return new Token(TokenType.LOGIC_OPERATOR, temp);
+        if (RecognizedOperators.LOGICAL_OPERATORS.contains(lowerCaseTemp)) {
+            return new Token(TokenType.LOGIC_OPERATOR, lowerCaseTemp);
         }
+
 //        temp is an attribute
         return new Token(TokenType.ATTRIBUTE, temp);
     }
@@ -142,7 +146,7 @@ public class QueryLexer {
     /**
      * Skips blank characters.
      */
-    public void skipBlanks() {
+    private void skipBlanks() {
         while (currentPosition < data.length && Character.isWhitespace(data[currentPosition])) {
             currentPosition++;
         }

@@ -34,4 +34,23 @@ public class Token {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token = (Token) o;
+        return type == token.type &&
+                Objects.equals(value, token.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, value);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Type: %s, Value: %s", type, value);
+    }
 }

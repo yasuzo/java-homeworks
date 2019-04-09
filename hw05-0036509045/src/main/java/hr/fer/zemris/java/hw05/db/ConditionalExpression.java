@@ -48,4 +48,19 @@ public class ConditionalExpression {
     public IComparisonOperator getComparisonOperator() {
         return operator;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConditionalExpression that = (ConditionalExpression) o;
+        return valueGetter.equals(that.valueGetter) &&
+                stringLiteral.equals(that.stringLiteral) &&
+                operator.equals(that.operator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(valueGetter, stringLiteral, operator);
+    }
 }

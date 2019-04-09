@@ -25,7 +25,7 @@ public class StudentRecord {
      * @throws IllegalArgumentException If {@code finalGrade} is not in range [1, 5] or
      *                                  other attributes contain illegal characters.
      *                                  First and last name can only contain letters or
-     *                                  in case of multiple last/first names, space between them.
+     *                                  in case of multiple last/first names, space/dash between them.
      *                                  Jmbag can only contain 10 digits and nothing more.
      */
     public StudentRecord(String jmbag, String firstName, String lastName, int finalGrade) {
@@ -75,7 +75,7 @@ public class StudentRecord {
      */
     private void setFirstName(String firstName) {
         Objects.requireNonNull(firstName);
-        if (firstName.matches("[\\d_\\-\\W]")) {
+        if (firstName.matches(".*[\\d_].*")) {
             throw new IllegalArgumentException("First name must contain only letters.");
         }
         this.firstName = firstName;
@@ -99,7 +99,7 @@ public class StudentRecord {
      */
     private void setLastName(String lastName) {
         Objects.requireNonNull(lastName);
-        if (lastName.matches("[\\d_\\-\\W]")) {
+        if (lastName.matches(".*[\\d_].*")) {
             throw new IllegalArgumentException("Last name must contain only letters.");
         }
         this.lastName = lastName;

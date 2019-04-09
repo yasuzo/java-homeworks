@@ -21,8 +21,9 @@ public class ComparisonOperators {
         GREATER_OR_EQUALS = (value, expression) -> value.compareTo(expression) >= 0;
         EQUALS = (value, expression) -> value.compareTo(expression) == 0;
         NOT_EQUALS = (value, expression) -> value.compareTo(expression) != 0;
+
         LIKE = (value, expression) -> {
-            if (expression.split("\\*").length > 2) {
+            if (expression.matches(".*\\*.*\\*.*")) {
                 throw new IllegalArgumentException("Multiple wildcards in an expression.");
             }
             expression = expression.replace("*", ".*");

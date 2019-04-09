@@ -13,25 +13,25 @@ class RecognizedOperators {
     /**
      * Contains recognized logical operators.
      */
-    static final Set<String> logicalOperators;
+    static final Set<String> LOGICAL_OPERATORS;
 
     /**
      * Contains recognized comparison operators.
      */
-    static final Set<String> comparisonOperators;
+    static final Set<String> COMPARISON_OPERATORS;
 
     static {
-        logicalOperators = new HashSet<>();
-        logicalOperators.add("and");
+        LOGICAL_OPERATORS = new HashSet<>();
+        LOGICAL_OPERATORS.add("and");
 
-        comparisonOperators = new HashSet<>();
-        comparisonOperators.add("==");
-        comparisonOperators.add("!=");
-        comparisonOperators.add(">=");
-        comparisonOperators.add("<=");
-        comparisonOperators.add("<");
-        comparisonOperators.add(">");
-        comparisonOperators.add("like");
+        COMPARISON_OPERATORS = new HashSet<>();
+        COMPARISON_OPERATORS.add("=");
+        COMPARISON_OPERATORS.add("!=");
+        COMPARISON_OPERATORS.add(">=");
+        COMPARISON_OPERATORS.add("<=");
+        COMPARISON_OPERATORS.add("<");
+        COMPARISON_OPERATORS.add(">");
+        COMPARISON_OPERATORS.add("like");
 
     }
 }

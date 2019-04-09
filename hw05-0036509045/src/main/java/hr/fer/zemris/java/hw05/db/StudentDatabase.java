@@ -10,7 +10,7 @@ import java.util.*;
 public class StudentDatabase {
 
     private Map<String, StudentRecord> recordsByIndex;
-    private Set<StudentRecord> records;
+    private List<StudentRecord> records;
 
     /**
      * Creates a new database with list of recordsByIndex given as argument.
@@ -35,7 +35,7 @@ public class StudentDatabase {
             recordsByIndex.put(record.getJmbag(), record);
         }
 
-        records = new HashSet<>(recordsByIndex.values());
+        records = new ArrayList<>(recordsByIndex.values());
     }
 
     /**

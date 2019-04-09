@@ -15,7 +15,7 @@ public enum TokenType {
      */
     ATTRIBUTE,
     /**
-     * Comparison operator {<, >, <=, >=, !=, ==, like}
+     * Comparison operator {<, >, <=, >=, !=, =, like}
      */
     COMPARISON_OPERATOR,
     /**
