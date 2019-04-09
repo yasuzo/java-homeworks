@@ -18,7 +18,7 @@ public class Glavni1 {
                 .setOrigin(0.05, 0.4)
                 .setAngle(0)
                 .setUnitLength(0.9)
-                .setUnitLengthDegreeScaler(1.0/3.0)
+                .setUnitLengthDegreeScaler(1.0 / 3.0)
                 .registerProduction('F', "F+F--F+F")
                 .setAxiom("F")
                 .build();

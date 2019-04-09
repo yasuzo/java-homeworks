@@ -11,7 +11,7 @@ public class Glavni2 {
     }
 
     private static LSystem createKochCurve2(LSystemBuilderProvider provider) {
-        String[] data = new String[] {
+        String[] data = new String[]{
                 "origin 0.05 0.4",
                 "angle 0",
                 "unitLength 0.9",

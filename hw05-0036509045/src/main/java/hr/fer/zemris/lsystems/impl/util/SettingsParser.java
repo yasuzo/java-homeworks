@@ -29,7 +29,7 @@ public class SettingsParser {
      *
      * @param settings Settings that should be parsed.
      * @throws NullPointerException If given array or any of the settings are {@code null}.
-     * @throws ParserException If any of the setting is invalid.
+     * @throws ParserException      If any of the setting is invalid.
      */
     public void parse(String[] settings) {
         Objects.requireNonNull(settings);
@@ -40,7 +40,7 @@ public class SettingsParser {
                 continue;
             }
 
-            try (Scanner sc = new Scanner(setting)){
+            try (Scanner sc = new Scanner(setting)) {
                 parseSetting(sc);
             } catch (Exception e) {
                 throw new ParserException("Invalid setting.");
@@ -189,7 +189,7 @@ public class SettingsParser {
         if (sc.hasNext()) {
             throw new ParserException("Invalid production setting.");
         }
-        if(chars.length != 1) {
+        if (chars.length != 1) {
             throw new ParserException("Invalid production setting.");
         }
         char c = chars[0];

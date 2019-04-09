@@ -18,7 +18,7 @@ public class StudentDatabase {
      * {@code [jmbag\tlastName\tfirstName\tfinalGrade]}.
      *
      * @param studentData List of recordsByIndex from db file.
-     * @throws NullPointerException If {@code studentData} is {@code null} or any of it's elements.
+     * @throws NullPointerException     If {@code studentData} is {@code null} or any of it's elements.
      * @throws IllegalArgumentException If data is invalid.
      */
     public StudentDatabase(List<String> studentData) {
@@ -85,8 +85,8 @@ public class StudentDatabase {
         Objects.requireNonNull(filter);
 
         List<StudentRecord> result = new ArrayList<>(records.size() / 2);
-        for(StudentRecord record : records) {
-            if(filter.accepts(record)) {
+        for (StudentRecord record : records) {
+            if (filter.accepts(record)) {
                 result.add(record);
             }
         }

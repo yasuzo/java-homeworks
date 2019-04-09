@@ -1,7 +1,6 @@
 package hr.fer.zemris.lsystems.impl;
 
 import hr.fer.zemris.collections.Dictionary;
-import hr.fer.zemris.collections.ObjectStack;
 import hr.fer.zemris.lsystems.LSystem;
 import hr.fer.zemris.lsystems.LSystemBuilder;
 import hr.fer.zemris.lsystems.Painter;
