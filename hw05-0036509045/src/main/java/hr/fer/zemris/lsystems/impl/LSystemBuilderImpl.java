@@ -148,7 +148,8 @@ public class LSystemBuilderImpl implements LSystemBuilder {
      * @param c Character.
      * @param s Turtle's command for given character.
      * @return {@code this} with updated members.
-     * @throws NullPointerException If command is {@code null}.
+     * @throws NullPointerException     If command is {@code null}.
+     * @throws IllegalArgumentException If command is not recognized.
      */
     @Override
     public LSystemBuilder registerCommand(char c, String s) {
@@ -159,44 +160,62 @@ public class LSystemBuilderImpl implements LSystemBuilder {
             throw new IllegalArgumentException("Illegal command.");
         }
 
-//        TODO: Break into a separate method and catch NumberFormatException.
         if (args.length == 1) {
-            switch (args[0]) {
-                case "push":
-                    actions.put(c, new PushCommand());
-                    break;
-                case "pop":
-                    actions.put(c, new PopCommand());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Illegal command.");
-            }
+            actions.put(c, extractZeroArgumentCommand(args[0]));
             return this;
         }
 
-        Command command;
-        switch (args[0]) {
-            case "color":
-                command = new ColorCommand(new Color(Integer.parseInt(args[1], 16)));
-                break;
-            case "draw":
-                command = new DrawCommand(Double.parseDouble(args[1]));
-                break;
-            case "skip":
-                command = new SkipCommand(Double.parseDouble(args[1]));
-                break;
-            case "scale":
-                command = new ScaleCommand(Double.parseDouble(args[1]));
-                break;
-            case "rotate":
-                double angle = Double.parseDouble(args[1]) / 360 * 2 * Math.PI;
-                command = new RotateCommand(angle);
-                break;
+        actions.put(c, extractOneArgumentCommand(args[0], args[1]));
+        return this;
+    }
+
+    /**
+     * Extracts one argument command from text.
+     *
+     * @param command Name of the command.
+     * @param arg     Command's argument.
+     * @return Command.
+     * @throws IllegalArgumentException If a command was not recognized or if it's argument is not valid.
+     */
+    private Command extractOneArgumentCommand(String command, String arg) {
+        try {
+            switch (command) {
+                case "color":
+                    return new ColorCommand(new Color(Integer.parseInt(arg, 16)));
+                case "draw":
+                    return new DrawCommand(Double.parseDouble(arg));
+                case "skip":
+                    return new SkipCommand(Double.parseDouble(arg));
+                case "scale":
+                    return new ScaleCommand(Double.parseDouble(arg));
+                case "rotate":
+                    double angle = Double.parseDouble(arg) / 360 * 2 * Math.PI;
+                    return new RotateCommand(angle);
+                default:
+                    throw new IllegalArgumentException("Illegal command.");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Illegal command.");
+        }
+    }
+
+    /**
+     * Extracts zero argument command from text.
+     * Zero argument commands are push and pop.
+     *
+     * @param command Command in text form.
+     * @return Command.
+     * @throws IllegalArgumentException If command was not recognized.
+     */
+    private Command extractZeroArgumentCommand(String command) {
+        switch (command) {
+            case "push":
+                return new PushCommand();
+            case "pop":
+                return new PopCommand();
             default:
                 throw new IllegalArgumentException("Illegal command.");
         }
-        actions.put(c, command);
-        return this;
     }
 
     /**

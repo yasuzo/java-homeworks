@@ -23,7 +23,8 @@ public class StudentDatabase {
      */
     public StudentDatabase(List<String> studentData) {
         Objects.requireNonNull(studentData);
-        recordsByIndex = new HashMap<>();
+        recordsByIndex = new HashMap<>((int) (studentData.size() * 1.5));
+        records = new ArrayList<>(studentData.size());
 
         for (String row : studentData) {
             Objects.requireNonNull(row);
@@ -32,10 +33,9 @@ public class StudentDatabase {
             if (recordsByIndex.containsKey(record.getJmbag())) {
                 throw new IllegalArgumentException("List contains duplicates.");
             }
+            records.add(record);
             recordsByIndex.put(record.getJmbag(), record);
         }
-
-        records = new ArrayList<>(recordsByIndex.values());
     }
 
     /**

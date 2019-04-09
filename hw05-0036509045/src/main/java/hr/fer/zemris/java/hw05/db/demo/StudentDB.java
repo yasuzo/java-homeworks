@@ -56,14 +56,14 @@ public class StudentDB {
 
             List<StudentRecord> filteredRecords;
 
-            if(parser.isDirectQuery()) {
+            if (parser.isDirectQuery()) {
 //                direct query
                 StudentRecord record = db.forJMBAG(parser.getQueriedJMBAG());
                 filteredRecords = new ArrayList<>();
-                if(record != null) {
+                if (record != null) {
                     filteredRecords.add(record);
                 }
-            }else {
+            } else {
 //                indirect query
                 IFilter filter = new QueryFilter(parser.getQuery());
                 filteredRecords = db.filter(filter);
