@@ -19,10 +19,15 @@ public class RecordFormatter {
      * Formats a given list of records in table-like structure.
      *
      * @param records Records to format.
+     * @return String representation of records in table-like structure or empty string ({@code ""}) if given list is empty.
      * @throws NullPointerException If given list is {@code null}.
      */
     public static String format(List<StudentRecord> records) {
         Objects.requireNonNull(records);
+
+        if (records.isEmpty()) {
+            return  "+======================+\n| No records selected. |\n+======================+";
+        }
 
         String rowFormat = createFormat(records);
 

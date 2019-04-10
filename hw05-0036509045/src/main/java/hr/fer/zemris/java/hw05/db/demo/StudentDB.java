@@ -44,6 +44,35 @@ public class StudentDB {
     }
 
     /**
+     * Filters records and returns table of records after filtration.
+     *
+     * @param query Database query.
+     * @param db Used database.
+     * @return Results of query in table form.
+     * @throws QueryParserException If query was invalid.
+     * @throws IllegalArgumentException If query parameters were invalid.
+     */
+    private static String query(String query, StudentDatabase db) {
+        QueryParser parser = new QueryParser(query);
+
+        List<StudentRecord> filteredRecords;
+
+        if (parser.isDirectQuery()) {
+//                direct query
+            StudentRecord record = db.forJMBAG(parser.getQueriedJMBAG());
+            filteredRecords = new ArrayList<>();
+            if (record != null) {
+                filteredRecords.add(record);
+            }
+        } else {
+//                indirect query
+            IFilter filter = new QueryFilter(parser.getQuery());
+            filteredRecords = db.filter(filter);
+        }
+        return RecordFormatter.format(filteredRecords) + "\nRecords selected: " + filteredRecords.size();
+    }
+
+    /**
      * Reads a query and prints a result.
      *
      * @param sc Scanner to read query with.
@@ -52,25 +81,10 @@ public class StudentDB {
     private static void readQueryAndPrintResult(Scanner sc, StudentDatabase db) {
         String query = sc.nextLine();
         try {
-            QueryParser parser = new QueryParser(query);
 
-            List<StudentRecord> filteredRecords;
+            String table = query(query, db);
 
-            if (parser.isDirectQuery()) {
-//                direct query
-                StudentRecord record = db.forJMBAG(parser.getQueriedJMBAG());
-                filteredRecords = new ArrayList<>();
-                if (record != null) {
-                    filteredRecords.add(record);
-                }
-            } else {
-//                indirect query
-                IFilter filter = new QueryFilter(parser.getQuery());
-                filteredRecords = db.filter(filter);
-            }
-
-            System.out.println(RecordFormatter.format(filteredRecords));
-            System.out.println("Records selected: " + filteredRecords.size());
+            System.out.println(table);
 
         } catch (QueryParserException e) {
             System.out.println("Invalid query. Try again.");
