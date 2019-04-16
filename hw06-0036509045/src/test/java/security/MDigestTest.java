@@ -23,7 +23,7 @@ class MDigestTest {
 
         in.close();
 
-        assertTrue(mDigest.matchDigests("2e7b3a91235ad72cb7e7f6a721f077faacfeafdea8f3785627a5245bea112598"));
-        assertFalse(mDigest.matchDigests("d03d4424461e22a458c6c716395f07dd9cea2180a996e78349985eda78e8b800"));
+        assertTrue(mDigest.matches("2e7b3a91235ad72cb7e7f6a721f077faacfeafdea8f3785627a5245bea112598"));
+        assertFalse(mDigest.matches("d03d4424461e22a458c6c716395f07dd9cea2180a996e78349985eda78e8b800"));
     }
 }

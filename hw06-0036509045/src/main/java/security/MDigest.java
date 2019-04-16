@@ -75,7 +75,7 @@ public class MDigest {
      * @return {@code true} if digests are equal, {@code false} otherwise.
      * @throws NullPointerException If given digest is {@code null}.
      */
-    public boolean matchDigests(String expectedDigest) {
+    public boolean matches(String expectedDigest) {
         Objects.requireNonNull(expectedDigest);
 
         byte[] expected;
