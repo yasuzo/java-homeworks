@@ -27,7 +27,7 @@ public class ArgumentChecker {
         if (result.isValid == false) {
             return result;
         }
-
+        result.isValid = false;
         int argCount = result.args.size();
         for (int count : validArgumentCounts) {
             if (count == argCount) {

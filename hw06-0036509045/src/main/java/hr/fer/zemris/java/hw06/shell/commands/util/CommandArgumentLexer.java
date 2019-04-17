@@ -67,6 +67,7 @@ public class CommandArgumentLexer {
      * @throws RuntimeException If an argument is invalid.
      */
     private String extractString() {
+        currentPosition++;
         StringBuilder sb = new StringBuilder();
         while (currentPosition < data.length && data[currentPosition] != '"') {
             if (data[currentPosition] == '\\' && currentPosition + 1 < data.length) {
@@ -84,6 +85,7 @@ public class CommandArgumentLexer {
                 continue;
             }
             sb.append(data[currentPosition]);
+            currentPosition++;
         }
 //        case where a closing quote of a string is missing (e.g. "abc)
         if(currentPosition >= data.length) {

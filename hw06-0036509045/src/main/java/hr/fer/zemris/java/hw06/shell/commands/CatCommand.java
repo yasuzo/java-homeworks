@@ -52,9 +52,7 @@ public class CatCommand implements ShellCommand {
 
         ArgumentChecker.Result checkResult = ArgumentChecker.checkArguments(arguments, 1, 2);
         if(checkResult.isValid() == false) {
-            for(String msg : checkResult.getMessages()) {
-                env.writeln(msg);
-            }
+            checkResult.getMessages().forEach(env::writeln);
             return ShellStatus.CONTINUE;
         }
 

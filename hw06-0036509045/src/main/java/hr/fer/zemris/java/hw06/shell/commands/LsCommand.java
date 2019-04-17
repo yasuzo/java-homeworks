@@ -49,9 +49,7 @@ public class LsCommand implements ShellCommand {
 //        check attributes
         ArgumentChecker.Result checkResult = ArgumentChecker.checkArguments(arguments, 1);
         if (checkResult.isValid() == false) {
-            for (String msg : checkResult.getMessages()) {
-                env.writeln(msg);
-            }
+            checkResult.getMessages().forEach(env::writeln);
             return ShellStatus.CONTINUE;
         }
         List<String> args = checkResult.getArguments();
@@ -65,9 +63,15 @@ public class LsCommand implements ShellCommand {
 
 //        actual execution
         FileConsumer consumer = new FileConsumer(env);
-        try (Stream<Path> children = Files.walk(directory, 0)) {
-            children.forEach(consumer);
-        } catch (IOException e) {
+        try (Stream<Path> children = Files.walk(directory, 1)) {
+            children.filter(path -> {
+                try {
+                    return Files.isSameFile(directory, path) == false;
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not access file system.");
+                }
+            }).forEach(consumer);
+        } catch (IOException | RuntimeException e) {
             env.writeln("There was a problem reading file structure from disk.");
         }
         return ShellStatus.CONTINUE;
