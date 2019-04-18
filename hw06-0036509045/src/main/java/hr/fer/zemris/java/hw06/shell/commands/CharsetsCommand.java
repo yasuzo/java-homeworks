@@ -4,7 +4,6 @@ import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
 
-import java.io.ObjectStreamClass;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -24,15 +23,16 @@ public class CharsetsCommand implements ShellCommand {
 
     /**
      * {@inheritDoc}
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     *
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If a message could not be written to user.
      */
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         Objects.requireNonNull(env);
         Objects.requireNonNull(arguments);
-        if(arguments.isBlank() == false) {
-            env.writeln("charset command does not take any arguments.");
+        if (arguments.isBlank() == false) {
+            env.writeln("charsets command does not take any arguments.");
             return ShellStatus.CONTINUE;
         }
 

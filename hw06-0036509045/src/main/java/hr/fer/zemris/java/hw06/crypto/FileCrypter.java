@@ -29,9 +29,9 @@ public class FileCrypter {
      * from input stream and writes it to output stream.<br>
      * Neither of the streams will be closed automatically, it is expected they will be closed externally.
      *
-     * @param cipher Cipher that is used for encryption/decription.
-     *               It has to be initialized.
-     * @param keySpec Secret key for encryption/decryption.
+     * @param cipher    Cipher that is used for encryption/decription.
+     *                  It has to be initialized.
+     * @param keySpec   Secret key for encryption/decryption.
      * @param paramSpec Specifies encryption/decryption algorithm specifications.
      * @throws NullPointerException If any of the arguments are {@code null}.
      */
@@ -64,12 +64,12 @@ public class FileCrypter {
     /**
      * Encrypts data coming from input stream and sends transformed data to output stream.
      *
-     * @param in Data source.
+     * @param in  Data source.
      * @param out Stream to which transformed data will be sent.
      * @throws InvalidAlgorithmParameterException If algorithm parameters are not valid.
-     * @throws InvalidKeyException If key is not valid.
-     * @throws IOException If data could not be read/written.
-     * @throws FileCrypterException If data could not be encrypted.
+     * @throws InvalidKeyException                If key is not valid.
+     * @throws IOException                        If data could not be read/written.
+     * @throws FileCrypterException               If data could not be encrypted.
      */
     public void encrypt(InputStream in, OutputStream out) throws InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         Objects.requireNonNull(in);
@@ -81,12 +81,12 @@ public class FileCrypter {
     /**
      * Decrypts data coming from input stream and sends transformed data to output stream.
      *
-     * @param in Data source.
+     * @param in  Data source.
      * @param out Stream to which transformed data will be sent.
      * @throws InvalidAlgorithmParameterException If algorithm parameters are not valid.
-     * @throws InvalidKeyException If key is not valid.
-     * @throws IOException If data could not be read/written.
-     * @throws FileCrypterException If data could not be decrypted.
+     * @throws InvalidKeyException                If key is not valid.
+     * @throws IOException                        If data could not be read/written.
+     * @throws FileCrypterException               If data could not be decrypted.
      */
     public void decrypt(InputStream in, OutputStream out) throws InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         Objects.requireNonNull(in);

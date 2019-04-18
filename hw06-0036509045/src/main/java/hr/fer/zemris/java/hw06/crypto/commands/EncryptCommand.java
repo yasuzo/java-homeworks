@@ -26,12 +26,12 @@ public class EncryptCommand implements Command {
      *
      * @param fileToEncrypt File that needs to be encrypted.
      * @param encryptedFile Destination file.
-     * @param fileCrypter Object used to encrypt a file.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @param fileCrypter   Object used to encrypt a file.
+     * @throws NullPointerException     If any of the arguments are {@code null}.
      * @throws IllegalArgumentException If {@code fileToEncrypt} is not readable.
      */
     public EncryptCommand(Path fileToEncrypt, Path encryptedFile, FileCrypter fileCrypter) {
-        if(Files.isReadable(fileToEncrypt) == false) {
+        if (Files.isReadable(fileToEncrypt) == false) {
             throw new IllegalArgumentException("File that needs to be encrypted isn't readable.");
         }
         this.fileToEncrypt = Objects.requireNonNull(fileToEncrypt);
@@ -45,10 +45,10 @@ public class EncryptCommand implements Command {
      */
     @Override
     public void execute() {
-        try(InputStream in = new BufferedInputStream(Files.newInputStream(fileToEncrypt));
-                OutputStream out = new BufferedOutputStream(Files.newOutputStream(encryptedFile))) {
+        try (InputStream in = new BufferedInputStream(Files.newInputStream(fileToEncrypt));
+             OutputStream out = new BufferedOutputStream(Files.newOutputStream(encryptedFile))) {
             fileCrypter.encrypt(in, out);
-        }catch (FileCrypterException e) {
+        } catch (FileCrypterException e) {
             System.out.println("File couldn't be encrypted.");
             return;
         } catch (IOException e) {

@@ -15,6 +15,7 @@ public class NormalEnvironment implements Environment {
     private static final Character DEFAULT_PROMPT_SYMBOL = '>';
     private static final Character DEFAULT_MORELINES_SYMBOL = '\\';
     private static final Character DEFAULT_MULTILINE_SYMBOL = '|';
+
     static {
         commands = new TreeMap<>();
         commands.put("cat", new CatCommand());
@@ -26,6 +27,7 @@ public class NormalEnvironment implements Environment {
         commands.put("hexdump", new HexdumpCommand());
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());
+        commands.put("symbol", new SymbolCommand());
         commands = Collections.unmodifiableSortedMap(commands);
     }
 
@@ -80,6 +82,7 @@ public class NormalEnvironment implements Environment {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given symbol is {@code null};
      */
     @Override
@@ -94,6 +97,7 @@ public class NormalEnvironment implements Environment {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given symbol is {@code null};
      */
     @Override
@@ -108,6 +112,7 @@ public class NormalEnvironment implements Environment {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given symbol is {@code null};
      */
     @Override

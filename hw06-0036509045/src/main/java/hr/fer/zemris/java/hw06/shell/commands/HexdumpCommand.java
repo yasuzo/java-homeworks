@@ -53,9 +53,14 @@ public class HexdumpCommand implements ShellCommand {
         }
         Path file = Paths.get(checkResult.getArguments().get(0));
 
+//        is file a directory?
+        if(Files.isDirectory(file)) {
+            env.writeln("Cannot dump contents of a directory.");
+            return ShellStatus.CONTINUE;
+        }
+
 //        hexdump
         try (InputStream in = new BufferedInputStream(Files.newInputStream(file))) {
-            StringBuilder sb = new StringBuilder();
             byte[] line = new byte[16];
             int readLineBytes = 0;
             int readLines = 0;

@@ -33,7 +33,8 @@ public class HelpCommand implements ShellCommand {
 
     /**
      * {@inheritDoc}
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     *
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user has failed.
      */
     @Override
@@ -50,7 +51,7 @@ public class HelpCommand implements ShellCommand {
         List<String> args = checkResult.getArguments();
 
 //        no arguments => list all available commands
-        if(args.size() == 0) {
+        if (args.size() == 0) {
             env.commands().forEach((key, value) -> env.writeln(key));
             return ShellStatus.CONTINUE;
         }
@@ -59,7 +60,7 @@ public class HelpCommand implements ShellCommand {
         ShellCommand command = env.commands().get(commandName);
 
 //        unrecognized command
-        if(command == null) {
+        if (command == null) {
             env.writeln(String.format("No commands match '%s'.", commandName));
             return ShellStatus.CONTINUE;
         }
@@ -67,7 +68,7 @@ public class HelpCommand implements ShellCommand {
         List<String> description = command.getCommandDescription();
 
 //        missing description
-        if(description == null) {
+        if (description == null) {
             env.writeln(String.format("Command '%s' is missing description.", commandName));
             return ShellStatus.CONTINUE;
         }

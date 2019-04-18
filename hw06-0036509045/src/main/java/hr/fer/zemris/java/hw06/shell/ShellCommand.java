@@ -12,7 +12,7 @@ public interface ShellCommand {
     /**
      * Executes a command and returns a new {@link ShellStatus}.
      *
-     * @param env Shell environment that will be used to communicate with a user.
+     * @param env       Shell environment that will be used to communicate with a user.
      * @param arguments Command arguments.
      * @return New shell status.
      */

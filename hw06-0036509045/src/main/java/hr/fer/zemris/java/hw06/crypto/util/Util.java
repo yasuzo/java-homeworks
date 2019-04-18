@@ -76,8 +76,8 @@ public class Util {
      * @return String representation of given byte.
      */
     public static String encodeByte(byte b) {
-        byte second = (byte)(b & 0xF);
-        byte first = (byte)(b >>> 4 & 0xF);
+        byte second = (byte) (b & 0xF);
+        byte first = (byte) (b >>> 4 & 0xF);
 
         char sec = second >= 10 ? (char) ('a' + second - 10) : (char) (second + '0');
         char fir = first >= 10 ? (char) ('a' + first - 10) : (char) (first + '0');

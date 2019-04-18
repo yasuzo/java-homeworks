@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.CommandArgumentParser;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.BufferedReader;
@@ -13,7 +12,10 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Shell command that reads a file in given charset and outputs it to the user.
@@ -41,7 +43,7 @@ public class CatCommand implements ShellCommand {
     /**
      * {@inheritDoc}
      *
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If message to user couldn't be written.
      */
     @Override
@@ -51,7 +53,7 @@ public class CatCommand implements ShellCommand {
 
 
         ArgumentChecker.Result checkResult = ArgumentChecker.checkArguments(arguments, 1, 2);
-        if(checkResult.isValid() == false) {
+        if (checkResult.isValid() == false) {
             checkResult.getMessages().forEach(env::writeln);
             return ShellStatus.CONTINUE;
         }
@@ -70,7 +72,7 @@ public class CatCommand implements ShellCommand {
 
 //        read a file and output it to the console
         try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
-            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 env.writeln(line);
             }
         } catch (IOException e) {

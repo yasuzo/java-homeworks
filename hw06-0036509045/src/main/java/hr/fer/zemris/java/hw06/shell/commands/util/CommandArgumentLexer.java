@@ -88,11 +88,11 @@ public class CommandArgumentLexer {
             currentPosition++;
         }
 //        case where a closing quote of a string is missing (e.g. "abc)
-        if(currentPosition >= data.length) {
+        if (currentPosition >= data.length) {
             throw new RuntimeException("Closing quote is missing.");
         }
 //        solve this case: "C:\fi le".txt -> that should be invalid.
-        if(currentPosition + 1 < data.length && Character.isWhitespace(data[currentPosition + 1]) == false) {
+        if (currentPosition + 1 < data.length && Character.isWhitespace(data[currentPosition + 1]) == false) {
             throw new RuntimeException("Invalid string, space is expected after argument enclosed in quotes.");
         }
         currentPosition++;

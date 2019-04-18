@@ -1,8 +1,5 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import hr.fer.zemris.java.hw06.crypto.MDigest;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;
@@ -13,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MDigestTest {
 

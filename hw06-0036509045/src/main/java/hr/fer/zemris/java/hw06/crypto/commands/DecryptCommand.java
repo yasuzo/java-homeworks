@@ -26,12 +26,12 @@ public class DecryptCommand implements Command {
      *
      * @param fileToDecrypt File that needs to be encrypted.
      * @param decryptedFile Destination file.
-     * @param fileCrypter Object used to encrypt a file.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @param fileCrypter   Object used to encrypt a file.
+     * @throws NullPointerException     If any of the arguments are {@code null}.
      * @throws IllegalArgumentException If {@code fileToDecrypt} is not readable.
      */
     public DecryptCommand(Path fileToDecrypt, Path decryptedFile, FileCrypter fileCrypter) {
-        if(Files.isReadable(fileToDecrypt) == false) {
+        if (Files.isReadable(fileToDecrypt) == false) {
             throw new IllegalArgumentException("File that needs to be encrypted isn't readable.");
         }
         this.fileToDecrypt = Objects.requireNonNull(fileToDecrypt);
@@ -45,10 +45,10 @@ public class DecryptCommand implements Command {
      */
     @Override
     public void execute() {
-        try(InputStream in = new BufferedInputStream(Files.newInputStream(fileToDecrypt));
-            OutputStream out = new BufferedOutputStream(Files.newOutputStream(decryptedFile))) {
+        try (InputStream in = new BufferedInputStream(Files.newInputStream(fileToDecrypt));
+             OutputStream out = new BufferedOutputStream(Files.newOutputStream(decryptedFile))) {
             fileCrypter.decrypt(in, out);
-        }catch (FileCrypterException e) {
+        } catch (FileCrypterException e) {
             System.out.println("File couldn't be decrypted.");
             return;
         } catch (IOException e) {

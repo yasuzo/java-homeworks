@@ -39,11 +39,10 @@ public class MDigest {
      * Instance of this class will not close given input stream, it needs to be closed externally.
      * Input stream can be closed right after constructor call since digest will happen automatically.
      *
-     *
      * @param inputStream   Input stream of data to digest.
      * @param messageDigest {@link MessageDigest} object that will calculate the digest.
      * @throws NullPointerException If any of the parameters are {@code null}.
-     * @throws MDigestException If data couldn't be read.
+     * @throws MDigestException     If data couldn't be read.
      */
     public MDigest(InputStream inputStream, MessageDigest messageDigest) {
         this.in = Objects.requireNonNull(inputStream);

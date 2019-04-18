@@ -39,7 +39,7 @@ public class CopyCommand implements ShellCommand {
     /**
      * {@inheritDoc}
      *
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user is not possible.
      */
     @Override
@@ -57,22 +57,28 @@ public class CopyCommand implements ShellCommand {
         Path file = Paths.get(checkResult.getArguments().get(0));
         Path dest = Paths.get(checkResult.getArguments().get(1));
 
+//        is the first argument a file?
+        if(Files.isDirectory(file)) {
+            env.writeln("Cannot copy a directory.");
+            return ShellStatus.CONTINUE;
+        }
+
 //        is file readable?
-        if(Files.isReadable(file) == false) {
+        if (Files.isReadable(file) == false) {
             env.writeln("Either given path is not a file or file is unreadable.");
             return ShellStatus.CONTINUE;
         }
 
 //        is destination a directory?
-        if(Files.isDirectory(dest)) {
+        if (Files.isDirectory(dest)) {
             dest = Paths.get(dest.toString(), file.getFileName().toString());
         }
 
 //        destination file exists?
-        if(Files.exists(dest)) {
+        if (Files.exists(dest)) {
             env.write("Destination file already exists. Overwrite [y/N]: ");
             String answer = env.readLine().trim().toLowerCase();
-            if(answer.equals("y") == false) {
+            if (answer.equals("y") == false) {
                 env.writeln("Operation aborted.");
                 return ShellStatus.CONTINUE;
             }
@@ -81,7 +87,7 @@ public class CopyCommand implements ShellCommand {
 //        copy
         try (InputStream in = new BufferedInputStream(Files.newInputStream(file));
              OutputStream out = new BufferedOutputStream(Files.newOutputStream(dest))) {
-            for(int dataBit = in.read(); dataBit != -1; dataBit = in.read()) {
+            for (int dataBit = in.read(); dataBit != -1; dataBit = in.read()) {
                 out.write(dataBit);
             }
         } catch (IOException e) {

@@ -18,7 +18,7 @@ public class CommandArgumentParser {
      *
      * @param arguments Command arguments that need to be parsed.
      * @throws NullPointerException If given string is {@code null}.
-     * @throws RuntimeException If some arguments are invalid.
+     * @throws RuntimeException     If some arguments are invalid.
      */
     public CommandArgumentParser(String arguments) {
         lexer = new CommandArgumentLexer(arguments); // this will throw NullPointerException if arguments are null
@@ -32,7 +32,7 @@ public class CommandArgumentParser {
      * @throws RuntimeException If some arguments are invalid.
      */
     private void parse() {
-        for(String arg = lexer.next(); arg != null; arg = lexer.next()) {
+        for (String arg = lexer.next(); arg != null; arg = lexer.next()) {
             arguments.add(arg);
         }
     }

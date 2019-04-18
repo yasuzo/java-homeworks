@@ -36,7 +36,8 @@ public class MkdirCommand implements ShellCommand {
 
     /**
      * {@inheritDoc}
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     *
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user is not possible.
      */
     @Override

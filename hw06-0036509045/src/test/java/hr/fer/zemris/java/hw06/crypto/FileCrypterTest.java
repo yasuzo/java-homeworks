@@ -1,13 +1,11 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
-import hr.fer.zemris.java.hw06.crypto.FileCrypter;
 import org.junit.jupiter.api.Test;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;

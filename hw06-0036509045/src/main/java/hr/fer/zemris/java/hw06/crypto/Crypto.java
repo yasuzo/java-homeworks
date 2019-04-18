@@ -85,7 +85,7 @@ public class Crypto {
         } catch (IllegalArgumentException e) {
             System.out.println("Key and/or initialization vector consists of illegal characters.");
             return null;
-        }catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
 //            never gonna happen
             System.out.println("Unexpected error occured.");
             return null;

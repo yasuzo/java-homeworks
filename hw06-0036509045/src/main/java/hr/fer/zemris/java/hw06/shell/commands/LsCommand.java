@@ -6,7 +6,6 @@ import hr.fer.zemris.java.hw06.shell.ShellStatus;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;

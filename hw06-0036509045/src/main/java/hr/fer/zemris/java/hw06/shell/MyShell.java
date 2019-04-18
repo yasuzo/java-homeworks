@@ -8,7 +8,7 @@ import java.util.Scanner;
  *
  * @author Jan Capek
  */
-public class Shell {
+public class MyShell {
 
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
@@ -26,7 +26,7 @@ public class Shell {
                 env.write(env.getPromptSymbol().toString() + " ");
                 String l = readLineOrLines(env);
 //                blank input
-                if(l.isBlank()) {
+                if (l.isBlank()) {
                     continue;
                 }
 
@@ -43,7 +43,7 @@ public class Shell {
 //                execute a command and update status.
                 status = command.executeCommand(env, arguments);
             } while (status != ShellStatus.TERMINATE);
-        }catch (ShellIOException e) {
+        } catch (ShellIOException e) {
             System.err.println("An error occurred. Exiting...");
             return;
         }
@@ -58,7 +58,7 @@ public class Shell {
     private static String extractCommandArguments(String input) {
         Scanner sc = new Scanner(input);
         String arguments;
-        if(sc.hasNext()) {
+        if (sc.hasNext()) {
             sc.next();
             arguments = sc.hasNext() ? sc.nextLine() : "";
         } else {
@@ -77,7 +77,7 @@ public class Shell {
     private static String extractCommandName(String input) {
         Scanner sc = new Scanner(input);
         String name;
-        if(sc.hasNext()) {
+        if (sc.hasNext()) {
             name = sc.next();
         } else {
             name = null;

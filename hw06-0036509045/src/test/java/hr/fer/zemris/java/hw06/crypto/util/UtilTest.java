@@ -9,25 +9,25 @@ class UtilTest {
     @Test
     void hextobyteNormal() {
         String hex = "01aE22";
-        assertArrayEquals(new byte[] {1, -82, 34}, Util.hextobyte(hex));
+        assertArrayEquals(new byte[]{1, -82, 34}, Util.hextobyte(hex));
     }
 
     @Test
     void hextobyteNormal2() {
         String hex = "001aE22";
-        assertArrayEquals(new byte[] {0, 1, -82, 34}, Util.hextobyte(hex));
+        assertArrayEquals(new byte[]{0, 1, -82, 34}, Util.hextobyte(hex));
     }
 
     @Test
     void hextobyteNormal3() {
         String hex = "FF01aE22";
-        assertArrayEquals(new byte[] {-1, 1, -82, 34}, Util.hextobyte(hex));
+        assertArrayEquals(new byte[]{-1, 1, -82, 34}, Util.hextobyte(hex));
     }
 
     @Test
     void hextobyteEmpty() {
         String hex = "";
-        assertArrayEquals(new byte[] {}, Util.hextobyte(hex));
+        assertArrayEquals(new byte[]{}, Util.hextobyte(hex));
     }
 
     @Test
