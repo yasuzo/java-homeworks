@@ -1,4 +1,4 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
 /**
  * Thrown by {@link MDigest} in case data couldn't be digested.

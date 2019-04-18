@@ -1,4 +1,4 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
 /**
  * Exception thrown by {@link FileCrypter} in case an error occurred.

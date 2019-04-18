@@ -1,4 +1,4 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

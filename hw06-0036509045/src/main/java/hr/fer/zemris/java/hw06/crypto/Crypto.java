@@ -1,6 +1,9 @@
-package security.demo;
+package hr.fer.zemris.java.hw06.crypto;
 
-import security.FileCrypter;
+import hr.fer.zemris.java.hw06.crypto.commands.CheckDigestCommand;
+import hr.fer.zemris.java.hw06.crypto.commands.Command;
+import hr.fer.zemris.java.hw06.crypto.commands.DecryptCommand;
+import hr.fer.zemris.java.hw06.crypto.commands.EncryptCommand;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -12,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Scanner;
 
-import static security.util.Util.hextobyte;
+import static hr.fer.zemris.java.hw06.crypto.util.Util.hextobyte;
 
 /**
  * Program that can check message digests of a file, encrypt a file or decrypt it.

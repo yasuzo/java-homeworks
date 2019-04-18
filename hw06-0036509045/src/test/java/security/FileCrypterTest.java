@@ -1,7 +1,7 @@
 package security;
 
+import hr.fer.zemris.java.hw06.crypto.FileCrypter;
 import org.junit.jupiter.api.Test;
-import security.util.Util;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -17,8 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static security.util.Util.hextobyte;
+import static hr.fer.zemris.java.hw06.crypto.util.Util.hextobyte;
 
 class FileCrypterTest {
 

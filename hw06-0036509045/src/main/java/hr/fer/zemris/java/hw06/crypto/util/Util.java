@@ -1,4 +1,4 @@
-package security.util;
+package hr.fer.zemris.java.hw06.crypto.util;
 
 import java.util.Objects;
 

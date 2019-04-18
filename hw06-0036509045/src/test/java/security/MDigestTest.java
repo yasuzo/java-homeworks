@@ -1,6 +1,8 @@
 package security;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import hr.fer.zemris.java.hw06.crypto.MDigest;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;

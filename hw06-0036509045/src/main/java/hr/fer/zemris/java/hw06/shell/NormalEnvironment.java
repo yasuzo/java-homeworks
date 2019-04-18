@@ -1,8 +1,6 @@
 package hr.fer.zemris.java.hw06.shell;
 
-import hr.fer.zemris.java.hw06.shell.commands.CatCommand;
-import hr.fer.zemris.java.hw06.shell.commands.CharsetsCommand;
-import hr.fer.zemris.java.hw06.shell.commands.LsCommand;
+import hr.fer.zemris.java.hw06.shell.commands.*;
 
 import java.util.*;
 
@@ -22,6 +20,8 @@ public class NormalEnvironment implements Environment {
         commands.put("cat", new CatCommand());
         commands.put("ls", new LsCommand());
         commands.put("charsets", new CharsetsCommand());
+        commands.put("tree", new TreeCommand());
+        commands.put("copy", new CopyCommand());
         commands = Collections.unmodifiableSortedMap(commands);
     }
 
@@ -49,6 +49,8 @@ public class NormalEnvironment implements Environment {
             return sc.nextLine();
         } catch (NoSuchElementException e) {
             throw new ShellIOException("Couldn't read a line.");
+        } catch (IllegalStateException e) {
+            throw new ShellIOException("Scanner is closed.");
         }
     }
 

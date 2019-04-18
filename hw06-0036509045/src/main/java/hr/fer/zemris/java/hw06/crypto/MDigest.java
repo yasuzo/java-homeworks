@@ -1,6 +1,6 @@
-package security;
+package hr.fer.zemris.java.hw06.crypto;
 
-import security.util.Util;
+import hr.fer.zemris.java.hw06.crypto.util.Util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,7 +1,7 @@
-package security.demo;
+package hr.fer.zemris.java.hw06.crypto.commands;
 
-import security.FileCrypter;
-import security.FileCrypterException;
+import hr.fer.zemris.java.hw06.crypto.FileCrypter;
+import hr.fer.zemris.java.hw06.crypto.FileCrypterException;
 
 import java.io.*;
 import java.nio.file.Files;

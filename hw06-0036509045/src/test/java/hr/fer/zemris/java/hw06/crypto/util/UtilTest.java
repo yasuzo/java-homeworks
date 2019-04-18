@@ -1,7 +1,6 @@
-package security.util;
+package hr.fer.zemris.java.hw06.crypto.util;
 
 import org.junit.jupiter.api.Test;
-import security.util.Util;
 
 import static org.junit.jupiter.api.Assertions.*;
 

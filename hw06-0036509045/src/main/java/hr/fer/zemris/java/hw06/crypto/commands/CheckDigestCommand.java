@@ -1,6 +1,6 @@
-package security.demo;
+package hr.fer.zemris.java.hw06.crypto.commands;
 
-import security.MDigest;
+import hr.fer.zemris.java.hw06.crypto.MDigest;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

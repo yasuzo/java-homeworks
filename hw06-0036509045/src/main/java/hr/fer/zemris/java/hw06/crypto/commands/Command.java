@@ -1,4 +1,4 @@
-package security.demo;
+package hr.fer.zemris.java.hw06.crypto.commands;
 
 /**
  * Interface that models a command that needs to be executed.
