@@ -62,6 +62,6 @@ public class DecryptCommand implements Command {
             return;
         }
 
-        System.out.format("Decryption completed. Generated file %s based on file %s.", decryptedFile.toString(), fileToDecrypt.toString());
+        System.out.format("Decryption completed. Generated file %s based on file %s.%n", decryptedFile.toString(), fileToDecrypt.toString());
     }
 }

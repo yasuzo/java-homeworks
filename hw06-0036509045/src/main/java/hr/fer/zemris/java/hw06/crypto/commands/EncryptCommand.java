@@ -62,6 +62,6 @@ public class EncryptCommand implements Command {
             return;
         }
 
-        System.out.format("Encryption completed. Generated file %s based on file %s.", encryptedFile.toString(), fileToEncrypt.toString());
+        System.out.format("Encryption completed. Generated file %s based on file %s.%n", encryptedFile.toString(), fileToEncrypt.toString());
     }
 }
