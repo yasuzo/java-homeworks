@@ -75,7 +75,7 @@ public class Util {
      * @param b Byte that needs to be encoded.
      * @return String representation of given byte.
      */
-    private static String encodeByte(byte b) {
+    public static String encodeByte(byte b) {
         byte second = (byte)(b & 0xF);
         byte first = (byte)(b >>> 4 & 0xF);
 

@@ -22,6 +22,8 @@ public class NormalEnvironment implements Environment {
         commands.put("charsets", new CharsetsCommand());
         commands.put("tree", new TreeCommand());
         commands.put("copy", new CopyCommand());
+        commands.put("mkdir", new MkdirCommand());
+        commands.put("hexdump", new HexdumpCommand());
         commands = Collections.unmodifiableSortedMap(commands);
     }
 
