@@ -7,6 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ValueWrapperTest {
 
     @Test
+    void constructorTest() {
+        ValueWrapper wrapper = new ValueWrapper(true);
+        assertEquals(true, wrapper.getValue());
+    }
+
+    @Test
     void addString() {
         ValueWrapper wrapper = new ValueWrapper(5);
         wrapper.add("2");
