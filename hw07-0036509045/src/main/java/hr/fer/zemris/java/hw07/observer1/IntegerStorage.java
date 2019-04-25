@@ -29,7 +29,7 @@ public class IntegerStorage {
             observers = new ArrayList<>();
         }
         if (observers.contains(observer) == false) {
-            observers = new ArrayList<>(observers);
+            copyOnWrite();
             observers.add(observer);
         }
     }
@@ -40,11 +40,11 @@ public class IntegerStorage {
      * @param observer Observer that should be removed.
      */
     public void removeObserver(IntegerStorageObserver observer) {
-        if(observers == null) {
+        if (observers == null) {
             return;
         }
         int index = observers.indexOf(observer);
-        if(index != -1) {
+        if (index != -1) {
             copyOnWrite();
             observers.remove(index);
         }
@@ -61,11 +61,11 @@ public class IntegerStorage {
      * Removes all observers from internal collection.
      */
     public void clearObservers() {
-        if(observers == null || observers.size() == 0) {
+        if (observers == null || observers.size() == 0) {
             return;
         }
-        copyOnWrite();
-        observers.clear();
+//        instead of copying and then clearing a list, just create a new list
+        observers = new ArrayList<>();
     }
 
     /**
