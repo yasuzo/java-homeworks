@@ -93,7 +93,6 @@ public class PrimesCollection implements Iterable<Integer> {
             if (number % 2 == 0) {
                 return false;
             }
-
             int limit = (int) Math.sqrt(number);
             for (int i = 3; i <= limit; i += 2) {
                 if (number % i == 0) {
