@@ -27,7 +27,7 @@ public class ObjectMultistack {
      * Pushes given value wrapper on top of the stack with given key.
      * It does not matter if stack under given key does not already exist, it will be created.
      *
-     * @param keyName Key of the stack that the wrapper should be pushed on.
+     * @param keyName      Key of the stack that the wrapper should be pushed on.
      * @param valueWrapper Wrapper that should be pushed.
      * @throws NullPointerException If either of the arguments are {@code null}.
      */
@@ -47,7 +47,7 @@ public class ObjectMultistack {
      * @throws EmptyStackException If stack under given key is empty.
      */
     public ValueWrapper pop(String keyName) {
-        if(isEmpty(keyName)) {
+        if (isEmpty(keyName)) {
             throw new EmptyStackException();
         }
         MultistackEntry result = stacks.get(keyName);
@@ -63,7 +63,7 @@ public class ObjectMultistack {
      * @throws EmptyStackException If wanted stack is empty.
      */
     public ValueWrapper peek(String keyName) {
-        if(isEmpty(keyName)) {
+        if (isEmpty(keyName)) {
             throw new EmptyStackException();
         }
         return stacks.get(keyName).value;
@@ -92,7 +92,7 @@ public class ObjectMultistack {
          * Constructs a new entry with given value and a reference to the next entry in the stack.
          *
          * @param value Value of the entry.
-         * @param next Next entry in the stack.
+         * @param next  Next entry in the stack.
          */
         private MultistackEntry(ValueWrapper value, MultistackEntry next) {
             this.value = value;

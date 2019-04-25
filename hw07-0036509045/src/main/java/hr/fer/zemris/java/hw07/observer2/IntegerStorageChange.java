@@ -17,8 +17,8 @@ public class IntegerStorageChange {
      * Constructs a new {@link IntegerStorageChange} which encapsulates object whose value has change, its old and new values.
      *
      * @param integerStorage Instance whose value has changed.
-     * @param oldValue Previous value.
-     * @param newValue New value.
+     * @param oldValue       Previous value.
+     * @param newValue       New value.
      * @throws NullPointerException If given storage is {@code null}.
      */
     public IntegerStorageChange(IntegerStorage integerStorage, int oldValue, int newValue) {

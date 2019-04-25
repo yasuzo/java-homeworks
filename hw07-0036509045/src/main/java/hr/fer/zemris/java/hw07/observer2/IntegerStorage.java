@@ -40,11 +40,11 @@ public class IntegerStorage {
      * @param observer Observer that should be removed.
      */
     public void removeObserver(IntegerStorageObserver observer) {
-        if(observers == null) {
+        if (observers == null) {
             return;
         }
         int index = observers.indexOf(observer);
-        if(index != -1) {
+        if (index != -1) {
             copyOnWrite();
             observers.remove(index);
         }
@@ -61,7 +61,7 @@ public class IntegerStorage {
      * Removes all observers from internal collection.
      */
     public void clearObservers() {
-        if(observers == null || observers.size() == 0) {
+        if (observers == null || observers.size() == 0) {
             return;
         }
         copyOnWrite();

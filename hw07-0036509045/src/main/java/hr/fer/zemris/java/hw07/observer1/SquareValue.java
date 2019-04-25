@@ -7,10 +7,11 @@ import java.util.Objects;
  *
  * @author Jan Capek
  */
-public class SquareValue implements IntegerStorageObserver{
+public class SquareValue implements IntegerStorageObserver {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given storage is {@code null}.
      */
     @Override

@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Demo program that loads students records, processes them in certain ways using stream API
@@ -27,7 +26,7 @@ public class StudentDemo {
 
 //        execute actions
         int i = 1;
-        for(Action a : actions) {
+        for (Action a : actions) {
             System.out.format("Zadatak %d%n=========%n", i);
             a.execute();
             i++;
@@ -57,7 +56,7 @@ public class StudentDemo {
      * @return List of parsed student records.
      */
     private static List<StudentRecord> getRecords(List<String> lines) {
-        try{
+        try {
             return StudentRecordParser.parseAll(lines);
         } catch (IllegalArgumentException e) {
             System.out.println("Some records are invalid. Maybe there are empty lines in the file.");

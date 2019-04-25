@@ -7,12 +7,13 @@ import java.util.Objects;
  *
  * @author Jan Capek
  */
-public class ChangeCounter implements IntegerStorageObserver{
+public class ChangeCounter implements IntegerStorageObserver {
 
     private int count;
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given storage is {@code null}.
      */
     @Override

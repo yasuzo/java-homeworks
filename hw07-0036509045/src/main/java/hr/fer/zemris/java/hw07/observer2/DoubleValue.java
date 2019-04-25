@@ -16,7 +16,7 @@ public class DoubleValue implements IntegerStorageObserver {
      * @param n Number of observations wanted. Has to be at least 1.
      */
     public DoubleValue(int n) {
-        if(n < 1) {
+        if (n < 1) {
             throw new IllegalArgumentException("Number cannot be less than 1!");
         }
         this.n = n;
@@ -24,18 +24,19 @@ public class DoubleValue implements IntegerStorageObserver {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given argument is {@code null}.
      */
     @Override
     public void valueChanged(IntegerStorageChange storageChange) {
         Objects.requireNonNull(storageChange);
 
-        if(n > 0) {
+        if (n > 0) {
             System.out.println("Double value: " + storageChange.getNewValue() * 2);
             n--;
         }
 
-        if(n <= 0) {
+        if (n <= 0) {
             storageChange.getIntegerStorage().removeObserver(this);
         }
     }

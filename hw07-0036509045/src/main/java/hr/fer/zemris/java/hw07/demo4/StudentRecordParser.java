@@ -77,7 +77,7 @@ public class StudentRecordParser {
      *
      * @param records Records in string format.
      * @return List of parsed records.
-     * @throws NullPointerException If given list any of its elements is {@code null}.
+     * @throws NullPointerException     If given list any of its elements is {@code null}.
      * @throws IllegalArgumentException If a record is invalid.
      */
     public static List<StudentRecord> parseAll(List<String> records) {

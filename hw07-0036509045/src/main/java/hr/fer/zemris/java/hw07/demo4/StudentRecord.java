@@ -21,13 +21,13 @@ public class StudentRecord {
     /**
      * Constructs a new record with given attributes.
      *
-     * @param jmbag Student's jmbag.
-     * @param firstName Student's first name.
-     * @param lastName Student's last name.
+     * @param jmbag         Student's jmbag.
+     * @param firstName     Student's first name.
+     * @param lastName      Student's last name.
      * @param midtermPoints Points on midterm exam.
-     * @param finalPoints Points on final exam.
-     * @param labPoints Laboratory points.
-     * @param finalGrade Final grade.
+     * @param finalPoints   Points on final exam.
+     * @param labPoints     Laboratory points.
+     * @param finalGrade    Final grade.
      * @throws NullPointerException If jmbag, first name or last name are {@code null}.
      */
     public StudentRecord(String jmbag, String firstName, String lastName, double midtermPoints, double finalPoints, double labPoints, int finalGrade) {

@@ -12,7 +12,7 @@ class ObjectMultistackTest {
     private ObjectMultistack multistack;
 
     private void test(String stackKey, Object... objects) {
-        for(Object o : objects) {
+        for (Object o : objects) {
             assertEquals(o, multistack.pop(stackKey).getValue());
         }
         assertThrows(EmptyStackException.class, () -> multistack.pop(stackKey));

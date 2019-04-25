@@ -11,6 +11,7 @@ public class SquareValue implements IntegerStorageObserver {
 
     /**
      * {@inheritDoc}
+     *
      * @throws NullPointerException If given argument is {@code null}.
      */
     @Override
