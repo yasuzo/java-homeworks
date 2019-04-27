@@ -24,7 +24,7 @@ public class ObjectMultistackDemo {
         System.out.println("Current value for year: "
                 + multistack.peek("year").getValue());
         multistack.peek("year").setValue(
-                ((Integer)multistack.peek("year").getValue()).intValue() + 50
+                ((Integer) multistack.peek("year").getValue()).intValue() + 50
         );
         System.out.println("Current value for year: "
                 + multistack.peek("year").getValue());
