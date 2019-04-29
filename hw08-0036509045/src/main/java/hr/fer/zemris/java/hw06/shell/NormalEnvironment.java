@@ -37,6 +37,7 @@ public class NormalEnvironment implements Environment {
         commands.put("pushd", new PushdCommand());
         commands.put("popd", new PopdCommand());
         commands.put("listd", new ListdCommand());
+        commands.put("dropd", new DropdCommand());
         commands = Collections.unmodifiableSortedMap(commands);
     }
 

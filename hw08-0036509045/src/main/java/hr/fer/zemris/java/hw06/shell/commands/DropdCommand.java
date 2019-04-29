@@ -12,20 +12,20 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Shell command for listing all directories stored on a stack.
+ * Shell command that pops a directory from the top of the stack and drops it.
  *
  * @author Jan Capek
  */
-public class ListdCommand implements ShellCommand {
+public class DropdCommand implements ShellCommand {
     private static String name;
     private static List<String> description;
 
     static {
-        name = "listd";
+        name = "dropd";
 
         description = new ArrayList<>();
-        description.add("Listd command takes in zero arguments.");
-        description.add("It will list directories stored on the stack starting from a most recent directory.");
+        description.add("Dropd command takes in zero arguments.");
+        description.add("It will remove stored directory from top of the stack.");
 
         description = Collections.unmodifiableList(description);
     }
@@ -40,14 +40,9 @@ public class ListdCommand implements ShellCommand {
 
         Stack<Path> stack = (Stack<Path>) env.getSharedData("cdstack");
         if (stack == null || stack.size() == 0) {
-            env.writeln("Nema pohranjenih direktorija.");
-            return ShellStatus.CONTINUE;
-        }
-
-        Object[] dirs = stack.toArray();
-        for (int i = dirs.length - 1; i >= 0; i--) {
-            Path p = (Path) dirs[i];
-            env.writeln(p.normalize().toString());
+            env.writeln("Stack is empty there are no directories to remove.");
+        } else {
+            stack.pop();
         }
         return ShellStatus.CONTINUE;
     }
