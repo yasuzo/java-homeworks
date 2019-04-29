@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.nio.file.Path;
@@ -34,13 +33,13 @@ public class PushdCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
-        Path dir = PathResolver.resolveRelativePath(env, Path.of(args.get(0)));
+        Path dir = env.getCurrentDirectory().resolve(Path.of(args.get(0)));
         Path currentDir = env.getCurrentDirectory();
 
 //        sets working directory to dir
@@ -56,7 +55,7 @@ public class PushdCommand implements ShellCommand {
 
 //        pushes last working directory on the stack
         Stack<Path> cdStack = (Stack<Path>) env.getSharedData("cdstack");
-        if(cdStack == null) {
+        if (cdStack == null) {
             cdStack = new Stack<>();
             env.setSharedData("cdstack", cdStack);
         }

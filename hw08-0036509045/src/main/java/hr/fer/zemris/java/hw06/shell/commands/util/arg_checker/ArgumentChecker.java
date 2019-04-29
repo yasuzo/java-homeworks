@@ -4,7 +4,6 @@ import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.commands.util.parsing.CommandArgumentParser;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,12 +25,13 @@ public class ArgumentChecker {
      * and {@link IllegalArgumentException} will be thrown. <br>
      * If everything is ok, a list of parsed arguments will be returned.
      *
-     * @param env Environment given as a parameter in {@link ShellCommand#executeCommand(Environment, String)}.
-     * @param arguments Argument string given in {@link ShellCommand#executeCommand(Environment, String)}.
+     * @param env                 Environment given as a parameter in {@link ShellCommand#executeCommand(Environment, String)}.
+     * @param arguments           Argument string given in {@link ShellCommand#executeCommand(Environment, String)}.
      * @param validArgumentCounts Valid number of parsed arguments from string.
      * @return List of arguments parsed from argument string.
-     * @throws IllegalArgumentException If {@code arguments} is invalid or number of arguments is invalid.
-     * @throws NullPointerException If given environment variable or arguments variable is {@code null}.
+     * @throws IllegalArgumentException                       If {@code arguments} is invalid or number of arguments is invalid.
+     * @throws NullPointerException                           If given environment variable or arguments variable is {@code null}.
+     * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user was not possible.
      */
     public static List<String> checkExecuteCommandArgs(Environment env, String arguments, int... validArgumentCounts) {
         Objects.requireNonNull(env, "Environment cannot be null.");

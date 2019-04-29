@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.BufferedReader;
@@ -16,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Shell command that reads a file in given charset and outputs it to the user.
@@ -44,14 +42,14 @@ public class CatCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1, 2);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
 //        create path and charset
-        Path file = PathResolver.resolveRelativePath(env, Paths.get(args.get(0)));
+        Path file = env.getCurrentDirectory().resolve(Paths.get(args.get(0)));
         Charset charset;
         try {
             charset = args.size() == 2 ? Charset.forName(args.get(1)) : Charset.defaultCharset();

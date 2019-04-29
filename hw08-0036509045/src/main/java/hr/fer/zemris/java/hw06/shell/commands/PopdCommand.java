@@ -5,22 +5,27 @@ import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
-import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.Stack;
 
-public class CharsetsCommand implements ShellCommand {
+/**
+ * Shell command that pops directory path from underlying stack and sets current working directory to that directory.
+ *
+ * @author Jan Capek
+ */
+public class PopdCommand implements ShellCommand {
     private static String name;
     private static List<String> description;
 
     static {
-        name = "charsets";
+        name = "popd";
 
         description = new ArrayList<>();
-        description.add("Charsets command takes no arguments and lists all available charsets in Java platform.");
-        description.add("A single charset will be outputted per line.");
+        description.add("Popd command takes in zero arguments.");
+        description.add("It will pop a directory from the stack and change current directory to it.");
 
         description = Collections.unmodifiableList(description);
     }
@@ -33,9 +38,16 @@ public class CharsetsCommand implements ShellCommand {
             return ShellStatus.CONTINUE;
         }
 
-        Set<String> charsets = Charset.availableCharsets().keySet();
-        for (String charset : charsets) {
-            env.writeln(charset);
+        Stack<Path> stack = (Stack<Path>) env.getSharedData("cdstack");
+        if (stack == null || stack.size() == 0) {
+            env.writeln("Stack is empty, there isn't a directory to pop.");
+        } else {
+            try {
+                env.setCurrentDirectory(stack.pop());
+            } catch (RuntimeException e) {
+                env.writeln("There was a problem changing to directory. Exiting...");
+                return ShellStatus.TERMINATE;
+            }
         }
         return ShellStatus.CONTINUE;
     }

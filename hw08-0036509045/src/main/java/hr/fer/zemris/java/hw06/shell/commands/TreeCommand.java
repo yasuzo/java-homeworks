@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Shell command used for recursive listing of directory contents.
@@ -37,13 +35,13 @@ public class TreeCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
-        Path dir = PathResolver.resolveRelativePath(env, Paths.get(args.get(0)));
+        Path dir = env.getCurrentDirectory().resolve(Paths.get(args.get(0)));
 
 //        Check if given path is a directory
         if (Files.isDirectory(dir) == false) {

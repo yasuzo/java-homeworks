@@ -34,7 +34,7 @@ public class SymbolCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1, 2);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
@@ -48,7 +48,7 @@ public class SymbolCommand implements ShellCommand {
         String symbol = args.get(1);
         if (symbol.length() == 1) {
             setSymbol(env, args.get(0), symbol.charAt(0));
-        }else {
+        } else {
             env.writeln("Symbol has to be one character.");
         }
         return ShellStatus.CONTINUE;
@@ -57,9 +57,9 @@ public class SymbolCommand implements ShellCommand {
     /**
      * Prints out currently used symbol.
      *
-     * @param env Environment used for communication with user.
+     * @param env        Environment used for communication with user.
      * @param symbolName Name of the symbol that needs to be printed.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user was not possible.
      */
     private void printCurrentSymbol(Environment env, String symbolName) {
@@ -83,10 +83,10 @@ public class SymbolCommand implements ShellCommand {
     /**
      * Sets a new symbol for appropriate type and prints an appropriate message.
      *
-     * @param env Environment whose symbol should be changed. It is also used for communication with user.
+     * @param env        Environment whose symbol should be changed. It is also used for communication with user.
      * @param symbolName Name of the symbol that should be changed. Legal names are PROMPT, MORELINES or MULTILINE.
-     * @param newSymbol New symbol that should be used.
-     * @throws NullPointerException If environment or symbol's name is {@code null}.
+     * @param newSymbol  New symbol that should be used.
+     * @throws NullPointerException                           If environment or symbol's name is {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user was not possible.
      */
     private void setSymbol(Environment env, String symbolName, char newSymbol) {

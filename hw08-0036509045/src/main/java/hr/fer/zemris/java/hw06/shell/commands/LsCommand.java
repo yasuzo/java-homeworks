@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.IOException;
@@ -38,14 +37,14 @@ public class LsCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
 //        check if given path is a directory
-        Path directory = PathResolver.resolveRelativePath(env, Paths.get(args.get(0)));
+        Path directory = env.getCurrentDirectory().resolve(Paths.get(args.get(0)));
         if (Files.isDirectory(directory) == false) {
             env.writeln("Given path is not a directory.");
             return ShellStatus.CONTINUE;

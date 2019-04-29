@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.*;
@@ -13,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Shell command that copies a file to a location.
@@ -40,17 +38,17 @@ public class CopyCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 2);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
-        Path file = PathResolver.resolveRelativePath(env, Paths.get(args.get(0)));
-        Path dest = PathResolver.resolveRelativePath(env, Paths.get(args.get(1)));
+        Path file = env.getCurrentDirectory().resolve(Paths.get(args.get(0)));
+        Path dest = env.getCurrentDirectory().resolve(Paths.get(args.get(1)));
 
 //        is the first argument a file?
-        if(Files.isDirectory(file)) {
+        if (Files.isDirectory(file)) {
             env.writeln("Cannot copy a directory.");
             return ShellStatus.CONTINUE;
         }
@@ -63,7 +61,7 @@ public class CopyCommand implements ShellCommand {
 
 //        are source and destination equal?
         try {
-            if(Files.isSameFile(file, dest)) {
+            if (Files.isSameFile(file, dest)) {
                 return ShellStatus.CONTINUE;
             }
         } catch (IOException e) {

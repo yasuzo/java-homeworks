@@ -5,7 +5,9 @@ import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Shell command that takes no arguments and prints current working directory.
@@ -26,7 +28,7 @@ public class PwdCommand implements ShellCommand {
 
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
-        try{
+        try {
             ArgumentChecker.checkExecuteCommandArgs(env, arguments, 0);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;

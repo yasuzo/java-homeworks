@@ -8,7 +8,6 @@ import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Shell command used to print a description of other shell commands.
@@ -34,7 +33,7 @@ public class HelpCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 0, 1);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;

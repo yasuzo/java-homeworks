@@ -4,7 +4,6 @@ import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
 import hr.fer.zemris.java.hw06.shell.commands.util.HexUtil;
-import hr.fer.zemris.java.hw06.shell.commands.util.PathResolver;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.BufferedInputStream;
@@ -39,16 +38,16 @@ public class HexdumpCommand implements ShellCommand {
     @Override
     public ShellStatus executeCommand(Environment env, String arguments) {
         List<String> args;
-        try{
+        try {
             args = ArgumentChecker.checkExecuteCommandArgs(env, arguments, 1);
         } catch (IllegalArgumentException e) {
             return ShellStatus.CONTINUE;
         }
 
-        Path file = PathResolver.resolveRelativePath(env, Paths.get(args.get(0)));
+        Path file = env.getCurrentDirectory().resolve(Paths.get(args.get(0)));
 
 //        is file a directory?
-        if(Files.isDirectory(file)) {
+        if (Files.isDirectory(file)) {
             env.writeln("Cannot dump contents of a directory.");
             return ShellStatus.CONTINUE;
         }
@@ -66,9 +65,9 @@ public class HexdumpCommand implements ShellCommand {
      * Dumps hex representation of a file to the user.
      *
      * @param env Environment which is used to communicate with a user.
-     * @param in Opened input data stream which contents will be dumped.
-     * @throws IOException If reading from stream was not possible.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @param in  Opened input data stream which contents will be dumped.
+     * @throws IOException                                    If reading from stream was not possible.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user was not possible.
      */
     private void dump(Environment env, InputStream in) throws IOException {
@@ -111,7 +110,7 @@ public class HexdumpCommand implements ShellCommand {
      * @param length Length of valid bytes.
      * @return Formatted hex line.
      * @throws IllegalArgumentException If {@code length} is greater than {@code data.length}.
-     * @throws NullPointerException If given array is {@code null}.
+     * @throws NullPointerException     If given array is {@code null}.
      */
     private String getFormattedHexLine(byte[] data, int length) {
         Objects.requireNonNull(data);
