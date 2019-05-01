@@ -3,18 +3,15 @@ package hr.fer.zemris.java.hw06.shell.commands;
 import hr.fer.zemris.java.hw06.shell.Environment;
 import hr.fer.zemris.java.hw06.shell.ShellCommand;
 import hr.fer.zemris.java.hw06.shell.ShellStatus;
-import hr.fer.zemris.java.hw06.shell.commands.util.FilterResult;
+import hr.fer.zemris.java.hw06.shell.commands.massrename_util.FilterResult;
+import hr.fer.zemris.java.hw06.shell.commands.massrename_util.NameBuilder;
+import hr.fer.zemris.java.hw06.shell.commands.massrename_util.NameBuilderParser;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.logging.Filter;
+import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -55,7 +52,7 @@ public class MassrenameCommand implements ShellCommand {
         Path dir1 = env.getCurrentDirectory().resolve(args.get(0));
         Path dir2 = env.getCurrentDirectory().resolve(args.get(1));
 
-        if(Files.isDirectory(dir1) == false || Files.isDirectory(dir2) == false) {
+        if (Files.isDirectory(dir1) == false || Files.isDirectory(dir2) == false) {
             env.writeln("First two arguments should be directories!");
             return ShellStatus.CONTINUE;
         }
@@ -75,14 +72,15 @@ public class MassrenameCommand implements ShellCommand {
             return ShellStatus.CONTINUE;
         }
 
-        if(args.size() == 4 && (command.equals("filter") || command.equals("groups"))) {
-            if(command.equals("filter")){
+        if (args.size() == 4 && (command.equals("filter") || command.equals("groups"))) {
+            if (command.equals("filter")) {
                 filterCommand(env, results);
             } else {
                 groupsCommand(env, results);
             }
         } else if (args.size() == 5 && (command.equals("execute") || command.equals("show"))) {
-
+            String renamingPattern = args.get(4);
+            showOrExecuteCommand(env, dir1, dir2, results, renamingPattern, command);
         } else {
             env.writeln("Wrong number of arguments or given CMD is not recognized. Call 'help' for more info.");
         }
@@ -91,12 +89,91 @@ public class MassrenameCommand implements ShellCommand {
     }
 
     /**
-     * Executes groups command.
+     * Executes show or execute command.
      *
      * @param env Environment used to communicate with user.
+     * @param sourceDir Source directory.
+     * @param destDir Destination directory in case of execute command.
+     * @param results Filtered files.
+     * @param renamePattern Renaming pattern.
+     * @param command Command that needs to be executed ('show' or 'execute').
+     * @throws NullPointerException If any of the arguments is {@code null} or in case a command is "show" then dirs can be null.
+     * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user failed.
+     */
+    private void showOrExecuteCommand(Environment env, Path sourceDir, Path destDir, List<FilterResult> results, String renamePattern, String command) {
+        Objects.requireNonNull(env);
+        Objects.requireNonNull(renamePattern);
+        Objects.requireNonNull(results);
+        Objects.requireNonNull(command);
+
+        List<String> names;
+        try {
+            names = getRenamedList(results,renamePattern);
+        } catch (IllegalArgumentException e) {
+            env.writeln("Renaming pattern is invalid.");
+            return;
+        } catch (RuntimeException e) {
+            env.writeln(e.getMessage());
+            return;
+        }
+
+        Iterator<FilterResult> resultIterator = results.iterator();
+        Iterator<String> newNameIterator = names.iterator();
+
+        if(command.equals("show")) {
+            while (resultIterator.hasNext()) {
+                String line = String.format("%s => %s", resultIterator.next().toString(), newNameIterator.next());
+                env.writeln(line);
+            }
+            return;
+        }
+
+        while (resultIterator.hasNext()) {
+            Path sourceFile = sourceDir.resolve(resultIterator.next().toString());
+            Path destFile = destDir.resolve(newNameIterator.next());
+            String line = String.format("%s => %s", sourceFile.getFileName().toString(), destFile.getFileName().toString());
+            env.writeln(line);
+            try {
+                Files.move(sourceFile, destFile);
+            } catch (IOException e) {
+                env.writeln("Could not access the file system.");
+                return;
+            }
+        }
+    }
+
+    /**
+     * Returns a list of new names of files.
+     *
+     * @param results       Filtered files.
+     * @param renamePattern Renaming pattern.
+     * @return List of new file names.
+     * @throws IllegalArgumentException If renaming pattern is invalid.
+     * @throws RuntimeException If an error happened in {@link NameBuilder#execute(FilterResult, StringBuilder)} method.
+     */
+    private List<String> getRenamedList(List<FilterResult> results, String renamePattern) {
+        Objects.requireNonNull(results);
+        Objects.requireNonNull(renamePattern);
+
+        NameBuilder nameBuilder = new NameBuilderParser(renamePattern).getNameBuilder();
+
+        List<String> newNames = new ArrayList<>(results.size());
+
+        results.forEach(result -> {
+            StringBuilder sb = new StringBuilder();
+            nameBuilder.execute(result, sb);
+            newNames.add(sb.toString());
+        });
+        return newNames;
+    }
+
+    /**
+     * Executes groups command.
+     *
+     * @param env     Environment used to communicate with user.
      * @param results Filtered results.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException In case communication with user is not possible.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      */
     private void groupsCommand(Environment env, List<FilterResult> results) {
         Objects.requireNonNull(env);
@@ -117,10 +194,10 @@ public class MassrenameCommand implements ShellCommand {
     /**
      * Executes filter command.
      *
-     * @param env Environment used to communicate with user.
+     * @param env     Environment used to communicate with user.
      * @param results Filtered results.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException In case communication with user is not possible.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException                           If any of the arguments are {@code null}.
      */
     private void filterCommand(Environment env, List<FilterResult> results) {
         Objects.requireNonNull(results);

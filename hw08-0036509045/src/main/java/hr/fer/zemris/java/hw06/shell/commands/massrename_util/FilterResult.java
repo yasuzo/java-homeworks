@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.hw06.shell.commands.util;
+package hr.fer.zemris.java.hw06.shell.commands.massrename_util;
 
 import java.io.File;
 import java.io.IOException;
