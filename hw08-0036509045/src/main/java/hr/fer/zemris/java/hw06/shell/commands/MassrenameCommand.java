@@ -8,9 +8,12 @@ import hr.fer.zemris.java.hw06.shell.commands.massrename_util.NameBuilder;
 import hr.fer.zemris.java.hw06.shell.commands.massrename_util.NameBuilderParser;
 import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
+import java.io.IOError;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
@@ -120,6 +123,7 @@ public class MassrenameCommand implements ShellCommand {
         Iterator<FilterResult> resultIterator = results.iterator();
         Iterator<String> newNameIterator = names.iterator();
 
+//        show
         if(command.equals("show")) {
             while (resultIterator.hasNext()) {
                 String line = String.format("%s => %s", resultIterator.next().toString(), newNameIterator.next());
@@ -128,14 +132,15 @@ public class MassrenameCommand implements ShellCommand {
             return;
         }
 
+//        execute
         while (resultIterator.hasNext()) {
             Path sourceFile = sourceDir.resolve(resultIterator.next().toString());
             Path destFile = destDir.resolve(newNameIterator.next());
-            String line = String.format("%s => %s", sourceFile.getFileName().toString(), destFile.getFileName().toString());
-            env.writeln(line);
             try {
-                Files.move(sourceFile, destFile);
-            } catch (IOException e) {
+                Files.move(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
+                String line = String.format("%s => %s", sourceFile.normalize().toString(), destFile.normalize().toString());
+                env.writeln(line);
+            } catch (IOException | IOError | SecurityException e) {
                 env.writeln("Could not access the file system.");
                 return;
             }
