@@ -24,9 +24,10 @@ public class Bojanje2 {
         public String getAlgorithmTitle() {
             return "Moj bfs!";
         }
+
         @Override
         public void fill(int x, int y, int color, Picture picture) {
-            Coloring col = new Coloring(new Pixel(x,y), picture, color);
+            Coloring col = new Coloring(new Pixel(x, y), picture, color);
             SubspaceExploreUtil.bfs(col, col, col, col);
         }
     };
@@ -36,9 +37,10 @@ public class Bojanje2 {
         public String getAlgorithmTitle() {
             return "Moj bfsV!";
         }
+
         @Override
         public void fill(int x, int y, int color, Picture picture) {
-            Coloring col = new Coloring(new Pixel(x,y), picture, color);
+            Coloring col = new Coloring(new Pixel(x, y), picture, color);
             SubspaceExploreUtil.bfsv(col, col, col, col);
         }
     };
@@ -48,9 +50,10 @@ public class Bojanje2 {
         public String getAlgorithmTitle() {
             return "Moj dfs!";
         }
+
         @Override
         public void fill(int x, int y, int color, Picture picture) {
-            Coloring col = new Coloring(new Pixel(x,y), picture, color);
+            Coloring col = new Coloring(new Pixel(x, y), picture, color);
             SubspaceExploreUtil.dfs(col, col, col, col);
         }
     };

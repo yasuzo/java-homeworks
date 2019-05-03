@@ -1,12 +1,8 @@
 package hr.fer.zemris.java.hw06.shell.commands.massrename_util;
 
-import com.sun.jdi.ObjectReference;
-
-import javax.naming.Name;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -44,8 +40,8 @@ public class NameBuilderParser {
     /**
      * Returns a new  {@link NameBuilder} that appends a group at given index to a name and adds padding if necessary.
      *
-     * @param index Index of a group.
-     * @param padding Character used for padding.
+     * @param index    Index of a group.
+     * @param padding  Character used for padding.
      * @param minWidth Minimum length of a string that should be appended.
      * @return New name builder.
      */
@@ -63,7 +59,7 @@ public class NameBuilderParser {
      * Creates a new parser with given expression.
      *
      * @param expression Expression used for renaming.
-     * @throws NullPointerException If given expression is {@code null}.
+     * @throws NullPointerException     If given expression is {@code null}.
      * @throws IllegalArgumentException If given expression is invalid.
      */
     public NameBuilderParser(String expression) {
@@ -84,12 +80,12 @@ public class NameBuilderParser {
 
 //        create a composite nameBuilder
         NameBuilder nameBuilder = text("");
-        for(String s : normalText) {
-            if(s.contains("${")) {
+        for (String s : normalText) {
+            if (s.contains("${")) {
                 throw new IllegalArgumentException("Unclosed group tag.");
             }
             nameBuilder = nameBuilder.then(text(s));
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 nameBuilder = nameBuilder.then(it.next());
             }
         }
@@ -112,7 +108,7 @@ public class NameBuilderParser {
      */
     private NameBuilder createGroupNameBuilder(String group) {
         String[] parts = group.split(",");
-        if(parts.length != 1 && parts.length != 2) {
+        if (parts.length != 1 && parts.length != 2) {
             throw new IllegalArgumentException("Invalid group syntax in the expression.");
         }
 
@@ -130,7 +126,7 @@ public class NameBuilderParser {
         }
 
 //        check if min width is less than 0, group index cannot be checked here.
-        if(minWidth < 0) {
+        if (minWidth < 0) {
             throw new IllegalArgumentException("Minimal width cannot be less than 0.");
         }
 

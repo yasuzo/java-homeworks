@@ -10,7 +10,6 @@ import hr.fer.zemris.java.hw06.shell.commands.util.arg_checker.ArgumentChecker;
 
 import java.io.IOError;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -94,13 +93,13 @@ public class MassrenameCommand implements ShellCommand {
     /**
      * Executes show or execute command.
      *
-     * @param env Environment used to communicate with user.
-     * @param sourceDir Source directory.
-     * @param destDir Destination directory in case of execute command.
-     * @param results Filtered files.
+     * @param env           Environment used to communicate with user.
+     * @param sourceDir     Source directory.
+     * @param destDir       Destination directory in case of execute command.
+     * @param results       Filtered files.
      * @param renamePattern Renaming pattern.
-     * @param command Command that needs to be executed ('show' or 'execute').
-     * @throws NullPointerException If any of the arguments is {@code null} or in case a command is "show" then dirs can be null.
+     * @param command       Command that needs to be executed ('show' or 'execute').
+     * @throws NullPointerException                           If any of the arguments is {@code null} or in case a command is "show" then dirs can be null.
      * @throws hr.fer.zemris.java.hw06.shell.ShellIOException If communication with user failed.
      */
     private void showOrExecuteCommand(Environment env, Path sourceDir, Path destDir, List<FilterResult> results, String renamePattern, String command) {
@@ -111,7 +110,7 @@ public class MassrenameCommand implements ShellCommand {
 
         List<String> names;
         try {
-            names = getRenamedList(results,renamePattern);
+            names = getRenamedList(results, renamePattern);
         } catch (IllegalArgumentException e) {
             env.writeln("Renaming pattern is invalid.");
             return;
@@ -124,7 +123,7 @@ public class MassrenameCommand implements ShellCommand {
         Iterator<String> newNameIterator = names.iterator();
 
 //        show
-        if(command.equals("show")) {
+        if (command.equals("show")) {
             while (resultIterator.hasNext()) {
                 String line = String.format("%s => %s", resultIterator.next().toString(), newNameIterator.next());
                 env.writeln(line);
@@ -154,7 +153,7 @@ public class MassrenameCommand implements ShellCommand {
      * @param renamePattern Renaming pattern.
      * @return List of new file names.
      * @throws IllegalArgumentException If renaming pattern is invalid.
-     * @throws RuntimeException If an error happened in {@link NameBuilder#execute(FilterResult, StringBuilder)} method.
+     * @throws RuntimeException         If an error happened in {@link NameBuilder#execute(FilterResult, StringBuilder)} method.
      */
     private List<String> getRenamedList(List<FilterResult> results, String renamePattern) {
         Objects.requireNonNull(results);

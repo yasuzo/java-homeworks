@@ -18,15 +18,15 @@ public class Node<S> {
      * Constructs a new node that holds given parameters.
      *
      * @param parent Previous node.
-     * @param state Current state.
-     * @param cost Cost of getting to the state.
-     * @throws NullPointerException If given state is {@code null}.
+     * @param state  Current state.
+     * @param cost   Cost of getting to the state.
+     * @throws NullPointerException     If given state is {@code null}.
      * @throws IllegalArgumentException If cost is less than 0.
      */
     public Node(Node<S> parent, S state, double cost) {
         this.parent = parent;
         this.state = Objects.requireNonNull(state);
-        if(cost < 0) {
+        if (cost < 0) {
             throw new IllegalArgumentException("Price cannot be less than 0.");
         }
         this.cost = cost;

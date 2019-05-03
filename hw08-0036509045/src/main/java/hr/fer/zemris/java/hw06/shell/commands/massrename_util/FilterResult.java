@@ -23,16 +23,16 @@ public class FilterResult {
     /**
      * Constructs a new FilterResult that holds a file at given path and a matcher used for grouping file's name.
      *
-     * @param file Path to a file a new instance should hold.
+     * @param file    Path to a file a new instance should hold.
      * @param matcher Matcher that groups parts of file's name.
-     * @throws NullPointerException If any of the arguments are {@code null}.
+     * @throws NullPointerException     If any of the arguments are {@code null}.
      * @throws IllegalArgumentException If matcher does not match.
      */
     private FilterResult(Path file, Matcher matcher) {
         this.file = Objects.requireNonNull(file);
         this.matcher = Objects.requireNonNull(matcher);
 
-        if(matcher.matches() == false) {
+        if (matcher.matches() == false) {
             throw new IllegalArgumentException("Matcher should match a file name.");
         }
     }
@@ -71,17 +71,17 @@ public class FilterResult {
     /**
      * Returns a list of {@link FilterResult} objects that hold paths to files matching a pattern in a given directory.
      *
-     * @param dir Directory in which files should be matched.
+     * @param dir     Directory in which files should be matched.
      * @param pattern Pattern to match files' names against.
      * @return List of results that hold files that match the pattern.
-     * @throws IllegalArgumentException If given path is not a directory.
+     * @throws IllegalArgumentException               If given path is not a directory.
      * @throws java.util.regex.PatternSyntaxException If given pattern is not valid.
-     * @throws IOException In case there was a problem accessing a file system.
+     * @throws IOException                            In case there was a problem accessing a file system.
      */
     public static List<FilterResult> filter(Path dir, String pattern) throws IOException {
         Objects.requireNonNull(dir);
         Objects.requireNonNull(pattern);
-        if(Files.isDirectory(dir) == false) {
+        if (Files.isDirectory(dir) == false) {
             throw new IllegalArgumentException();
         }
 

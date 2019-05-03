@@ -39,7 +39,7 @@ public class KonfiguracijaSlagalice {
     private boolean configOk(int[] conf) {
         Objects.requireNonNull(conf);
         Set<Integer> requiredNumbersInConf = new HashSet<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
-        if(requiredNumbersInConf.size() != conf.length) {
+        if (requiredNumbersInConf.size() != conf.length) {
             return false;
         }
         for (int num : conf) {
@@ -61,8 +61,8 @@ public class KonfiguracijaSlagalice {
      * @return Index of '0' in state configuration.
      */
     public int indexOfSpace() {
-        for(int i = 0; i < conf.length; i++) {
-            if(conf[i] == 0) {
+        for (int i = 0; i < conf.length; i++) {
+            if (conf[i] == 0) {
                 return i;
             }
         }
@@ -85,14 +85,14 @@ public class KonfiguracijaSlagalice {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < conf.length; i++) {
-            if(conf[i] == 0) {
+        for (int i = 0; i < conf.length; i++) {
+            if (conf[i] == 0) {
                 sb.append('*');
             } else {
                 sb.append(conf[i]);
             }
             sb.append(' ');
-            if(i % 3 == 2) {
+            if (i % 3 == 2) {
                 sb.append('\n');
             }
         }

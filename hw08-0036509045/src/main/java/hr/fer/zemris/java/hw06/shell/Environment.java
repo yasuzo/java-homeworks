@@ -102,7 +102,7 @@ public interface Environment {
     /**
      * Stores given value under given key.
      *
-     * @param key Key to store value under.
+     * @param key   Key to store value under.
      * @param value Value that should be stored.
      */
     void setSharedData(String key, Object value);

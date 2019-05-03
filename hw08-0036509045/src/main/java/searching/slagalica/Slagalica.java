@@ -2,7 +2,10 @@ package searching.slagalica;
 
 import searching.algorithms.Transition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -63,11 +66,11 @@ public class Slagalica implements Supplier<KonfiguracijaSlagalice>,
 
         List<Transition<KonfiguracijaSlagalice>> list = new ArrayList<>(4);
 
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             int x = zeroX + nextX[i];
             int y = zeroY + nextY[i];
             int nextZeroIndex = y * 3 + x;
-            if(inBounds(x, y)) {
+            if (inBounds(x, y)) {
                 int[] nextConfig = currentState.getPolje().clone();
                 swap(nextConfig, nextZeroIndex, zeroIndex);
                 list.add(new Transition<>(new KonfiguracijaSlagalice(nextConfig), 1));
@@ -80,10 +83,10 @@ public class Slagalica implements Supplier<KonfiguracijaSlagalice>,
      * Swaps two values in the array.
      *
      * @param array Array whose values need to be swapped.
-     * @param ind1 Index of the first element.
-     * @param ind2 Index of the second element.
+     * @param ind1  Index of the first element.
+     * @param ind2  Index of the second element.
      * @throws ArrayIndexOutOfBoundsException If indexes are not valid.
-     * @throws NullPointerException If given array is {@code null}.
+     * @throws NullPointerException           If given array is {@code null}.
      */
     private static void swap(int[] array, int ind1, int ind2) {
         Objects.requireNonNull(array);
@@ -94,12 +97,13 @@ public class Slagalica implements Supplier<KonfiguracijaSlagalice>,
 
     /**
      * Checks if coordinates are in bounds.
+     *
      * @param x X coordinate.
      * @param y Y coordinate.
      * @return {@code true} if coordinates are in bounds, {@code false} otherwise.
      */
     private static boolean inBounds(int x, int y) {
-        if(x < 0 || x >= 3) {
+        if (x < 0 || x >= 3) {
             return false;
         }
         if (y < 0 || y >= 3) {

@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class SlagalicaMain {
     public static void main(String[] args) {
-        if(args.length != 1) {
+        if (args.length != 1) {
             System.out.println("Invalid number of arguments.");
             return;
         }
@@ -64,7 +64,7 @@ public class SlagalicaMain {
         Objects.requireNonNull(s);
         char[] chars = s.toCharArray();
         int[] ints = new int[chars.length];
-        for(int i = 0; i < chars.length; i++) {
+        for (int i = 0; i < chars.length; i++) {
             ints[i] = chars[i] - '0';
         }
         return ints;

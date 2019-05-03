@@ -15,12 +15,12 @@ public class Transition<S> {
      * Constructs a new transition objects that holds given state and cost.
      *
      * @param state State this should hold.
-     * @param cost Price this should hold.
+     * @param cost  Price this should hold.
      * @throws IllegalArgumentException If cost is less than 0.
-     * @throws NullPointerException If given state is {@code null}.
+     * @throws NullPointerException     If given state is {@code null}.
      */
     public Transition(S state, double cost) {
-        if(cost < 0) {
+        if (cost < 0) {
             throw new IllegalArgumentException("Price cannot be less than 0.");
         }
         this.cost = cost;

@@ -15,7 +15,7 @@ public interface ShellCommand {
      * @param env       Shell environment that will be used to communicate with a user.
      * @param arguments Command arguments.
      * @return New shell status.
-     * @throws ShellIOException In case a communication with user couldn't be established through given environment.
+     * @throws ShellIOException     In case a communication with user couldn't be established through given environment.
      * @throws NullPointerException If any of the arguments are {@code null}.
      */
     ShellStatus executeCommand(Environment env, String arguments);

@@ -13,9 +13,9 @@ public interface NameBuilder {
      * Fills a string buffer with a result of execution.
      *
      * @param result Filtered result that holds a file.
-     * @param sb String builder that should be filled.
+     * @param sb     String builder that should be filled.
      * @throws NullPointerException If any of the arguments are {@code null}.
-     * @throws RuntimeException If other implementations throw an exception.
+     * @throws RuntimeException     If other implementations throw an exception.
      */
     void execute(FilterResult result, StringBuilder sb);
 

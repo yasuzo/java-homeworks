@@ -22,16 +22,16 @@ public class Coloring implements Consumer<Pixel>, Function<Pixel, List<Pixel>>, 
      * @param reference Reference pixel of the picture.
      *                  Pixels of the same color as this one that are around it will be colored to the color that is
      *                  provided as an argument.
-     * @param picture Picture which needs to be colored.
+     * @param picture   Picture which needs to be colored.
      * @param fillColor Fill color.
-     * @throws NullPointerException If pixel reference or picture is {@code null}.
+     * @throws NullPointerException     If pixel reference or picture is {@code null}.
      * @throws IllegalArgumentException If pixel reference is not inside picture's boundaries.
      */
     public Coloring(Pixel reference, Picture picture, int fillColor) {
         this.picture = Objects.requireNonNull(picture);
 
         Objects.requireNonNull(reference);
-        if(isInPicture(reference.getX(), reference.getY()) == false) {
+        if (isInPicture(reference.getX(), reference.getY()) == false) {
             throw new IllegalArgumentException("Pixel is not inside pictures boundaries.");
         }
         this.reference = reference;
@@ -70,10 +70,10 @@ public class Coloring implements Consumer<Pixel>, Function<Pixel, List<Pixel>>, 
 
         List<Pixel> list = new ArrayList<>(4);
 
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             int x = refX + nextX[i];
             int y = refY + nextY[i];
-            if(isInPicture(x, y)) {
+            if (isInPicture(x, y)) {
                 list.add(new Pixel(x, y));
             }
         }
@@ -88,7 +88,7 @@ public class Coloring implements Consumer<Pixel>, Function<Pixel, List<Pixel>>, 
      * @return {@code true} if given coordinate belong to the picture, {@code false} otherwise.
      */
     private boolean isInPicture(int x, int y) {
-        if(x < 0 || x >= picture.getWidth()) {
+        if (x < 0 || x >= picture.getWidth()) {
             return false;
         }
         if (y < 0 || y >= picture.getHeight()) {
