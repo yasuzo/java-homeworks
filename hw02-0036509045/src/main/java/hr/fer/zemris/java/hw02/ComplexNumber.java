@@ -33,18 +33,6 @@ public class ComplexNumber {
     }
 
     /**
-     * Calculates polar coordinates of complex number.
-     */
-    private void calculatePolarCoordinates() {
-        angle = Math.atan2(imaginary, real);
-
-//        if angle is negative, transform it to positive
-        angle = angle < 0 ? angle + 2 * Math.PI : angle;
-
-        magnitude = Math.sqrt(Math.pow(real, 2) + Math.pow(imaginary, 2));
-    }
-
-    /**
      * Constructs a new complex number with just a real part.
      * Imaginary part will be 0.
      *
@@ -138,6 +126,17 @@ public class ComplexNumber {
         return new ComplexNumber(real, imaginary);
     }
 
+    /**
+     * Calculates polar coordinates of complex number.
+     */
+    private void calculatePolarCoordinates() {
+        angle = Math.atan2(imaginary, real);
+
+//        if angle is negative, transform it to positive
+        angle = angle < 0 ? angle + 2 * Math.PI : angle;
+
+        magnitude = Math.sqrt(Math.pow(real, 2) + Math.pow(imaginary, 2));
+    }
 
     /**
      * Adds two complex numbers and returns a resulting complex number.

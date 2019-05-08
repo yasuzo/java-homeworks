@@ -61,27 +61,42 @@ public class HexdumpCommand implements ShellCommand {
 
 //        hexdump
         try (InputStream in = new BufferedInputStream(Files.newInputStream(file))) {
-            byte[] line = new byte[16];
-            int readLineBytes = 0;
-            int readLines = 0;
-            for (int dataBit = in.read(); dataBit != -1; dataBit = in.read()) {
-//                line is finished, print it.
-                if (readLineBytes == 16) {
-                    env.writeln(String.format("%08X: %s", readLines * 16, getFormattedHexLine(line, 16)));
-                    readLineBytes = 0;
-                    readLines++;
-                }
-                line[readLineBytes] = (byte) dataBit;
-                readLineBytes++;
-            }
-//            check if there is a half finished line
-            if (readLineBytes > 0) {
-                env.writeln(String.format("%08X: %s", readLines * 16, getFormattedHexLine(line, readLineBytes)));
-            }
+            dump(env, in);
         } catch (IOException e) {
             env.writeln("File either does not exists or is not readable.");
         }
         return ShellStatus.CONTINUE;
+    }
+
+    /**
+     * Dumps hex representation of a file to the user.
+     *
+     * @param env Environment that is used to communicate with a user.
+     * @param in Opened input data stream which contents will be dumped.
+     * @throws IOException If reading from stream was not possible.
+     * @throws NullPointerException If any of the arguments are {@code null}.
+     */
+    private void dump(Environment env, InputStream in) throws IOException {
+        Objects.requireNonNull(env);
+        Objects.requireNonNull(in);
+
+        byte[] line = new byte[16];
+        int readLineBytes = 0;
+        int readLines = 0;
+        for (int dataBit = in.read(); dataBit != -1; dataBit = in.read()) {
+//                line is finished, print it.
+            if (readLineBytes == 16) {
+                env.writeln(String.format("%08X: %s", readLines * 16, getFormattedHexLine(line, 16)));
+                readLineBytes = 0;
+                readLines++;
+            }
+            line[readLineBytes] = (byte) dataBit;
+            readLineBytes++;
+        }
+//            check if there is a half finished line
+        if (readLineBytes > 0) {
+            env.writeln(String.format("%08X: %s", readLines * 16, getFormattedHexLine(line, readLineBytes)));
+        }
     }
 
     @Override
@@ -101,8 +116,10 @@ public class HexdumpCommand implements ShellCommand {
      * @param length Length of valid bytes.
      * @return Formatted hex line.
      * @throws IllegalArgumentException If {@code length} is greater than {@code data.length}.
+     * @throws NullPointerException If given array is {@code null}.
      */
     private String getFormattedHexLine(byte[] data, int length) {
+        Objects.requireNonNull(data);
         if (length > data.length) {
             throw new IllegalArgumentException("Length of valid bytes cannot exceed length of array.");
         }
