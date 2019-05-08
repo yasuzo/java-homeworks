@@ -6,6 +6,7 @@ import hr.fer.zemris.math.ComplexRootedPolynomial;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Instances of this class are used to calculate Newton's fractal.
@@ -28,6 +29,8 @@ public class NewtonWorker implements Callable<short[]> {
     private int minY;
     private int maxY;
 
+    private AtomicBoolean cancel;
+
     private ComplexRootedPolynomial polynomial;
     private ComplexPolynomial derived;
 
@@ -46,7 +49,7 @@ public class NewtonWorker implements Callable<short[]> {
      * @throws NullPointerException If given polynomial is {@code null}.
      */
     public NewtonWorker(ComplexRootedPolynomial polynomial,
-                        double minRe, double maxRe, double minIm, double maxIm, int width, int height, int minY, int maxY) {
+                        double minRe, double maxRe, double minIm, double maxIm, int width, int height, int minY, int maxY, AtomicBoolean cancel) {
         this.polynomial = Objects.requireNonNull(polynomial);
         derived = polynomial.toComplexPolynom().derive();
         maxIterations = polynomial.toComplexPolynom().order() + 1;
@@ -58,6 +61,7 @@ public class NewtonWorker implements Callable<short[]> {
         this.height = height;
         this.minY = minY;
         this.maxY = maxY;
+        this.cancel = cancel;
     }
 
     @Override
@@ -66,6 +70,9 @@ public class NewtonWorker implements Callable<short[]> {
         int offset = 0;
 
         for (int y = minY; y < maxY; y++) {
+            if(cancel.get()) {
+                return data;
+            }
             for (int x = 0; x < width; x++) {
                 Complex z = mapToComplexPlain(x, y, width, height, minRe, maxRe, minIm, maxIm);
                 int iter = 0;

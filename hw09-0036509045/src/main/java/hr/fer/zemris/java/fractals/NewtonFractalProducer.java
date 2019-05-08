@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Fractal producer that produces Newton's fractal.
@@ -37,7 +38,7 @@ public class NewtonFractalProducer implements IFractalProducer {
 
     @Override
     public void produce(double reMin, double reMax, double imMin, double imMax,
-                        int width, int height, long requestNo, IFractalResultObserver observer) {
+                        int width, int height, long requestNo, IFractalResultObserver observer, AtomicBoolean cancel) {
 
 //        create workers
         int jobNumber = 8 * 8;
@@ -46,11 +47,11 @@ public class NewtonFractalProducer implements IFractalProducer {
         for (int i = 0; i < jobNumber - 1; i++) {
             int minY = i * numberOfRowsPerJob;
             int maxY = i * numberOfRowsPerJob + numberOfRowsPerJob;
-            NewtonWorker worker = new NewtonWorker(polynomial, reMin, reMax, imMin, imMax, width, height, minY, maxY);
+            NewtonWorker worker = new NewtonWorker(polynomial, reMin, reMax, imMin, imMax, width, height, minY, maxY, cancel);
             workers.add(worker);
         }
         int minY = (jobNumber - 1) * numberOfRowsPerJob;
-        NewtonWorker worker = new NewtonWorker(polynomial, reMin, reMax, imMin, imMax, width, height, minY, height);
+        NewtonWorker worker = new NewtonWorker(polynomial, reMin, reMax, imMin, imMax, width, height, minY, height, cancel);
         workers.add(worker);
 
 //        submit workers
@@ -63,6 +64,9 @@ public class NewtonFractalProducer implements IFractalProducer {
         short[] data = new short[width * height];
         int offset = 0;
         for (Future<short[]> f : futures) {
+            if(cancel.get()) {
+                return;
+            }
             for (short bit : getData(f)) {
                 data[offset++] = bit;
             }
