@@ -7,6 +7,11 @@ import hr.fer.zemris.java.raytracer.viewer.RayTracerViewer;
 
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Parallel scene ray casting program.
+ *
+ * @author Jan Capek
+ */
 @SuppressWarnings("Duplicates")
 public class RayCasterParallel {
     public static void main(String[] args) {
