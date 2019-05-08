@@ -4,7 +4,6 @@ import hr.fer.zemris.java.fractals.util.concurrent.DaemonicThreadFactory;
 import hr.fer.zemris.java.fractals.util.concurrent.NewtonWorker;
 import hr.fer.zemris.java.fractals.viewer.IFractalProducer;
 import hr.fer.zemris.java.fractals.viewer.IFractalResultObserver;
-import hr.fer.zemris.math.ComplexPolynomial;
 import hr.fer.zemris.math.ComplexRootedPolynomial;
 
 import java.util.ArrayList;

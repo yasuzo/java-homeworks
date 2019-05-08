@@ -23,8 +23,8 @@ public class Newton {
         int i = 0;
         List<Complex> roots = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-        for(String s = sc.nextLine().trim(); s.equals("done") == false || roots.size() < 2; s = sc.nextLine().trim()) {
-            if(s.equals("done")) {
+        for (String s = sc.nextLine().trim(); s.equals("done") == false || roots.size() < 2; s = sc.nextLine().trim()) {
+            if (s.equals("done")) {
                 System.out.println("At least two roots are needed. Please enter them.");
                 continue;
             }
@@ -45,6 +45,14 @@ public class Newton {
         FractalViewer.show(new NewtonFractalProducer(new ComplexRootedPolynomial(Complex.ONE, polynomialRoots)));
     }
 
+    /**
+     * Parses given expression to complex number.
+     *
+     * @param expression Expression that needs to be parsed.
+     * @return Parsed complex number.
+     * @throws NullPointerException If given expression is {@code null}.
+     * @throws IllegalArgumentException If given expression is invalid complex number.
+     */
     private static Complex parseComplex(String expression) {
         Objects.requireNonNull(expression);
 

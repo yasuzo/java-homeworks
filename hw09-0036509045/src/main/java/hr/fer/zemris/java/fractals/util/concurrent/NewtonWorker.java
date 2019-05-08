@@ -15,10 +15,9 @@ import java.util.concurrent.Callable;
 public class NewtonWorker implements Callable<short[]> {
 
     private static final double CONVERGENCE_THRESHOLD = 1e-3;
-    private static final double ROOT_THRESHOLD = 1e-2;
+    private static final double ROOT_THRESHOLD = 2e-3;
 
     private final int maxIterations;
-
 
     private double minRe;
     private double maxRe;
@@ -36,12 +35,12 @@ public class NewtonWorker implements Callable<short[]> {
      * Constructs a new worker that computes fractals for given range of complex numbers and for given range of raster pixels.
      *
      * @param polynomial Polynomial on which a fractal is based.
-     * @param minRe    Minimal real part of a complex number.
-     * @param maxRe    Maximal real part of a complex number.
-     * @param minIm    Minimal imaginary part of a complex number.
-     * @param maxIm    Maximal imaginary part of a complex number.
-     * @param width     Plain's width.
-     * @param height      Plain's height.
+     * @param minRe      Minimal real part of a complex number.
+     * @param maxRe      Maximal real part of a complex number.
+     * @param minIm      Minimal imaginary part of a complex number.
+     * @param maxIm      Maximal imaginary part of a complex number.
+     * @param width      Plain's width.
+     * @param height     Plain's height.
      * @param minY       Minimal y coordinate of a pixel.
      * @param maxY       Maximal y coordinate of a pixel.
      * @throws NullPointerException If given polynomial is {@code null}.
@@ -71,7 +70,7 @@ public class NewtonWorker implements Callable<short[]> {
                 Complex z = mapToComplexPlain(x, y, width, height, minRe, maxRe, minIm, maxIm);
                 int iter = 0;
                 Complex zOld;
-                do{
+                do {
                     Complex numerator = polynomial.apply(z);
                     Complex denominator = derived.apply(z);
                     zOld = z;
@@ -87,19 +86,19 @@ public class NewtonWorker implements Callable<short[]> {
     /**
      * Maps pixels coordinate to a complex plain.
      *
-     * @param x Pixel's x coordinate.
-     * @param y Pixel's y coordinate.
-     * @param width Plain's width.
+     * @param x      Pixel's x coordinate.
+     * @param y      Pixel's y coordinate.
+     * @param width  Plain's width.
      * @param height Plain's height.
-     * @param minRe Minimal real part of a complex number.
-     * @param maxRe Maximal real part of a complex number.
-     * @param minIm Minimal imaginary part of a complex number.
-     * @param maxIm Maximal imaginary part of a complex number.
+     * @param minRe  Minimal real part of a complex number.
+     * @param maxRe  Maximal real part of a complex number.
+     * @param minIm  Minimal imaginary part of a complex number.
+     * @param maxIm  Maximal imaginary part of a complex number.
      * @return Mapped complex number.
      */
     private Complex mapToComplexPlain(int x, int y, int width, int height, double minRe, double maxRe, double minIm, double maxIm) {
-        double real = x / (width-1.0) * (maxRe - minRe) + minRe;
-        double imag = (height-1.0-y) / (height-1) * (maxIm - minIm) + minIm;
+        double real = x / (width - 1.0) * (maxRe - minRe) + minRe;
+        double imag = (height - 1.0 - y) / (height - 1) * (maxIm - minIm) + minIm;
         return new Complex(real, imag);
     }
 }
