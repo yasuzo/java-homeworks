@@ -26,16 +26,18 @@ public class Newton {
         for (String s = sc.nextLine().trim(); s.equals("done") == false || roots.size() < 2; s = sc.nextLine().trim()) {
             if (s.equals("done")) {
                 System.out.println("At least two roots are needed. Please enter them.");
+                System.out.format("Root %d> ", i + 1);
                 continue;
             }
             try {
                 roots.add(parseComplex(s));
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid number syntax.");
+                System.out.format("Root %d> ", i + 1); // ponavlja se, ali ne mozes imat sve u zivotu
                 continue;
             }
             i++;
-            System.out.format("Root %d>", i + 1);
+            System.out.format("Root %d> ", i + 1);
         }
 
         System.out.println("Image of fractal will appear shortly. Thank you.");
