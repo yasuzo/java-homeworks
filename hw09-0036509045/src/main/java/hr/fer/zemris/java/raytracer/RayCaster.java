@@ -6,6 +6,11 @@ import hr.fer.zemris.java.raytracer.viewer.RayTracerViewer;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Ray caster rendering program.
+ *
+ * @author Jan Capek
+ */
 public class RayCaster {
 
     public static void main(String[] args) {
@@ -36,6 +41,8 @@ public class RayCaster {
 
             short[] rgb = new short[3];
             int offset = 0;
+
+//            determine color for each pixel on the screen starting from upper left corner
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     if (cancel.get()) {
