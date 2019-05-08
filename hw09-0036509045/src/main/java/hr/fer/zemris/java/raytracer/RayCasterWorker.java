@@ -1,68 +1,74 @@
 package hr.fer.zemris.java.raytracer;
 
 import hr.fer.zemris.java.raytracer.model.*;
-import hr.fer.zemris.java.raytracer.viewer.RayTracerViewer;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Ray caster rendering program.
- *
- * @author Jan Capek
- */
 @SuppressWarnings("Duplicates")
-public class RayCaster {
+public class RayCasterWorker extends RecursiveAction {
 
-    public static void main(String[] args) {
-        RayTracerViewer.show(getIRayTracerProducer(),
-                new Point3D(10, 0, 0),
-                new Point3D(0, 0, 0),
-                new Point3D(0, 0, 10),
-                20, 20);
-    }
+    private static final int MAX_CALCULATION_ROWS = 10;
+
+    private int width;
+    private int height;
+    private double horizontal;
+    private double vertical;
+
+    private Point3D xAxis;
+    private Point3D yAxis;
+    private Point3D screenCorner;
+    private Point3D eye;
+
+    private Scene scene;
+
+    private short[] red;
+    private short[] green;
+    private short[] blue;
+
+    private AtomicBoolean cancel;
+
+    private int minY;
+    private int maxY;
 
     /**
-     * @return Ray tracer producer.
+     * Constructs a new ray cast worker with given attributes.
+     *
+     * @param width        Width of the plane.
+     * @param height       Height of the plane.
+     * @param horizontal   Horizontal width of observed space.
+     * @param vertical     Vertical width of observed space.
+     * @param xAxis        x axis of the scene.
+     * @param yAxis        y axis of the scene.
+     * @param screenCorner Location of the corner.
+     * @param eye          Location of the observer.
+     * @param scene        Scene that is rendered.
+     * @param red          Array of red color, one slot for one pixel.
+     * @param green        Array of green color, one slot for one pixel.
+     * @param blue         Array of blue color, one slot for one pixel.
+     * @param cancel       Flag that indicates if calculation should be canceled.
+     * @param minY         First row that this worker has to calculate.
+     * @param maxY         First row that worker should NOT calculate.
      */
-    private static IRayTracerProducer getIRayTracerProducer() {
-        return (eye, view, viewUp, horizontal, vertical, width, height, requestNo, observer, cancel) -> {
-            System.out.println("Započinjem izračune...");
-            short[] red = new short[width * height];
-            short[] green = new short[width * height];
-            short[] blue = new short[width * height];
-//            calculate axis
-            Point3D normalizedViewUp = viewUp.normalize();
-            Point3D zAxis = view.sub(eye).normalize();
-            Point3D yAxis = normalizedViewUp.sub(zAxis.scalarMultiply(zAxis.scalarProduct(normalizedViewUp))).normalize();
-            Point3D xAxis = zAxis.vectorProduct(yAxis);
-            Point3D screenCorner = view.sub(xAxis.scalarMultiply(horizontal / 2.0)).add(yAxis.scalarMultiply(vertical / 2.0));
-//            create scene
-            Scene scene = RayTracerViewer.createPredefinedScene();
-
-            short[] rgb = new short[3];
-            int offset = 0;
-
-//            determine color for each pixel on the screen starting from upper left corner
-            for (int y = 0; y < height; y++) {
-                if (cancel.get()) {
-                    return;
-                }
-                for (int x = 0; x < width; x++) {
-                    Point3D screenPoint = screenCorner.add(xAxis.scalarMultiply(x / (width - 1.0) * horizontal))
-                            .sub(yAxis.scalarMultiply(y / (height - 1.0) * vertical));
-                    Ray ray = Ray.fromPoints(eye, screenPoint);
-                    tracer(scene, ray, rgb);
-                    red[offset] = rgb[0] > 255 ? 255 : rgb[0];
-                    green[offset] = rgb[1] > 255 ? 255 : rgb[1];
-                    blue[offset] = rgb[2] > 255 ? 255 : rgb[2];
-                    offset++;
-                }
-            }
-            System.out.println("Izračuni gotovi...");
-            observer.acceptResult(red, green, blue, requestNo);
-            System.out.println("Dojava gotova...");
-        };
+    public RayCasterWorker(int width, int height, double horizontal, double vertical, Point3D xAxis, Point3D yAxis, Point3D screenCorner, Point3D eye,
+                           Scene scene, short[] red, short[] green, short[] blue, AtomicBoolean cancel, int minY, int maxY) {
+        this.width = width;
+        this.height = height;
+        this.horizontal = horizontal;
+        this.vertical = vertical;
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+        this.screenCorner = screenCorner;
+        this.eye = eye;
+        this.scene = scene;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.cancel = cancel;
+        this.minY = minY;
+        this.maxY = maxY;
     }
 
     /**
@@ -142,5 +148,45 @@ public class RayCaster {
             }
         }
         return closest;
+    }
+
+    @Override
+    protected void compute() {
+        int rowsToExecute = maxY - minY;
+        if (rowsToExecute <= MAX_CALCULATION_ROWS) {
+            calculate();
+            return;
+        }
+        invokeAll(
+                new RayCasterWorker(width, height, horizontal, vertical, xAxis, yAxis, screenCorner, eye, scene,
+                        red, green, blue, cancel, minY, minY + rowsToExecute / 2),
+                new RayCasterWorker(width, height, horizontal, vertical, xAxis, yAxis, screenCorner, eye, scene,
+                        red, green, blue, cancel, minY + rowsToExecute / 2, maxY)
+        );
+    }
+
+    /**
+     * Calculate pixels that this workers has gotten.
+     */
+    private void calculate() {
+        short[] rgb = new short[3];
+        int offset = minY * width;
+
+//            determine color for each pixel on the screen starting from upper left corner
+        for (int y = minY; y < maxY; y++) {
+            if (cancel.get()) {
+                return;
+            }
+            for (int x = 0; x < width; x++) {
+                Point3D screenPoint = screenCorner.add(xAxis.scalarMultiply(x / (width - 1.0) * horizontal))
+                        .sub(yAxis.scalarMultiply(y / (height - 1.0) * vertical));
+                Ray ray = Ray.fromPoints(eye, screenPoint);
+                tracer(scene, ray, rgb);
+                red[offset] = rgb[0] > 255 ? 255 : rgb[0];
+                green[offset] = rgb[1] > 255 ? 255 : rgb[1];
+                blue[offset] = rgb[2] > 255 ? 255 : rgb[2];
+                offset++;
+            }
+        }
     }
 }
