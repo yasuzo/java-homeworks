@@ -6,6 +6,9 @@ import hr.fer.zemris.java.gui.layouts.RCPosition;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Demo of a {@link CalcLayout}.
+ */
 public class DemoFrame1 extends JFrame {
     public DemoFrame1() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

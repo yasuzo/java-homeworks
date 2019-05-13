@@ -5,6 +5,9 @@ import hr.fer.zemris.java.gui.layouts.CalcLayout;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Demo of a {@link CalcLayout}.
+ */
 public class DemoFrame2 extends JFrame {
 
     public DemoFrame2() {

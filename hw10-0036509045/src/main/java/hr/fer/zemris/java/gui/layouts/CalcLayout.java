@@ -6,6 +6,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * Calculator layout manager. It is a grid layout with 5 rows and 7 columns.
+ * Component on position (1, 1) takes 5 columns which means that placement on positions (1, 2) - (1, 5) is illegal.
+ * Every other component is one column wide and one row high.
+ *
+ * @author Jan Capek
+ */
 public class CalcLayout implements LayoutManager2 {
 
     private static final int ROW_COUNT = 5;
