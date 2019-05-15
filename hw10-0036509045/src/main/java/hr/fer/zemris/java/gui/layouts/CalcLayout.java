@@ -185,7 +185,7 @@ public class CalcLayout implements LayoutManager2 {
 
     @Override
     public void layoutContainer(Container parent) {
-        if(placementParamsNeedUpdate) {
+        if (placementParamsNeedUpdate) {
             updatePlacementParameters(parent);
         }
         components.forEach((position, component) -> {
