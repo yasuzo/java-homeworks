@@ -28,8 +28,7 @@ public class BarChartComponent extends JComponent {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Rectangle r = drawLabels(g);
-        Point gridOrigin = drawGrid(g, r);
+        Point gridOrigin = drawGridWithLabels(g);
         drawBars(g, gridOrigin);
     }
 
@@ -70,7 +69,7 @@ public class BarChartComponent extends JComponent {
         Objects.requireNonNull(text);
         FontMetrics fontMetrics = getFontMetrics(getFont());
         Dimension dim = new Dimension();
-        dim.height = fontMetrics.getHeight() * 2;
+        dim.height = fontMetrics.getHeight();
         dim.width = fontMetrics.stringWidth(text);
         return dim;
     }
@@ -97,10 +96,10 @@ public class BarChartComponent extends JComponent {
 
         int horizontalLineNumber = (chart.getMaxY() - chart.getMinY()) / chart.getyDiff();
         int verticalLineNumber = getMaxX();
-        int xDelta = Math.round((getWidth() - origin.x - 20f) / verticalLineNumber);
+        double xDelta = (getWidth() - origin.x - 20f) / verticalLineNumber;
         int yDelta = Math.round((origin.y - 20f) / horizontalLineNumber);
         int maxLineCoordinateY = origin.y - horizontalLineNumber * yDelta - 10;
-        int maxLineCoordinateX = origin.x + verticalLineNumber * xDelta + 10;
+        int maxLineCoordinateX = origin.x + (int)Math.round(verticalLineNumber * xDelta) + 10;
 
         int currentY = chart.getMinY();
         int yDiff = chart.getyDiff();
@@ -115,21 +114,22 @@ public class BarChartComponent extends JComponent {
             g.setColor(Color.BLACK);
             String s = Integer.toString(currentY);
             Dimension textDim = textBoxDimensions(s);
-            g.drawString(s, origin.x - axisNumberDistance - textDim.width, origin.y - i * yDelta + textDim.height / 4);
+            g.drawString(s, origin.x - axisNumberDistance - textDim.width, origin.y - i * yDelta + Math.round(textDim.height / 4f));
             currentY += yDiff;
         }
 
 //        add vertical lines and x labels
         for (int i = 1; i <= verticalLineNumber; i++) {
+            int x2 = (int)Math.round(origin.x + i * xDelta);
             g.setColor(Color.ORANGE);
-            g.drawLine(origin.x + i * xDelta, origin.y + 5, origin.x + i * xDelta, maxLineCoordinateY);
+            g.drawLine(x2, origin.y + 5, x2, maxLineCoordinateY);
             g.setColor(Color.DARK_GRAY);
-            g.drawLine(origin.x + i * xDelta, origin.y + 5, origin.x + i * xDelta, origin.y);
+            g.drawLine(x2, origin.y + 5, x2, origin.y);
 //            add label
             g.setColor(Color.BLACK);
             String s = Integer.toString(i);
             Dimension textDim = textBoxDimensions(s);
-            int stringX = Math.round(origin.x + i * xDelta - xDelta / 2f - textDim.width / 2f);
+            int stringX = (int) Math.round(origin.x + i * xDelta - xDelta / 2f - textDim.width / 2f);
             int stringY = origin.y + axisNumberDistance + 10;
             g.drawString(s, stringX, stringY);
         }
@@ -152,24 +152,31 @@ public class BarChartComponent extends JComponent {
     }
 
     /**
-     * Draws axis labels on canvas.
+     * Draws axis labels and grid on canvas.
      *
      * @param g Graphics object used for drawing.
-     * @return Rectangle where it is free to draw.
+     * @return Graph origin.
      * @throws NullPointerException If given argument is {@code null}.
      */
-    private Rectangle drawLabels(Graphics g) {
+    private Point drawGridWithLabels(Graphics g) {
         Objects.requireNonNull(g);
 
         int height = getHeight();
         int width = getWidth();
-        FontMetrics fontMetrics = getFontMetrics(getFont());
-        int textBoxHeight = fontMetrics.getHeight() * 2;
+        Dimension xLabelDimensions = textBoxDimensions(chart.getxLabel());
+        Dimension yLabelDimensions = textBoxDimensions(chart.getyLabel());
+
+        Rectangle freeArea = new Rectangle(
+                5 + yLabelDimensions.height * 2 + 5,
+                0,
+                width - (5 + yLabelDimensions.height * 2 + 5),
+                height - (5 + xLabelDimensions.height * 2 + 5));
+
+        Point origin = drawGrid(g, freeArea);
 
 //        ----------------- yLabel ------------------
-        int yLabelWidth = fontMetrics.stringWidth(chart.getyLabel());
-        int xCoordLabelY = 5 + textBoxHeight;
-        int yCoordLabelY = Math.round(height / 2f + yLabelWidth / 2f);
+        int xCoordLabelY = 5 + yLabelDimensions.height;
+        int yCoordLabelY = Math.round(origin.y / 2f + yLabelDimensions.width / 2f);
 
 //        rotate
         Graphics2D g2d = (Graphics2D) g;
@@ -183,13 +190,12 @@ public class BarChartComponent extends JComponent {
         g2d.setTransform(defaultAf);
 
 //        ----------------- xLabel ------------------
-        int xLabelWidth = fontMetrics.stringWidth(chart.getxLabel());
-        int xCoordLabelX = Math.round(width / 2f - xLabelWidth / 2f);
-        int yCoordLabelX = height - 5 - textBoxHeight;
+        int xLabelWidth = xLabelDimensions.width;
+        int xCoordLabelX = Math.round(origin.x + (width - origin.x) / 2f - xLabelWidth / 2f);
+        int yCoordLabelX = height - 5 - xLabelDimensions.height;
         g.drawString(chart.getxLabel(), xCoordLabelX, yCoordLabelX);
 
-        int rectX = xCoordLabelY + textBoxHeight + 5;
-        return new Rectangle(rectX, 0, width - rectX, yCoordLabelX - textBoxHeight - 5);
+        return origin;
     }
 
     /**

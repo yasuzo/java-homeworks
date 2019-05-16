@@ -17,7 +17,7 @@ public class PrimDemo extends JFrame {
      */
     public PrimDemo() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(600, 600);
+        setSize(600, 550);
         setLayout(new BorderLayout());
         initUI();
     }
