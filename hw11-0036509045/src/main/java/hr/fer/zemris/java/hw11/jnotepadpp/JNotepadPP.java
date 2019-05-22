@@ -125,11 +125,13 @@ public class JNotepadPP extends JFrame {
         LJMenu edit = new LJMenu("editMenu");
         LJMenu info = new LJMenu("infoMenu");
         LJMenu languages = new LJMenu("languageMenu");
+        LJMenu tools = new LJMenu("toolsMenu");
 
         localizationProviderBridge.addLocalizationListener(file);
         localizationProviderBridge.addLocalizationListener(edit);
         localizationProviderBridge.addLocalizationListener(info);
         localizationProviderBridge.addLocalizationListener(languages);
+        localizationProviderBridge.addLocalizationListener(tools);
 
         file.add(actionFactory.getCreateNewDocumentAction());
         file.add(actionFactory.getOpenExistingDocumentAction());
@@ -150,10 +152,15 @@ public class JNotepadPP extends JFrame {
         languages.add(actionFactory.getLanguageEnAction());
         languages.add(actionFactory.getLanguageHrAction());
 
+        tools.add(actionFactory.getToLowerCaseAction());
+        tools.add(actionFactory.getToUpperCaseAction());
+        tools.add(actionFactory.getInvertCaseAction());
+
         mb.add(file);
         mb.add(edit);
         mb.add(info);
         mb.add(languages);
+        mb.add(tools);
         return mb;
     }
 

@@ -22,17 +22,10 @@ public abstract class CurrentDocumentDependantAction extends EditorAction implem
         multipleDocumentModel.addMultipleDocumentListener(this);
     }
 
-    /**
-     * Called every time an event occurs.
-     */
-    private void changeAction() {
-        boolean enable = multipleDocumentModel.getCurrentDocument() != null;
-        setEnabled(enable);
-    }
-
     @Override
     public void currentDocumentChanged(SingleDocumentModel previousModel, SingleDocumentModel currentModel) {
-        changeAction();
+        boolean enable = currentModel != null;
+        setEnabled(enable);
     }
 
     @Override

@@ -99,6 +99,21 @@ public class ActionFactory implements ILocalizationListener {
     private final Action languageHrAction;
 
     /**
+     * Action that inverts case of selected text.
+     */
+    private final Action invertCaseAction;
+
+    /**
+     * Action that transforms selected text to upper case.
+     */
+    private final Action toUpperCaseAction;
+
+    /**
+     * Action that transforms selected text to lower case.
+     */
+    private final Action toLowerCaseAction;
+
+    /**
      * Constructs an action factory.
      *
      * @param localizationBridge Bridge to localization provider.
@@ -123,6 +138,9 @@ public class ActionFactory implements ILocalizationListener {
         languageDeAction = new ChangeLanguageAction("de");
         languageEnAction = new ChangeLanguageAction("en");
         languageHrAction = new ChangeLanguageAction("hr");
+        invertCaseAction = new InvertCaseAction(uiBridge, model);
+        toUpperCaseAction = new ToUpperAction(uiBridge, model);
+        toLowerCaseAction = new ToLowerAction(uiBridge, model);
 
         initActions();
     }
@@ -151,6 +169,10 @@ public class ActionFactory implements ILocalizationListener {
         initAction(languageDeAction, "langDeAction_name", null, "langDeAction_desc");
         initAction(languageEnAction, "langEnAction_name", null, "langEnAction_desc");
         initAction(languageHrAction, "langHrAction_name", null, "langHrAction_desc");
+
+        initAction(toLowerCaseAction, "toLowerAction_name", null, "toLowerAction_desc", false);
+        initAction(toUpperCaseAction, "toUpperAction_name", null, "toUpperAction_desc", false);
+        initAction(invertCaseAction, "invertCaseAction_name", null, "invertCaseAction_desc", false);
     }
 
     /**
@@ -289,6 +311,27 @@ public class ActionFactory implements ILocalizationListener {
         return languageHrAction;
     }
 
+    /**
+     * @return Invert case action.
+     */
+    public Action getInvertCaseAction() {
+        return invertCaseAction;
+    }
+
+    /**
+     * @return Convert to upper case action.
+     */
+    public Action getToUpperCaseAction() {
+        return toUpperCaseAction;
+    }
+
+    /**
+     * @return Convert to lower case action.
+     */
+    public Action getToLowerCaseAction() {
+        return toLowerCaseAction;
+    }
+
     @Override
     public void localizationChanged() {
         setActionNameAndDescription(openExistingDocumentAction, "openAction_name", "openAction_desc");
@@ -304,5 +347,8 @@ public class ActionFactory implements ILocalizationListener {
         setActionNameAndDescription(languageDeAction, "langDeAction_name", "langDeAction_desc");
         setActionNameAndDescription(languageEnAction, "langEnAction_name", "langEnAction_desc");
         setActionNameAndDescription(languageHrAction, "langHrAction_name", "langHrAction_desc");
+        setActionNameAndDescription(toLowerCaseAction, "toLowerAction_name", "toLowerAction_desc");
+        setActionNameAndDescription(toUpperCaseAction, "toUpperAction_name", "toUpperAction_desc");
+        setActionNameAndDescription(invertCaseAction, "invertCaseAction_name", "invertCaseAction_desc");
     }
 }
