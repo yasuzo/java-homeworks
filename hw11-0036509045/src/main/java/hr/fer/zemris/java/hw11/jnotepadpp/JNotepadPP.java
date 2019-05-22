@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw11.jnotepadpp;
 
+import hr.fer.zemris.java.hw11.jnotepadpp.custom_components.JStatusBar;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.actions.ActionFactory;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.MultipleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.SingleDocumentListener;
@@ -69,7 +70,13 @@ public class JNotepadPP extends JFrame {
 //        menu bar
         this.setJMenuBar(createMenuBar());
 
+//        tool bar
         this.add(createToolBar(), BorderLayout.NORTH);
+
+//        status bar
+        JStatusBar statusBar = new JStatusBar();
+        multipleDocumentModel.addMultipleDocumentListener(statusBar);
+        this.add(statusBar, BorderLayout.SOUTH);
     }
 
 
@@ -106,6 +113,10 @@ public class JNotepadPP extends JFrame {
         return mb;
     }
 
+    /**
+     * Creates a toolbar and returns it.
+     * @return Toolbar.
+     */
     private JToolBar createToolBar() {
         JToolBar tb = new JToolBar();
 
@@ -124,6 +135,12 @@ public class JNotepadPP extends JFrame {
         tb.add(actionFactory.getExitAction());
 
         return tb;
+    }
+
+    @Override
+    public void dispose() {
+        MyThreadPool.shutdown();
+        super.dispose();
     }
 
     /**
