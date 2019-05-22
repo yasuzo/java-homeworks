@@ -3,6 +3,7 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.MultipleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,8 +32,8 @@ public class CloseDocumentAction extends CurrentDocumentDependantAction {
         if(current == null) return;
         if(current.isModified()) {
             int response = uiBridge.showOptionDialog(
-                    "Unsaved document",
-                    "Document is not saved.\nDo you want to continue?",
+                    LocalizationProvider.getInstance().getString("unsavedWarning_title"),
+                    LocalizationProvider.getInstance().getString("unsavedWarning_message"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null);

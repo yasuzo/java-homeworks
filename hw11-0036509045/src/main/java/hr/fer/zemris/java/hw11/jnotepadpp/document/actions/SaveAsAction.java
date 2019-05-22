@@ -3,6 +3,7 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.MultipleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,14 +33,14 @@ class SaveAsAction extends CurrentDocumentDependantAction {
         SingleDocumentModel doc = multipleDocumentModel.getCurrentDocument();
         if (doc == null) return;
 
-        Path destination = uiBridge.chooseDestinationFile("Save as...");
+        Path destination = uiBridge.chooseDestinationFile(LocalizationProvider.getInstance().getString("saveAction_name"));
         if (destination == null) return;
 
 //        check if file already exists
         if(Files.exists(destination)) {
             int response = uiBridge.showOptionDialog(
-                    "Overwrite...",
-                    "File already exist with that name.\nOverwrite?",
+                    LocalizationProvider.getInstance().getString("overwriteWarning_title"),
+                    LocalizationProvider.getInstance().getString("overwriteWarning_message"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null);

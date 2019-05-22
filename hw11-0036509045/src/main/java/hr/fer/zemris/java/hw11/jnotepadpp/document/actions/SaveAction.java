@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import java.awt.event.ActionEvent;
 
@@ -35,7 +36,9 @@ public class SaveAction extends SaveAsAction {
         try {
             multipleDocumentModel.saveDocument(current, null);
         } catch (Exception ex) {
-            uiBridge.showErrorMessage("Error", String.format("Could not save %s file.", current.getFilePath()));
+            String title = LocalizationProvider.getInstance().getString("error_title");
+            String message_format = LocalizationProvider.getInstance().getString("saveError_format");
+            uiBridge.showErrorMessage(title, String.format(message_format, current.getFilePath()));
         }
         current.setModified(false);
     }

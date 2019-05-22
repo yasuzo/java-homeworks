@@ -50,10 +50,10 @@ public class JStatusBar extends JPanel implements MultipleDocumentListener, Care
 //                    nothing
                 }
                 SwingUtilities.invokeLater(() -> dateTimeLabel.setText(getCurrentDateTime()));
-                MyThreadPool.getExecutor().submit(this);
+                MyThreadPool.submit(this);
             }
         };
-        MyThreadPool.getExecutor().submit(task);
+        MyThreadPool.submit(task);
     }
 
     /**
@@ -108,7 +108,10 @@ public class JStatusBar extends JPanel implements MultipleDocumentListener, Care
 
     @Override
     public void caretUpdate(CaretEvent e) {
-        MyThreadPool.getExecutor().submit(() -> {
+        int documentLength = currentDocument.getTextComponent().getText().length();
+        lengthLabel.setText(String.format("length:%-4d", documentLength));
+
+        MyThreadPool.submit(() -> {
             int caretPosition = e.getDot();
             int selected = Math.abs(caretPosition - e.getMark());
             char[] chars = currentDocument.getTextComponent().getText().toCharArray();

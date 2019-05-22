@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,8 +32,8 @@ public class ExitAction extends EditorAction {
 //            some document have not been saved => warn user.
         if(showSavePrompt) {
             int response = uiBridge.showOptionDialog(
-                    "Save documents",
-                    "Some documents are not saved.\nDo you want to continue?",
+                    LocalizationProvider.getInstance().getString("unsavedWarning_title"),
+                    LocalizationProvider.getInstance().getString("unsavedWarning_message"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null);

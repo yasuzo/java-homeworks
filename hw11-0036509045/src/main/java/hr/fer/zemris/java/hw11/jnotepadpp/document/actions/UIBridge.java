@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author Jan Capek
  */
-class UIBridge {
+public class UIBridge {
 
     /**
      * Popups will be based on this parent.
@@ -24,7 +24,7 @@ class UIBridge {
      *
      * @param parent Parent component of popups.
      */
-    UIBridge(JFrame parent) {
+    public UIBridge(JFrame parent) {
         Objects.requireNonNull(parent);
         this.parent = parent;
     }
@@ -98,7 +98,14 @@ class UIBridge {
      * @param title Dialog title.
      * @param message Message to show.
      */
-    void showErrorMessage(String title, String message) {
+    public void showErrorMessage(String title, String message) {
         showOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null);
+    }
+
+    /**
+     * Disconnects from parent. This is necessary to stop memory leakage.
+     */
+    public void disconnectParent() {
+        parent = null;
     }
 }

@@ -1,11 +1,15 @@
 package hr.fer.zemris.java.hw11.jnotepadpp;
 
 import hr.fer.zemris.java.hw11.jnotepadpp.custom_components.JStatusBar;
+import hr.fer.zemris.java.hw11.jnotepadpp.custom_components.LJMenu;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.actions.ActionFactory;
+import hr.fer.zemris.java.hw11.jnotepadpp.document.actions.UIBridge;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.MultipleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.SingleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.DefaultMultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProviderBridge;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,19 +28,45 @@ public class JNotepadPP extends JFrame {
      * Action factory used by components.
      */
     private ActionFactory actionFactory;
+
+    /**
+     * Bridge to this JFrame.
+     */
+    private UIBridge uiBridge;
+
     /**
      * Multiple document model used by actions.
      */
     private DefaultMultipleDocumentModel multipleDocumentModel;
+
+    /**
+     * Localization bridge.
+     */
+    private LocalizationProviderBridge localizationProviderBridge;
+
     /**
      * Listens for window close event.
      */
     private WindowListener localWindowListener = new WindowAdapter() {
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+            localizationProviderBridge.connect();
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            MyThreadPool.shutdown();
+            localizationProviderBridge.disconnect();
+            uiBridge.disconnectParent();
+        }
+
         @Override
         public void windowClosing(WindowEvent e) {
             actionFactory.getExitAction().actionPerformed(null);
         }
     };
+
     /**
      * Listener that changes title of this JFrame according to currently edited document.
      */
@@ -46,10 +76,12 @@ public class JNotepadPP extends JFrame {
      * Constructs a new main window.
      */
     public JNotepadPP() {
+        uiBridge = new UIBridge(this);
         multipleDocumentModel = new DefaultMultipleDocumentModel();
-        actionFactory = ActionFactory.getActionFactory(this, multipleDocumentModel);
+        localizationProviderBridge = new LocalizationProviderBridge(LocalizationProvider.getInstance());
+        actionFactory = ActionFactory.getActionFactory(localizationProviderBridge, uiBridge, multipleDocumentModel);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setSize(700, 700);
+        setSize(900, 700);
         setTitle("JNotepad++");
         addWindowListener(localWindowListener);
         multipleDocumentModel.addMultipleDocumentListener(titleDocumentListener);
@@ -88,9 +120,15 @@ public class JNotepadPP extends JFrame {
     private JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
 
-        JMenu file = new JMenu("File");
-        JMenu edit = new JMenu("Edit");
-        JMenu info = new JMenu("Info");
+        LJMenu file = new LJMenu("fileMenu");
+        LJMenu edit = new LJMenu("editMenu");
+        LJMenu info = new LJMenu("infoMenu");
+        LJMenu languages = new LJMenu("languageMenu");
+
+        localizationProviderBridge.addLocalizationListener(file);
+        localizationProviderBridge.addLocalizationListener(edit);
+        localizationProviderBridge.addLocalizationListener(info);
+        localizationProviderBridge.addLocalizationListener(languages);
 
         file.add(actionFactory.getCreateNewDocumentAction());
         file.add(actionFactory.getOpenExistingDocumentAction());
@@ -107,9 +145,14 @@ public class JNotepadPP extends JFrame {
 
         info.add(actionFactory.getDocumentStatisticsAction());
 
+        languages.add(actionFactory.getLanguageDeAction());
+        languages.add(actionFactory.getLanguageEnAction());
+        languages.add(actionFactory.getLanguageHrAction());
+
         mb.add(file);
         mb.add(edit);
         mb.add(info);
+        mb.add(languages);
         return mb;
     }
 
@@ -135,12 +178,6 @@ public class JNotepadPP extends JFrame {
         tb.add(actionFactory.getExitAction());
 
         return tb;
-    }
-
-    @Override
-    public void dispose() {
-        MyThreadPool.shutdown();
-        super.dispose();
     }
 
     /**

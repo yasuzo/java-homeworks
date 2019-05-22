@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ public class OpenAction extends EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Path path = uiBridge.chooseFile("Open file");
+        Path path = uiBridge.chooseFile(LocalizationProvider.getInstance().getString("openAction_name"));
         if (path == null) {
             return;
         }
@@ -34,7 +35,9 @@ public class OpenAction extends EditorAction {
         try {
             multipleDocumentModel.loadDocument(path);
         } catch (IllegalArgumentException ex) {
-            uiBridge.showErrorMessage("Error", String.format("File %s not readable.", path));
+            String title = LocalizationProvider.getInstance().getString("error_title");
+            String message_format = LocalizationProvider.getInstance().getString("unreadableFileError_format");
+            uiBridge.showErrorMessage(title, String.format(message_format, path));
         }
     }
 }

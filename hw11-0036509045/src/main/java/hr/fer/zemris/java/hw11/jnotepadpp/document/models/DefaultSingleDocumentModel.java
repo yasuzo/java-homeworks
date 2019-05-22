@@ -123,13 +123,16 @@ public class DefaultSingleDocumentModel implements SingleDocumentModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DefaultSingleDocumentModel that = (DefaultSingleDocumentModel) o;
+        if(this.documentPath == null) {
+            return this == that;
+        }
 //        todo: Paths should not be compared like this.
         return Objects.equals(documentPath, that.documentPath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(documentPath);
+        return Objects.hash(documentPath, documentPath);
     }
 
     /**

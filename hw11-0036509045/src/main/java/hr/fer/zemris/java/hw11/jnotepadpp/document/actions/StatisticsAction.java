@@ -1,7 +1,9 @@
 package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
+import hr.fer.zemris.java.hw11.jnotepadpp.MyThreadPool;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
+import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,9 +31,13 @@ public class StatisticsAction extends CurrentDocumentDependantAction {
     public void actionPerformed(ActionEvent e) {
         SingleDocumentModel current = multipleDocumentModel.getCurrentDocument();
         if(current == null) return;
-
-        DocumentStatistic stat = getStatistic(current);
-        uiBridge.showOptionDialog("Stats", stat.toString(), JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null);
+        MyThreadPool.submit(() -> {
+            DocumentStatistic stat = getStatistic(current);
+            SwingUtilities.invokeLater(() -> {
+                uiBridge.showOptionDialog(LocalizationProvider.getInstance().getString("statsAction_name"),
+                        stat.toString(), JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null);
+            });
+        });
     }
 
     /**
@@ -68,7 +74,7 @@ public class StatisticsAction extends CurrentDocumentDependantAction {
 
         @Override
         public String toString() {
-            return String.format("Your document has %d characters, %d non-blank characters and %d lines.",
+            return String.format(LocalizationProvider.getInstance().getString("statisticsOutput_format"),
                     charNumber, nonBlankCharNumber, linesNumber);
         }
     }
