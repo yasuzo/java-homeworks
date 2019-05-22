@@ -79,7 +79,7 @@ public class JNotepadPP extends JFrame {
         uiBridge = new UIBridge(this);
         multipleDocumentModel = new DefaultMultipleDocumentModel();
         localizationProviderBridge = new LocalizationProviderBridge(LocalizationProvider.getInstance());
-        actionFactory = ActionFactory.getActionFactory(localizationProviderBridge, uiBridge, multipleDocumentModel);
+        actionFactory = new ActionFactory(localizationProviderBridge, uiBridge, multipleDocumentModel);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(900, 700);
         setTitle("JNotepad++");
@@ -107,6 +107,7 @@ public class JNotepadPP extends JFrame {
 
 //        status bar
         JStatusBar statusBar = new JStatusBar();
+        localizationProviderBridge.addLocalizationListener(statusBar);
         multipleDocumentModel.addMultipleDocumentListener(statusBar);
         this.add(statusBar, BorderLayout.SOUTH);
     }

@@ -106,7 +106,7 @@ public class ActionFactory implements ILocalizationListener {
      * @param model     Document model used for document manipulation.
      * @throws NullPointerException If any of the parameters is {@code null}.
      */
-    private ActionFactory(LocalizationProviderBridge localizationBridge, UIBridge uiBridge, MultipleDocumentModel model) {
+    public ActionFactory(LocalizationProviderBridge localizationBridge, UIBridge uiBridge, MultipleDocumentModel model) {
         this.uiBridge = Objects.requireNonNull(uiBridge);
         Objects.requireNonNull(localizationBridge).addLocalizationListener(this);
 
@@ -125,19 +125,6 @@ public class ActionFactory implements ILocalizationListener {
         languageHrAction = new ChangeLanguageAction("hr");
 
         initActions();
-    }
-
-    /**
-     * Creates a new action factory if it has not been already created, if it has, existing factory is returned.
-     *
-     * @param localizationBridge Bridge to localization provider.
-     * @param uiBridge Main window where actions will be used.
-     * @param model     Document model used for document manipulation.
-     * @return Instance of {@link ActionFactory}.
-     * @throws NullPointerException If any of the parameters is {@code null}.
-     */
-    public static ActionFactory getActionFactory(LocalizationProviderBridge localizationBridge, UIBridge uiBridge, MultipleDocumentModel model) {
-        return actionFactory == null ? new ActionFactory(localizationBridge, uiBridge, model) : actionFactory;
     }
 
     /**
