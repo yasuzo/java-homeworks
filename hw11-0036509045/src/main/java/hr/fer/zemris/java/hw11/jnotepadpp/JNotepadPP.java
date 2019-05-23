@@ -24,6 +24,11 @@ import java.awt.event.WindowListener;
  */
 public class JNotepadPP extends JFrame {
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new JNotepadPP().setVisible(true));
+    }
+
+
     /**
      * Action factory used by components.
      */
@@ -88,10 +93,6 @@ public class JNotepadPP extends JFrame {
         initGUI();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JNotepadPP().setVisible(true));
-    }
-
     /**
      * GUI initialization.
      */
@@ -126,12 +127,14 @@ public class JNotepadPP extends JFrame {
         LJMenu info = new LJMenu("infoMenu");
         LJMenu languages = new LJMenu("languageMenu");
         LJMenu tools = new LJMenu("toolsMenu");
+        LJMenu sort = new LJMenu("sortMenu");
 
         localizationProviderBridge.addLocalizationListener(file);
         localizationProviderBridge.addLocalizationListener(edit);
         localizationProviderBridge.addLocalizationListener(info);
         localizationProviderBridge.addLocalizationListener(languages);
         localizationProviderBridge.addLocalizationListener(tools);
+        localizationProviderBridge.addLocalizationListener(sort);
 
         file.add(actionFactory.getCreateNewDocumentAction());
         file.add(actionFactory.getOpenExistingDocumentAction());
@@ -156,11 +159,16 @@ public class JNotepadPP extends JFrame {
         tools.add(actionFactory.getToUpperCaseAction());
         tools.add(actionFactory.getInvertCaseAction());
 
+        sort.add(actionFactory.getAscendingSortAction());
+        sort.add(actionFactory.getDescendingSortAction());
+
         mb.add(file);
         mb.add(edit);
         mb.add(info);
         mb.add(languages);
         mb.add(tools);
+        mb.add(sort);
+        mb.add(new JMenuItem(actionFactory.getUniqueAction()));
         return mb;
     }
 

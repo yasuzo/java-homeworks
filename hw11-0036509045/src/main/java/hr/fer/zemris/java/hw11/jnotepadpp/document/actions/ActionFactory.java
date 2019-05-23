@@ -8,6 +8,7 @@ import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProviderBridge;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.KeyEvent;
+import java.text.Collator;
 import java.util.*;
 
 /**
@@ -114,6 +115,21 @@ public class ActionFactory implements ILocalizationListener {
     private final Action toLowerCaseAction;
 
     /**
+     * Action that sorts selected lines in ascending order.
+     */
+    private final SortAction ascendingSortAction;
+
+    /**
+     * Action that sorts selected lines in descending order.
+     */
+    private final SortAction descendingSortAction;
+
+    /**
+     * Action that removes duplicate lines from selection.
+     */
+    private final Action uniqueAction;
+
+    /**
      * Constructs an action factory.
      *
      * @param localizationBridge Bridge to localization provider.
@@ -141,6 +157,14 @@ public class ActionFactory implements ILocalizationListener {
         invertCaseAction = new InvertCaseAction(uiBridge, model);
         toUpperCaseAction = new ToUpperAction(uiBridge, model);
         toLowerCaseAction = new ToLowerAction(uiBridge, model);
+
+        Locale locale = new Locale(LocalizationProvider.getInstance().getCurrentLanguage());
+        Collator collator = Collator.getInstance(locale);
+        Comparator<String> stringComparator = collator::compare;
+        ascendingSortAction = new SortAction(uiBridge, model, stringComparator);
+        descendingSortAction = new SortAction(uiBridge, model, stringComparator.reversed());
+
+        uniqueAction = new UniqueAction(uiBridge, model);
 
         initActions();
     }
@@ -173,6 +197,13 @@ public class ActionFactory implements ILocalizationListener {
         initAction(toLowerCaseAction, "toLowerAction_name", null, "toLowerAction_desc", false);
         initAction(toUpperCaseAction, "toUpperAction_name", null, "toUpperAction_desc", false);
         initAction(invertCaseAction, "invertCaseAction_name", null, "invertCaseAction_desc", false);
+
+
+        initAction(ascendingSortAction, "ascSortAction_name", null, "ascSortAction_desc", false);
+        initAction(descendingSortAction, "descSortAction_name", null, "descSortAction_desc", false);
+
+
+        initAction(uniqueAction, "uniqueAction_name", null, "uniqueAction_desc", false);
     }
 
     /**
@@ -332,6 +363,27 @@ public class ActionFactory implements ILocalizationListener {
         return toLowerCaseAction;
     }
 
+    /**
+     * @return Action that sorts selected lines in ascending order.
+     */
+    public Action getAscendingSortAction() {
+        return ascendingSortAction;
+    }
+
+    /**
+     * @return Action that sorts selected lines in descending order.
+     */
+    public Action getDescendingSortAction() {
+        return descendingSortAction;
+    }
+
+    /**
+     * @return Action that removes duplicate lines in selection.
+     */
+    public Action getUniqueAction() {
+        return uniqueAction;
+    }
+
     @Override
     public void localizationChanged() {
         setActionNameAndDescription(openExistingDocumentAction, "openAction_name", "openAction_desc");
@@ -350,5 +402,16 @@ public class ActionFactory implements ILocalizationListener {
         setActionNameAndDescription(toLowerCaseAction, "toLowerAction_name", "toLowerAction_desc");
         setActionNameAndDescription(toUpperCaseAction, "toUpperAction_name", "toUpperAction_desc");
         setActionNameAndDescription(invertCaseAction, "invertCaseAction_name", "invertCaseAction_desc");
+
+        setActionNameAndDescription(uniqueAction, "uniqueAction_name", "uniqueAction_desc");
+
+        setActionNameAndDescription(ascendingSortAction, "ascSortAction_name", "ascSortAction_desc");
+        setActionNameAndDescription(descendingSortAction, "descSortAction_name", "descSortAction_desc");
+
+        Locale locale = new Locale(LocalizationProvider.getInstance().getCurrentLanguage());
+        Collator collator = Collator.getInstance(locale);
+        Comparator<String> stringComparator = collator::compare;
+        ascendingSortAction.setComparator(stringComparator);
+        descendingSortAction.setComparator(stringComparator.reversed());
     }
 }

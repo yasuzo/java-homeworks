@@ -24,6 +24,6 @@ public class ToLowerAction extends TransformSelectionAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        transform(String::toLowerCase);
+        transformSelected(String::toLowerCase);
     }
 }

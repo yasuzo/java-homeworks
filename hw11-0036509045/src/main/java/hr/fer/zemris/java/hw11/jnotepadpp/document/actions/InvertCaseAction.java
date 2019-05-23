@@ -24,7 +24,7 @@ public class InvertCaseAction extends TransformSelectionAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        transform(selection -> {
+        transformSelected(selection -> {
             char[] chars = selection.toCharArray();
             for(int i = 0; i < chars.length; i++) {
                 if(Character.isUpperCase(chars[i])) {

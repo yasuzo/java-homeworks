@@ -2,9 +2,6 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
-import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 
 /**
@@ -27,6 +24,6 @@ public class ToUpperAction extends TransformSelectionAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        transform(String::toUpperCase);
+        transformSelected(String::toUpperCase);
     }
 }
