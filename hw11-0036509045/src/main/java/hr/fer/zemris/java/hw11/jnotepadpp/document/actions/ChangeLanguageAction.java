@@ -1,6 +1,5 @@
 package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
-import com.sun.jdi.ObjectReference;
 import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
 import javax.swing.*;

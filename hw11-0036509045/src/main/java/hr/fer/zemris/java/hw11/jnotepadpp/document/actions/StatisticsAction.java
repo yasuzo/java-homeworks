@@ -30,7 +30,7 @@ public class StatisticsAction extends CurrentDocumentDependantAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         SingleDocumentModel current = multipleDocumentModel.getCurrentDocument();
-        if(current == null) return;
+        if (current == null) return;
         MyThreadPool.submit(() -> {
             DocumentStatistic stat = getStatistic(current);
             SwingUtilities.invokeLater(() -> {
@@ -51,12 +51,12 @@ public class StatisticsAction extends CurrentDocumentDependantAction {
         Objects.requireNonNull(doc);
         DocumentStatistic result = new DocumentStatistic();
         char[] chars = doc.getTextComponent().getText().toCharArray();
-        for(char c : chars) {
+        for (char c : chars) {
             result.charNumber++;
-            if(Character.isWhitespace(c) == false) {
+            if (Character.isWhitespace(c) == false) {
                 result.nonBlankCharNumber++;
             }
-            if(c == '\n') {
+            if (c == '\n') {
                 result.linesNumber++;
             }
         }

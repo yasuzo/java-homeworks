@@ -3,7 +3,6 @@ package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.nio.file.Path;
 

@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
  *
  * @author Jan Capek
  */
-public class LocalizationProvider extends AbstractLocalizationProvider{
+public class LocalizationProvider extends AbstractLocalizationProvider {
 
     /**
      * Created instance of localization provider. Every time {@link LocalizationProvider#getInstance()}
@@ -48,7 +48,7 @@ public class LocalizationProvider extends AbstractLocalizationProvider{
      * Sets language to the given language.
      *
      * @param languageTag Tag of the new language.
-     * @throws NullPointerException If given language is {@code null}.
+     * @throws NullPointerException               If given language is {@code null}.
      * @throws java.util.MissingResourceException If given tag is not found.
      */
     public void setLanguage(String languageTag) {
@@ -66,7 +66,7 @@ public class LocalizationProvider extends AbstractLocalizationProvider{
      * @return Instance of {@link LocalizationProvider}.
      */
     public static LocalizationProvider getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LocalizationProvider();
         }
         return instance;

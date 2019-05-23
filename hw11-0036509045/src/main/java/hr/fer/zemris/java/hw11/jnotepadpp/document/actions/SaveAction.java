@@ -27,8 +27,8 @@ public class SaveAction extends SaveAsAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         SingleDocumentModel current = multipleDocumentModel.getCurrentDocument();
-        if(current == null) return;
-        if(current.getFilePath() == null) {
+        if (current == null) return;
+        if (current.getFilePath() == null) {
             super.actionPerformed(e);
             return;
         }

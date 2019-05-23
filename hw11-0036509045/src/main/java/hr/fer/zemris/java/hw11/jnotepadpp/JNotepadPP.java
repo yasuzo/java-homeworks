@@ -174,6 +174,7 @@ public class JNotepadPP extends JFrame {
 
     /**
      * Creates a toolbar and returns it.
+     *
      * @return Toolbar.
      */
     private JToolBar createToolBar() {

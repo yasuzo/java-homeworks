@@ -73,11 +73,11 @@ public class UIBridge {
     /**
      * Calls {@link JOptionPane#showOptionDialog(Component, Object, String, int, int, Icon, Object[], Object)} with given attributes.
      *
-     * @param title Dialog title.
-     * @param message Message to user.
-     * @param optionType JOptionPane's option type.
+     * @param title       Dialog title.
+     * @param message     Message to user.
+     * @param optionType  JOptionPane's option type.
      * @param messageType JOptionPane's message type.
-     * @param options Options offered.
+     * @param options     Options offered.
      * @return User response (JOptionPaneConstant).
      */
     public int showOptionDialog(String title, String message, int optionType, int messageType, Object[] options) {
@@ -95,7 +95,7 @@ public class UIBridge {
     /**
      * Shows error dialog to user.
      *
-     * @param title Dialog title.
+     * @param title   Dialog title.
      * @param message Message to show.
      */
     public void showErrorMessage(String title, String message) {

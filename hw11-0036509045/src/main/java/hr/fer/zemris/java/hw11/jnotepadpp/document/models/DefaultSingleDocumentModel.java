@@ -31,7 +31,7 @@ public class DefaultSingleDocumentModel implements SingleDocumentModel {
      *
      * @param documentPath Document's path; can be {@code null} in case it is a new document.
      * @param content      Document contents.
-     * @throws NullPointerException If given content is {@code null}.
+     * @throws NullPointerException     If given content is {@code null}.
      * @throws IllegalArgumentException If document path is not {@code null} and not accessible.
      */
     public DefaultSingleDocumentModel(Path documentPath, String content) {
@@ -123,7 +123,7 @@ public class DefaultSingleDocumentModel implements SingleDocumentModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DefaultSingleDocumentModel that = (DefaultSingleDocumentModel) o;
-        if(this.documentPath == null) {
+        if (this.documentPath == null) {
             return this == that;
         }
 //        todo: Paths should not be compared like this.

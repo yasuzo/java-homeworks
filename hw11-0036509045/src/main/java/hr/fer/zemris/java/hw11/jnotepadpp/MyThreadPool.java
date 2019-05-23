@@ -1,10 +1,7 @@
 package hr.fer.zemris.java.hw11.jnotepadpp;
 
-import java.util.Objects;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Singleton thread pool.
@@ -21,7 +18,7 @@ public class MyThreadPool {
      * @return Executor service.
      */
     private static ExecutorService getExecutor() {
-        if(executor == null) {
+        if (executor == null) {
             executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         }
         return executor;
@@ -35,7 +32,7 @@ public class MyThreadPool {
      */
     public static void submit(Runnable task) {
         getExecutor();
-        if(executor.isShutdown()) return;
+        if (executor.isShutdown()) return;
         executor.submit(task);
     }
 

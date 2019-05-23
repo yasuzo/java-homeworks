@@ -27,7 +27,7 @@ public class UniqueAction extends TransformSelectionAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("unique");
-        if(isEnabled() == false) {
+        if (isEnabled() == false) {
             return;
         }
         LineResult lineResult = getSelectedLines();

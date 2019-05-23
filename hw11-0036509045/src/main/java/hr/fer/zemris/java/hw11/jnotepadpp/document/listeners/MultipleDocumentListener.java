@@ -14,13 +14,14 @@ public interface MultipleDocumentListener {
      * Called when current documents are switched.
      *
      * @param previousModel Previous document.
-     * @param currentModel Current document.
+     * @param currentModel  Current document.
      * @throws NullPointerException If both arguments are {@code null}.
      */
     void currentDocumentChanged(SingleDocumentModel previousModel, SingleDocumentModel currentModel);
 
     /**
      * Called when a document was added (opened or created).
+     *
      * @param model Newly added document.
      * @throws NullPointerException If given model is {@code null}.
      */

@@ -30,14 +30,14 @@ public class ExitAction extends EditorAction {
         boolean showSavePrompt = isEverythingSaved() == false;
 
 //            some document have not been saved => warn user.
-        if(showSavePrompt) {
+        if (showSavePrompt) {
             int response = uiBridge.showOptionDialog(
                     LocalizationProvider.getInstance().getString("unsavedWarning_title"),
                     LocalizationProvider.getInstance().getString("unsavedWarning_message"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null);
-            if(response != JOptionPane.YES_OPTION) {
+            if (response != JOptionPane.YES_OPTION) {
                 return;
             }
         }
@@ -52,7 +52,7 @@ public class ExitAction extends EditorAction {
      */
     private boolean isEverythingSaved() {
         for (SingleDocumentModel doc : multipleDocumentModel) {
-            if(doc.isModified()) {
+            if (doc.isModified()) {
                 return false;
             }
         }

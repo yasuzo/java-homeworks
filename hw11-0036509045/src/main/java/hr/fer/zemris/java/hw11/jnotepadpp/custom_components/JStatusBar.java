@@ -160,7 +160,7 @@ public class JStatusBar extends JPanel implements MultipleDocumentListener, Care
     private void setLabels() {
         LocalizationProvider lp = LocalizationProvider.getInstance();
 //        there is no status
-        if(last == null) {
+        if (last == null) {
             lengthLabel.setText(lp.getString("statusLengthLabel_empty"));
             cursorInfoLabel.setText(lp.getString("statusCursorLabel_empty"));
             return;

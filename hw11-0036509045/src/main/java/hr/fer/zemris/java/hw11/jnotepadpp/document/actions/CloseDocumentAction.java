@@ -1,6 +1,5 @@
 package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
-import hr.fer.zemris.java.hw11.jnotepadpp.document.listeners.MultipleDocumentListener;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProvider;
@@ -29,15 +28,15 @@ public class CloseDocumentAction extends CurrentDocumentDependantAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         SingleDocumentModel current = multipleDocumentModel.getCurrentDocument();
-        if(current == null) return;
-        if(current.isModified()) {
+        if (current == null) return;
+        if (current.isModified()) {
             int response = uiBridge.showOptionDialog(
                     LocalizationProvider.getInstance().getString("unsavedWarning_title"),
                     LocalizationProvider.getInstance().getString("unsavedWarning_message"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null);
-            if(response != JOptionPane.YES_OPTION) {
+            if (response != JOptionPane.YES_OPTION) {
                 return;
             }
         }

@@ -249,7 +249,7 @@ public class DefaultMultipleDocumentModel extends JTabbedPane implements Multipl
         @Override
         public void documentModifyStatusUpdated(SingleDocumentModel model) {
             int index = openedDocuments.indexOf(model);
-            if(index != -1) {
+            if (index != -1) {
                 DefaultMultipleDocumentModel.this.setIconAt(index, model.isModified() ? ICON_MODIFIED : ICON_SAVED);
             }
         }
@@ -257,9 +257,9 @@ public class DefaultMultipleDocumentModel extends JTabbedPane implements Multipl
         @Override
         public void documentFilePathUpdated(SingleDocumentModel model) {
             int index = -1;
-            for(SingleDocumentModel doc : openedDocuments) {
+            for (SingleDocumentModel doc : openedDocuments) {
                 index++;
-                if(model == doc) {
+                if (model == doc) {
                     setTitleAt(index, doc.getFilePath().getFileName().toString());
                     setToolTipTextAt(index, doc.getFilePath().toString());
                     break;

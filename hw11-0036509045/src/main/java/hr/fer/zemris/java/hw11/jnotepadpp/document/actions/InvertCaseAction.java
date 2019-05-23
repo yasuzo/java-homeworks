@@ -26,10 +26,10 @@ public class InvertCaseAction extends TransformSelectionAction {
     public void actionPerformed(ActionEvent e) {
         transformSelected(selection -> {
             char[] chars = selection.toCharArray();
-            for(int i = 0; i < chars.length; i++) {
-                if(Character.isUpperCase(chars[i])) {
+            for (int i = 0; i < chars.length; i++) {
+                if (Character.isUpperCase(chars[i])) {
                     chars[i] = Character.toLowerCase(chars[i]);
-                }else if (Character.isLowerCase(chars[i])) {
+                } else if (Character.isLowerCase(chars[i])) {
                     chars[i] = Character.toUpperCase(chars[i]);
                 }
             }

@@ -18,7 +18,7 @@ public class LJMenu extends JMenu implements ILocalizationListener {
      * Constructs new LJMenu with given name key.
      *
      * @param nameKey Key under which menu name is stored in {@link LocalizationProvider}.
-     * @throws NullPointerException If given string is {@code null}.
+     * @throws NullPointerException               If given string is {@code null}.
      * @throws java.util.MissingResourceException If given key does not exist.
      */
     public LJMenu(String nameKey) {

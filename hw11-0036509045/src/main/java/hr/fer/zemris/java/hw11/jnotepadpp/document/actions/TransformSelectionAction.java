@@ -1,6 +1,5 @@
 package hr.fer.zemris.java.hw11.jnotepadpp.document.actions;
 
-import com.sun.jdi.ObjectReference;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.MultipleDocumentModel;
 import hr.fer.zemris.java.hw11.jnotepadpp.document.models.SingleDocumentModel;
 
@@ -10,7 +9,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +30,7 @@ public abstract class TransformSelectionAction extends CurrentDocumentDependantA
      */
     public TransformSelectionAction(UIBridge uiBridge, MultipleDocumentModel multipleDocumentModel) {
         super(uiBridge, multipleDocumentModel);
-        if(multipleDocumentModel.getCurrentDocument() != null) {
+        if (multipleDocumentModel.getCurrentDocument() != null) {
             multipleDocumentModel.getCurrentDocument().getTextComponent().addCaretListener(this);
         }
     }
@@ -63,9 +61,9 @@ public abstract class TransformSelectionAction extends CurrentDocumentDependantA
      * Transforms text at at given position for given length.
      *
      * @param transformer Function which will return transformed text.
-     * @param start Start selection index.
-     * @param length Length of selection.
-     * @throws NullPointerException If given transformer is {@code null};
+     * @param start       Start selection index.
+     * @param length      Length of selection.
+     * @throws NullPointerException     If given transformer is {@code null};
      * @throws IllegalArgumentException If given start index or length is invalid.
      */
     void transform(UnaryOperator<String> transformer, int start, int length) {
@@ -108,7 +106,7 @@ public abstract class TransformSelectionAction extends CurrentDocumentDependantA
         }
 //        check if last line ends with '\n'
         boolean endsWithNewLine = false;
-        if(text.endsWith("\n")) {
+        if (text.endsWith("\n")) {
             endsWithNewLine = true;
             text = text.substring(0, Math.max(0, text.length() - 1));
         }
@@ -120,10 +118,10 @@ public abstract class TransformSelectionAction extends CurrentDocumentDependantA
     @Override
     public void currentDocumentChanged(SingleDocumentModel previousModel, SingleDocumentModel currentModel) {
         super.currentDocumentChanged(previousModel, currentModel);
-        if(previousModel != null) {
+        if (previousModel != null) {
             previousModel.getTextComponent().removeCaretListener(this);
         }
-        if(currentModel != null) {
+        if (currentModel != null) {
             currentModel.getTextComponent().addCaretListener(this);
         }
     }
@@ -165,9 +163,9 @@ public abstract class TransformSelectionAction extends CurrentDocumentDependantA
         /**
          * Constructs a new result object.
          *
-         * @param lines List of selected lines.
-         * @param startIndex Starting index.
-         * @param length Length of all selected lines.
+         * @param lines           List of selected lines.
+         * @param startIndex      Starting index.
+         * @param length          Length of all selected lines.
          * @param endsWithNewLine Flag that indicates if last line ends with '\n'.
          * @throws NullPointerException If given list is {@code null}.
          */

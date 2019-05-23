@@ -7,9 +7,10 @@ import hr.fer.zemris.java.hw11.jnotepadpp.local.LocalizationProviderBridge;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
-import java.awt.event.KeyEvent;
 import java.text.Collator;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Singleton action factory used to create {@link javax.swing.Action} objects.
@@ -133,8 +134,8 @@ public class ActionFactory implements ILocalizationListener {
      * Constructs an action factory.
      *
      * @param localizationBridge Bridge to localization provider.
-     * @param uiBridge Bridge to the parent frame.
-     * @param model     Document model used for document manipulation.
+     * @param uiBridge           Bridge to the parent frame.
+     * @param model              Document model used for document manipulation.
      * @throws NullPointerException If any of the parameters is {@code null}.
      */
     public ActionFactory(LocalizationProviderBridge localizationBridge, UIBridge uiBridge, MultipleDocumentModel model) {
@@ -209,10 +210,10 @@ public class ActionFactory implements ILocalizationListener {
     /**
      * Sets action name and description gotten from localization provider based on given keys.
      *
-     * @param action Action whose attributes need to be set.
-     * @param nameKey Key under which action's name is stored.
+     * @param action         Action whose attributes need to be set.
+     * @param nameKey        Key under which action's name is stored.
      * @param descriptionKey Key under which action's description is stored.
-     * @throws NullPointerException If any of the parameters are {@code null}.
+     * @throws NullPointerException               If any of the parameters are {@code null}.
      * @throws java.util.MissingResourceException If any of the keys could not be found.
      */
     private void setActionNameAndDescription(Action action, String nameKey, String descriptionKey) {
@@ -224,9 +225,9 @@ public class ActionFactory implements ILocalizationListener {
     /**
      * Initializes given action with given attributes. Action will be enabled by default.
      *
-     * @param action Action that needs to be initialized.
-     * @param name Action's name.
-     * @param shortcut Keyboard shortcut.
+     * @param action      Action that needs to be initialized.
+     * @param name        Action's name.
+     * @param shortcut    Keyboard shortcut.
      * @param description Action's description.
      * @throws NullPointerException If given action is {@code null}.
      */
@@ -237,11 +238,11 @@ public class ActionFactory implements ILocalizationListener {
     /**
      * Initializes given action with given attributes.
      *
-     * @param action Action that needs to be initialized.
-     * @param name Action's name.
-     * @param shortcut Keyboard shortcut.
+     * @param action      Action that needs to be initialized.
+     * @param name        Action's name.
+     * @param shortcut    Keyboard shortcut.
      * @param description Action's description.
-     * @param enabled Enabled flag.
+     * @param enabled     Enabled flag.
      * @throws NullPointerException If given action is {@code null}.
      */
     private void initAction(Action action, String name, KeyStroke shortcut, String description, boolean enabled) {
