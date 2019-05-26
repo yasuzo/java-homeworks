@@ -1,0 +1,6 @@
+{$For i 0 10 2 $}
+ sin({$   =   i$}^2) = {$= i i * @sin "0.000\"" @decfmt $}
+{$eND$}
+{$For i 0 "qwerty" 2 $}
+ sin({$   =   i +32 $}^2) = {$= i i * @sin "0.000\"" @decfmt $}
+{$eND$}

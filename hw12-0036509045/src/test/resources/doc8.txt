@@ -1,0 +1,5 @@
+{$ for var "\"this\t\t \\ is\r string\"\n" var2$}
+{$end$}
+
+{$for var1 "Joe\\ \"Long\" Smith" var2  var3 $}
+{$end$}

@@ -1,0 +1,5 @@
+{$ FOR var "\"this\t\t \\ is\r string\"\n" var2 $}
+{$ END $}
+
+{$ FOR var1 "Joe\\ \"Long\" Smith" var2 var3 $}
+{$ END $}

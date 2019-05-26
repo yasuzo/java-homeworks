@@ -1,0 +1,15 @@
+This is sample \\ text. \{$= $}
+{$ FOR i 1 10 "DF" $}
+ This is {$= i $}-th time this message is generated.
+{$EnD  $}
+{$For i 0 10 2 $}
+ sin({$   =   i$}^2) = {$= i i * @sin "0.000\"" @decfmt $}
+{$eND$}
+
+{$ FOR ewe_32 1 10 $}
+ This is {$= i $}-th time this message is generated.
+{$EnD  $}
+
+{$For i 0 .10 -.2 $}
+ sin({$   = 3 + i$}^2) = {$= i i * @sin "0.000" @decfmt $}
+{$eND$}
