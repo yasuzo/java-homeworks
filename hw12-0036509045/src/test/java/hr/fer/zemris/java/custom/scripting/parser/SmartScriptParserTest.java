@@ -1,3 +1,4 @@
+package hr.fer.zemris.java.custom.scripting.parser;
 
 import hr.fer.zemris.java.custom.scripting.demo.TreeWriter;
 import hr.fer.zemris.java.custom.scripting.nodes.DocumentNode;

@@ -1,3 +1,5 @@
+package hr.fer.zemris.java.custom.scripting.lexer;
+
 import hr.fer.zemris.java.custom.scripting.lexer.*;
 import org.junit.jupiter.api.Test;
 
