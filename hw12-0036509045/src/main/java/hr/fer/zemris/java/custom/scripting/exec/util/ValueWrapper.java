@@ -1,4 +1,4 @@
-package hr.fer.zemris.java.custom.scripting.exec;
+package hr.fer.zemris.java.custom.scripting.exec.util;
 
 import hr.fer.zemris.java.custom.scripting.exec.util.ObjectConverter;
 

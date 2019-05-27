@@ -245,7 +245,6 @@ public class SmartScriptLexer {
             case '*':
             case '/':
             case '-':
-            case '^':
             case '+':
                 return true;
         }

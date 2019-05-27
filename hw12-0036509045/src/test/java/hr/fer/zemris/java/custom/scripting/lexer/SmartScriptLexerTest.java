@@ -216,14 +216,13 @@ class SmartScriptLexerTest {
 
     @Test
     void nextTokenTagStateOperators() {
-        String input = "*-+^/";
+        String input = "*-+/";
         lexer = new SmartScriptLexer(input);
         lexer.setState(SmartScriptLexerState.TAG);
         SmartScriptToken[] tokens = {
                 new SmartScriptToken(SmartScriptTokenType.OPERATOR, "*"),
                 new SmartScriptToken(SmartScriptTokenType.OPERATOR, "-"),
                 new SmartScriptToken(SmartScriptTokenType.OPERATOR, "+"),
-                new SmartScriptToken(SmartScriptTokenType.OPERATOR, "^"),
                 new SmartScriptToken(SmartScriptTokenType.OPERATOR, "/"),
                 new SmartScriptToken(SmartScriptTokenType.EOF, null)
         };
