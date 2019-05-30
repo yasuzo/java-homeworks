@@ -25,7 +25,7 @@ public class SmartScriptExecuteDemo {
         List<RequestContext.RCCookie> cookies = new ArrayList<>();
         new SmartScriptEngine(
                 new SmartScriptParser(documentBody).getDocumentNode(),
-                new RequestContext(System.out, parameters, persistentParameters, cookies)
+                new RequestContext(System.out, parameters, persistentParameters, cookies, null)
         ).execute();
     }
 }

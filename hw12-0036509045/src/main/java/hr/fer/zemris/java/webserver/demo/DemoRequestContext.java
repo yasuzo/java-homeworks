@@ -23,7 +23,7 @@ public class DemoRequestContext {
         OutputStream os = Files.newOutputStream(Paths.get(filePath));
         RequestContext rc = new RequestContext(os, new HashMap<>(),
                 new HashMap<>(),
-                new ArrayList<>());
+                new ArrayList<>(), null);
         rc.setEncoding(encoding);
         rc.setMimeType("text/plain");
         rc.setStatusCode(205);
@@ -37,7 +37,7 @@ public class DemoRequestContext {
         OutputStream os = Files.newOutputStream(Paths.get(filePath));
         RequestContext rc = new RequestContext(os, new HashMap<>(),
                 new HashMap<>(),
-                new ArrayList<>());
+                new ArrayList<>(), null);
         rc.setEncoding(encoding);
         rc.setMimeType("text/plain");
         rc.setStatusCode(205);

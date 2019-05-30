@@ -5,11 +5,13 @@ import hr.fer.zemris.java.custom.scripting.exec.SmartScriptRuntimeException;
 import hr.fer.zemris.java.custom.scripting.parser.SmartScriptParser;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -51,6 +53,10 @@ public class SmartHttpServer {
      */
     private ServerThread serverThread;
     /**
+     * Thread for cleaning sessions.
+     */
+    private SessionCleaner sessionCleanerThread;
+    /**
      * Thread pool used for tasks.
      */
     private ExecutorService threadPool;
@@ -58,6 +64,20 @@ public class SmartHttpServer {
      * Server's web root.
      */
     private Path documentRoot;
+    /**
+     * Web workers used to process request.
+     */
+    private Map<String, IWebWorker> workersMap = new HashMap<>();
+
+    /**
+     * Map of sessions.
+     */
+    private Map<String, SessionMapEntry> sessions = new HashMap<>();
+
+    /**
+     * Random session id generator.
+     */
+    private Random sessionRandom = new Random();
 
     /**
      * Constructs a new server configured by config file whose path is given as an argument.
@@ -87,7 +107,8 @@ public class SmartHttpServer {
             System.out.println("Program takes in one argument, path to config file.");
             return;
         }
-        new SmartHttpServer(args[0]).start();
+        SmartHttpServer server = new SmartHttpServer(args[0]);
+        server.start();
     }
 
     /**
@@ -107,11 +128,43 @@ public class SmartHttpServer {
             sessionTimeout = Integer.parseInt(properties.getProperty("session.timeout"));
             loadMimeTypes(Path.of(properties.getProperty("server.mimeConfig")));
             documentRoot = Path.of(properties.getProperty("server.documentRoot")).toAbsolutePath().normalize();
+            loadWorkers(Path.of(properties.getProperty("server.workers")));
         } catch (NullPointerException | NumberFormatException e) {
             throw new RuntimeException("Invalid configuration files.");
         } catch (IOError e) {
             throw new RuntimeException("Document root cannot be accessed.");
         }
+    }
+
+    /**
+     * Loads workers from workers config file whose path is given as an argument.
+     *
+     * @param workerConfigPath Path of the workers config file.
+     * @throws NullPointerException If given path is {@code null}.
+     * @throws RuntimeException     If config is not readable or is invalid.
+     */
+    private void loadWorkers(Path workerConfigPath) {
+        Objects.requireNonNull(workerConfigPath);
+        Properties properties = new Properties();
+        try {
+            properties.load(Files.newBufferedReader(workerConfigPath));
+        } catch (IOException e) {
+            throw new RuntimeException("Worker's configuration file could not be read.");
+        }
+        properties.forEach((key, value) -> {
+            IWebWorker worker;
+            try {
+                Class<?> referenceToClass = this.getClass().getClassLoader().loadClass((String) value);
+                worker = (IWebWorker) referenceToClass.getConstructor().newInstance();
+            } catch (ClassNotFoundException | InvocationTargetException
+                    | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+                throw new RuntimeException("Workers config file has invalid entries.");
+            }
+            if (workersMap.containsKey(key)) {
+                throw new RuntimeException("Workers config file has multiple entries for the same request path.");
+            }
+            workersMap.put((String) key, worker);
+        });
     }
 
     /**
@@ -144,6 +197,9 @@ public class SmartHttpServer {
         serverThread = new ServerThread();
         threadPool = Executors.newFixedThreadPool(workerThreads);
         serverThread.start();
+        sessionCleanerThread = new SessionCleaner();
+        sessionCleanerThread.start();
+
     }
 
     /**
@@ -155,6 +211,31 @@ public class SmartHttpServer {
         }
         serverThread.kill();
         threadPool.shutdown();
+        sessionCleanerThread.kill();
+    }
+
+    /**
+     * Session map entry for storing sessions.
+     */
+    private static class SessionMapEntry {
+        String sid;
+        String host;
+        long validUntil;
+        Map<String, String> map;
+
+        /**
+         * Constructs a new session map entry with given attributes.
+         *
+         * @param sid  Session id.
+         * @param host Host on which session is valid.
+         * @throws NullPointerException If given sid or host is {@code null}.
+         */
+        SessionMapEntry(String sid, String host, long validUntil) {
+            this.sid = Objects.requireNonNull(sid);
+            this.host = Objects.requireNonNull(host);
+            this.validUntil = validUntil;
+            map = new ConcurrentHashMap<>();
+        }
     }
 
     /**
@@ -171,7 +252,6 @@ public class SmartHttpServer {
          * Terminates the thread.
          */
         protected synchronized void kill() {
-            serverThread.interrupt();
             shouldTerminate = true;
         }
 
@@ -210,6 +290,59 @@ public class SmartHttpServer {
     }
 
     /**
+     * Session cleaner thread.
+     */
+    private class SessionCleaner extends Thread {
+        /**
+         * Flag that indicates to a thread if it should stop running.
+         */
+        private volatile boolean shouldTerminate;
+
+        /**
+         * Constructs a new daemon thread for cleaning old sessions.
+         */
+        public SessionCleaner() {
+            this.setDaemon(true);
+        }
+
+        /**
+         * Terminates the thread.
+         */
+        protected synchronized void kill() {
+            shouldTerminate = true;
+            this.interrupt();
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(1000 * 60 * 5); // sleep 5 minutes
+                } catch (InterruptedException e) {
+
+                }
+                if (shouldTerminate) {
+                    break;
+                }
+                cleanOldSessions();
+            }
+        }
+
+        /**
+         * Removes old sessions from the session map.
+         */
+        private void cleanOldSessions() {
+            Iterator<Map.Entry<String, SessionMapEntry>> it = sessions.entrySet().iterator();
+            while (it.hasNext()) {
+                SessionMapEntry session = it.next().getValue();
+                if (session.validUntil <= System.currentTimeMillis()) {
+                    it.remove();
+                }
+            }
+        }
+    }
+
+    /**
      * Client worker model. Instances of this class are used to serve clients with content.
      */
     private class ClientWorker implements Runnable, IDispatcher {
@@ -222,9 +355,10 @@ public class SmartHttpServer {
         private String host;
         private Map<String, String> params = new HashMap<String, String>();
         private Map<String, String> tempParams = new HashMap<String, String>();
-        private Map<String, String> permPrams = new HashMap<String, String>();
+        private Map<String, String> permParams = new HashMap<String, String>();
         private List<RequestContext.RCCookie> outputCookies = new ArrayList<RequestContext.RCCookie>();
         private String SID;
+        private RequestContext context;
 
         /**
          * Constructs a new worker with given client socket.
@@ -257,6 +391,8 @@ public class SmartHttpServer {
                 return;
             }
 
+            getSessionEntry(header);
+
 //            extract params
             String paramString = fullPath.replaceFirst("^.*?(?:\\?|$)", "");
             parseParameters(paramString);
@@ -266,8 +402,64 @@ public class SmartHttpServer {
             try {
                 internalDispatchRequest(path, true);
             } catch (Exception e) {
+                e.printStackTrace();
                 sendEmptyResponse(500, "Unexpected error occurred.");
             }
+        }
+
+        /**
+         * Returns a session entry for current request. If no entry is found or existing one is
+         * invalid, new entry will be created and returned.
+         * This will automatically save session entry to the sessions map and set sid cookie of the request context if needed.
+         *
+         * @param header Request header.
+         * @return Session entry for current request.
+         * @throws NullPointerException If given header is {@code null}.
+         */
+        private SessionMapEntry getSessionEntry(String header) {
+            Objects.requireNonNull(header);
+            Matcher m = Pattern.compile("\r\nCookie:.*[\\s;]sid=\"([A-Z]+)\"").matcher(header);
+            String sidCandidate = null;
+            if (m.find()) {
+                sidCandidate = m.group(1);
+            }
+            SessionMapEntry sessionEntry = sessions.get(sidCandidate);
+
+//            session entry is valid -> return it
+            if (sessionEntry != null && sessionEntry.validUntil > System.currentTimeMillis()) {
+                SID = sessionEntry.sid;
+                permParams = sessionEntry.map;
+                return sessionEntry;
+            }
+
+//            ------------ NEW SESSION ENTRY ------------
+//            crete sid
+            StringBuilder sb = new StringBuilder();
+            sessionRandom.ints(20, 65, 91).forEach(num -> sb.append((char) num));
+            sidCandidate = sb.toString();
+
+//            create session entry
+            long validUntil = System.currentTimeMillis() + sessionTimeout * 1000;
+            sessionEntry = new SessionMapEntry(sidCandidate, host, validUntil);
+
+//            update globals
+            SID = sessionEntry.sid;
+            sessions.put(sessionEntry.sid, sessionEntry);
+            permParams = sessionEntry.map;
+
+//            set sid cookie
+            getRequestContext().addRCCookie(new RequestContext.RCCookie("sid", sidCandidate, null, host, "/"));
+            return sessionEntry;
+        }
+
+        /**
+         * Constructs a new request context if not already constructed and returns it.
+         *
+         * @return Request context.
+         */
+        private RequestContext getRequestContext() {
+            return context = context != null ?
+                    context : new RequestContext(ostream, params, permParams, outputCookies, tempParams, this, SID);
         }
 
         /**
@@ -278,7 +470,7 @@ public class SmartHttpServer {
          * @throws NullPointerException If given message is {@code null}.
          */
         private void sendEmptyResponse(int code, String message) {
-            RequestContext rc = new RequestContext(ostream, null, null, null);
+            RequestContext rc = new RequestContext(ostream, null, null, null, SID);
             rc.setStatusCode(code);
             rc.setStatusText(message);
             try {
@@ -319,15 +511,44 @@ public class SmartHttpServer {
         private String readHeader(PushbackInputStream clientIn) throws IOException {
             Objects.requireNonNull(clientIn);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] array = new byte[1024];
+            int state = 0;
+            loop:
             while (true) {
-                int len = clientIn.read(array, 0, clientIn.available());
-                if (len == -1) {
-                    break;
+                int b = clientIn.read();
+                if (b == -1) {
+                    throw new RuntimeException("Header could not be read.");
                 }
-                bos.write(array, 0, len);
-                if (new String(bos.toByteArray(), 0, len, StandardCharsets.ISO_8859_1).contains("\r\n\r\n")) {
-                    break;
+                bos.write(b);
+                switch (state) {
+                    case 0:
+                        if (b == 13) {
+                            state = 1;
+                        } else if (b == 10) {
+                            state = 4;
+                        }
+                        break;
+                    case 1:
+                        if (b == 10) {
+                            state = 2;
+                        } else {
+                            state = 0;
+                        }
+                        break;
+                    case 2:
+                        if (b == 13) {
+                            state = 3;
+                        } else {
+                            state = 0;
+                        }
+                        break;
+                    case 3:
+                    case 4:
+                        if (b == 10) {
+                            break loop;
+                        } else {
+                            state = 0;
+                        }
+                        break;
                 }
             }
             String requestData = new String(bos.toByteArray(), StandardCharsets.ISO_8859_1);
@@ -387,7 +608,12 @@ public class SmartHttpServer {
          * @throws Exception In case an error occurred while processing a request.
          */
         public void internalDispatchRequest(String urlPath, boolean directCall) throws Exception {
-            Path requestedPath = null;
+            if (urlPath.startsWith("/private/") && directCall) {
+                sendEmptyResponse(404, "Path not available.");
+                return;
+            }
+
+            Path requestedPath;
             try {
                 requestedPath = documentRoot.resolve(urlPath.substring(1)).toAbsolutePath().normalize();
             } catch (Exception e) {
@@ -401,42 +627,57 @@ public class SmartHttpServer {
                 return;
             }
 
-//            get file extension
-            String fileExtension = requestedPath.getFileName().toString().replaceFirst(".*\\.", "");
-
-//            configure request context
-            RequestContext rc = new RequestContext(ostream, params, permPrams, outputCookies, tempParams, this);
-            rc.setStatusCode(200);
-
+//            get file extension and serve
+            String fileExtension = requestedPath.getFileName().toString().replaceFirst("(?:.*\\.|.*)", "");
             try {
-                if (fileExtension.equals("smscr")) {
-                    executeSmartScript(Files.readString(requestedPath), rc);
-                } else {
-                    String mimeType = mimeTypes.getOrDefault(fileExtension, "application/octet-stream");
-                    rc.setMimeType(mimeType);
-                    rc.write(Files.readAllBytes(requestedPath));
+                if (urlPath.matches("/ext/[^/]+")) {
+                    Class<?> referenceToClass = this.getClass().getClassLoader()
+                            .loadClass("hr.fer.zemris.java.webserver.workers." + urlPath.replaceFirst("/ext/", ""));
+                    ((IWebWorker) referenceToClass.getConstructor().newInstance()).processRequest(getRequestContext());
                     csocket.close();
+                } else if (workersMap.containsKey(urlPath)) {
+                    workersMap.get(urlPath).processRequest(getRequestContext());
+                    csocket.close();
+                } else if (fileExtension.equals("smscr")) {
+                    executeSmartScript(Files.readString(requestedPath));
+                } else {
+                    serveFile(requestedPath);
                 }
             } catch (IOException e) {
-                sendEmptyResponse(404, "Path not available.");
+                sendEmptyResponse(404, "File not found");
             }
+        }
+
+        /**
+         * Serves a file and closes the connection.
+         *
+         * @param file File that needs to be served.
+         * @throws IOException          If data either could not be read or sent.
+         * @throws NullPointerException If given path is {@code null}.
+         */
+        private void serveFile(Path file) throws IOException {
+            Objects.requireNonNull(file);
+            String fileExtension = file.getFileName().toString().replaceFirst("(?:.*\\.|.*)", "");
+            String mimeType = mimeTypes.getOrDefault(fileExtension, "application/octet-stream");
+            RequestContext rc = getRequestContext();
+            rc.setMimeType(mimeType);
+            rc.write(Files.readAllBytes(file));
+            csocket.close();
         }
 
         /**
          * Executes smart script and closes the client socket.
          *
          * @param script Loaded smart script that needs to be executed.
-         * @param requestContext Request context.
          * @throws NullPointerException If any of the parameters are {@code null}.
-         * @throws IOException If socket could not be closed.
+         * @throws IOException          If socket could not be closed.
          */
-        private void executeSmartScript(String script, RequestContext requestContext) throws IOException {
+        private void executeSmartScript(String script) throws IOException {
             Objects.requireNonNull(script);
-            Objects.requireNonNull(requestContext);
             try {
                 new SmartScriptEngine(
                         new SmartScriptParser(script).getDocumentNode(),
-                        requestContext
+                        getRequestContext()
                 ).execute();
                 csocket.close();
             } catch (SmartScriptRuntimeException e) {

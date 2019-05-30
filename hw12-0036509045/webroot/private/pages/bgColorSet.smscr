@@ -1,0 +1,11 @@
+{$= "text/html" @setMimeType $}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Background color</title>
+    </head>
+     <body>
+         Background color set to: #{$= "bgcolor" "" @paramGet $} >
+         <a href="/index2.html">Index</a>
+     </body>
+</html>

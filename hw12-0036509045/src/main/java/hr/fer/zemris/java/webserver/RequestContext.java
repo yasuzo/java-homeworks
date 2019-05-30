@@ -80,20 +80,27 @@ public class RequestContext {
     private boolean headerGenerated;
 
     /**
+     * Session id.
+     */
+    private String sessionId;
+
+    /**
      * Constructs a new request context.
      *
      * @param outputStream         Context output stream; this will be used to respond.
      * @param parameters           Request parameters.
      * @param persistentParameters Persistent request parameters.
      * @param outputCookies        List of output cookies.
+     * @param sessionId            Session id.
      * @throws NullPointerException If given output stream is {@code null}.
      */
     public RequestContext(OutputStream outputStream, Map<String, String> parameters, Map<String,
-            String> persistentParameters, List<RCCookie> outputCookies) {
+            String> persistentParameters, List<RCCookie> outputCookies, String sessionId) {
         this.outputStream = Objects.requireNonNull(outputStream);
         this.parameters = parameters;
         this.persistentParameters = persistentParameters;
         this.outputCookies = outputCookies;
+        this.sessionId = sessionId;
     }
 
     /**
@@ -105,11 +112,12 @@ public class RequestContext {
      * @param outputCookies        List of output cookies.
      * @param temporaryParameters  Map of temporary parameters.
      * @param dispatcher           Request dispatcher.
+     * @param sessionId            Session id.
      * @throws NullPointerException If given output stream is {@code null}.
      */
     public RequestContext(OutputStream outputStream, Map<String, String> parameters, Map<String, String> persistentParameters,
-                          List<RCCookie> outputCookies, Map<String, String> temporaryParameters, IDispatcher dispatcher) {
-        this(outputStream, parameters, persistentParameters, outputCookies);
+                          List<RCCookie> outputCookies, Map<String, String> temporaryParameters, IDispatcher dispatcher, String sessionId) {
+        this(outputStream, parameters, persistentParameters, outputCookies, sessionId);
 //        todo: What to do if null?
         this.temporaryParameters = temporaryParameters;
         this.dispatcher = dispatcher;
@@ -181,6 +189,15 @@ public class RequestContext {
     public RequestContext write(String text) throws IOException {
         Objects.requireNonNull(text);
         return write(text.getBytes(charset));
+    }
+
+    /**
+     * Returns a request dispatcher.
+     *
+     * @return Request dispatcher.
+     */
+    public IDispatcher getDispatcher() {
+        return dispatcher;
     }
 
     /**
