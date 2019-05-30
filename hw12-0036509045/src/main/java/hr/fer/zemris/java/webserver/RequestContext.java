@@ -204,7 +204,7 @@ public class RequestContext {
      * @return Session id.
      */
     public String getSessionID() {
-        return "";
+        return sessionId;
     }
 
     /**
@@ -472,6 +472,7 @@ public class RequestContext {
                             + (domain == null ? "" : String.format("; Domain=%s", domain))
                             + (path == null ? "" : String.format("; Path=%s", path))
                             + (maxAge == null ? "" : String.format("; Max-Age=%s", maxAge))
+                            + "; HttpOnly"
             );
             return cookie;
         }
