@@ -16,7 +16,7 @@ public class PParamSetMethod implements SmartScriptMethod {
     @Override
     public void execute(RequestContext context, Stack<ValueWrapper> valueStack) {
         String name = (String) valueStack.pop().getValue();
-        String value = (String) valueStack.pop().getValue();
+        String value = valueStack.pop().getValue().toString();
         context.setPersistentParameter(name, value);
     }
 }

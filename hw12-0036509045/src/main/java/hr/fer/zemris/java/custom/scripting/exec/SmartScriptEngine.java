@@ -87,6 +87,8 @@ public class SmartScriptEngine {
 
     /**
      * Executes parsed script.
+     *
+     * @throws SmartScriptRuntimeException If an error occurred while executing a script.
      */
     public void execute() {
         try {

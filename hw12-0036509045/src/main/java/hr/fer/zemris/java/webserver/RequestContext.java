@@ -14,12 +14,15 @@ import java.util.stream.Collectors;
  */
 public class RequestContext {
 
-//    TODO: Is parameters map meant to hold temporary and persistent parameters?
-
     /**
      * Response output stream.
      */
     private OutputStream outputStream;
+
+    /**
+     * Request task dispatcher.
+     */
+    private IDispatcher dispatcher;
 
     /**
      * Used charset.
@@ -94,6 +97,25 @@ public class RequestContext {
     }
 
     /**
+     * Constructs a new request context.
+     *
+     * @param outputStream         Context output stream; this will be used to respond.
+     * @param parameters           Request parameters.
+     * @param persistentParameters Persistent request parameters.
+     * @param outputCookies        List of output cookies.
+     * @param temporaryParameters  Map of temporary parameters.
+     * @param dispatcher           Request dispatcher.
+     * @throws NullPointerException If given output stream is {@code null}.
+     */
+    public RequestContext(OutputStream outputStream, Map<String, String> parameters, Map<String, String> persistentParameters,
+                          List<RCCookie> outputCookies, Map<String, String> temporaryParameters, IDispatcher dispatcher) {
+        this(outputStream, parameters, persistentParameters, outputCookies);
+//        todo: What to do if null?
+        this.temporaryParameters = temporaryParameters;
+        this.dispatcher = dispatcher;
+    }
+
+    /**
      * Writes headers to {@link RequestContext#outputStream}.
      *
      * @throws IOException If headers could not be written.
@@ -144,6 +166,7 @@ public class RequestContext {
         Objects.requireNonNull(data);
         sendHeaders();
         outputStream.write(data, offset, len);
+        outputStream.flush();
         return this;
     }
 
@@ -254,7 +277,7 @@ public class RequestContext {
      * @return Parameter value or {@code null} if there is no parameter with given name.
      */
     public String getTemporaryParameter(String name) {
-        return persistentParameters == null ? null : persistentParameters.get(name);
+        return temporaryParameters == null ? null : temporaryParameters.get(name);
     }
 
     /**

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class SmartScriptExecuteDemo {
     public static void main(String[] args) throws IOException {
-        String documentBody = Files.readString(Path.of("src/main/resources/smscr_examples/osnovni.smscr"));
+        String documentBody = Files.readString(Path.of("src/main/resources/smscr_examples/fibonacciHTML.smscr"));
         Map<String, String> parameters = new HashMap<>();
         Map<String, String> persistentParameters = new HashMap<>();
         List<RequestContext.RCCookie> cookies = new ArrayList<>();
