@@ -1,7 +1,7 @@
 package hr.fer.zemris.java.webapp2.servlets;
 
 import hr.fer.zemris.java.webapp2.GlobalConstants;
-import hr.fer.zemris.java.webapp2.ServletContextAttributeConstants;
+import hr.fer.zemris.java.webapp2.ContextConstants;
 import hr.fer.zemris.java.webapp2.services.Renderer;
 
 import javax.servlet.ServletException;
@@ -20,10 +20,8 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.setAttribute(GlobalConstants.TITLE, "Index");
-
-        Renderer renderer = (Renderer) getServletContext().getAttribute(ServletContextAttributeConstants.RENDERER);
+        Renderer renderer = (Renderer) getServletContext().getAttribute(ContextConstants.RENDERER);
         renderer.render(req, resp, "mainLayout.jsp", "index.jsp");
     }
 }

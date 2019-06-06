@@ -1,6 +1,6 @@
 package hr.fer.zemris.java.webapp2.servlets;
 
-import hr.fer.zemris.java.webapp2.ServletContextAttributeConstants;
+import hr.fer.zemris.java.webapp2.ContextConstants;
 import hr.fer.zemris.java.webapp2.services.Renderer;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class ColorPickerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Renderer renderer = (Renderer)getServletContext().getAttribute(ServletContextAttributeConstants.RENDERER);
+        Renderer renderer = (Renderer)getServletContext().getAttribute(ContextConstants.RENDERER);
         renderer.render(req, resp, "mainLayout.jsp", "colors.jsp");
     }
 }

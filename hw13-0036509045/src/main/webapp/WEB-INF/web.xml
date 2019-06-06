@@ -13,7 +13,7 @@
     </description>
 
     <listener>
-        <listener-class>hr.fer.zemris.java.webapp2.essentials.MainRequestListener</listener-class>
+        <listener-class>hr.fer.zemris.java.webapp2.essentials.MainServletContextListener</listener-class>
     </listener>
 
     <!-- index -->
@@ -49,4 +49,83 @@
         <url-pattern>/setcolor</url-pattern>
     </servlet-mapping>
 
+    <!-- trigonometric -->
+    <servlet>
+        <servlet-name>Trigonometric</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.TrigonometricServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Trigonometric</servlet-name>
+        <url-pattern>/trigonometric</url-pattern>
+    </servlet-mapping>
+
+    <!-- reportImage -->
+    <servlet>
+        <servlet-name>ReportImage</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.ReportImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReportImage</servlet-name>
+        <url-pattern>/reportImage</url-pattern>
+    </servlet-mapping>
+
+    <!-- powers -->
+    <servlet>
+        <servlet-name>Powers</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.PowersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Powers</servlet-name>
+        <url-pattern>/powers</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting -->
+    <servlet>
+        <servlet-name>Voting</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.voting.GlasanjeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Voting</servlet-name>
+        <url-pattern>/glasanje</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-vote -->
+    <servlet>
+        <servlet-name>VotingVote</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.voting.GlasanjeGlasajServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingVote</servlet-name>
+        <url-pattern>/glasanje-glasaj</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-results -->
+    <servlet>
+        <servlet-name>VotingResults</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.voting.GlasanjeRezultatiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingResults</servlet-name>
+        <url-pattern>/glasanje-rezultati</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-graphics -->
+    <servlet>
+        <servlet-name>VotingGraphics</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.voting.VotingGraphicsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingGraphics</servlet-name>
+        <url-pattern>/glasanje-grafika</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-xls -->
+    <servlet>
+        <servlet-name>VotingXls</servlet-name>
+        <servlet-class>hr.fer.zemris.java.webapp2.servlets.voting.VotingXlsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingXls</servlet-name>
+        <url-pattern>/glasanje-xls</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -2,10 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="true" %>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <% if(request.getAttribute(GlobalConstants.TITLE) != null) { %>
-    <title><%= request.getAttribute(GlobalConstants.TITLE) %></title>
-    <% } %>
+    <meta charset="UTF-8">
+    <title>OS Report</title>
     <style>
         body {
             background-color: <%= (session.getAttribute("pickedBgCol") != null ? "#" + session.getAttribute("pickedBgCol") : "#ffffff") %>;
@@ -13,6 +11,8 @@
     </style>
 </head>
 <body>
-    <jsp:include page="<%= (String)request.getAttribute(GlobalConstants.INCLUDE_PAGE_BODY) %>"/>
+    <h1>OS usage</h1>
+    <p>Here are the results of OS usage in survey that we completed</p>
+    <img src="reportImage">
 </body>
 </html>
