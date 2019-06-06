@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Servlet that serves voting data in *.xls format.
@@ -48,7 +49,7 @@ public class VotingXlsServlet extends HttpServlet {
         row.createCell(0).setCellValue("Name");
         row.createCell(1).setCellValue("Votes");
         int i = 1;
-        for(VotingDBUtil.BandData band : bands) {
+        for (VotingDBUtil.BandData band : bands) {
             row = sheet.createRow(i);
             row.createCell(0).setCellValue(band.getName());
             row.createCell(1).setCellValue(band.getVotes());

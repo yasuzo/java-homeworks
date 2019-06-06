@@ -48,7 +48,7 @@ public class VotingGraphicsServlet extends HttpServlet {
      */
     private PieDataset createDataset(Map<Integer, VotingDBUtil.BandData> bands) {
         DefaultPieDataset result = new DefaultPieDataset();
-        for(VotingDBUtil.BandData band : bands.values()) {
+        for (VotingDBUtil.BandData band : bands.values()) {
             result.setValue(band.getName(), band.getVotes());
         }
         return result;

@@ -27,7 +27,7 @@ public class PowersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int a, b, n;
         HSSFWorkbook workbook;
-        try{
+        try {
             a = Integer.parseInt(req.getParameter("a"));
             b = Integer.parseInt(req.getParameter("b"));
             n = Integer.parseInt(req.getParameter("n"));
@@ -54,13 +54,13 @@ public class PowersServlet extends HttpServlet {
      * @throws IllegalArgumentException If arguments are invalid. n must be in range [1, 5] and a & b must be in range [-100, 100] and a <= b.
      */
     private HSSFWorkbook createExcelDocument(int a, int b, int n) {
-        if(n < 1 || n > 5 || a < -100 || a > 100 || b < -100 || b > 100 || a > b) {
+        if (n < 1 || n > 5 || a < -100 || a > 100 || b < -100 || b > 100 || a > b) {
             throw new IllegalArgumentException("n must be in range [1, 5] and a & b must be in range [-100, 100] and a <= b");
         }
         HSSFWorkbook workbook = new HSSFWorkbook();
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             HSSFSheet sheet = workbook.createSheet(String.format("%d. sheet", i + 1));
-            for(int j = a; j <= b; j++) {
+            for (int j = a; j <= b; j++) {
                 HSSFRow row = sheet.createRow(j - a);
                 row.createCell(0).setCellValue(j);
                 row.createCell(1).setCellValue(Math.pow(j, i + 1));

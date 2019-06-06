@@ -26,7 +26,7 @@ public class GlasanjeGlasajServlet extends HttpServlet {
 //        read band data
         Map<Integer, VotingDBUtil.BandData> bands = VotingDBUtil.getBandData(bandInfo, votesInfo);
         try {
-            VotingDBUtil.BandData band = bands.get(Integer.parseInt((String)req.getParameter("id")));
+            VotingDBUtil.BandData band = bands.get(Integer.parseInt((String) req.getParameter("id")));
             band.setVotes(band.getVotes() + 1);
         } catch (NullPointerException | NumberFormatException e) {
             resp.sendRedirect(req.getContextPath() + "/glasanje");

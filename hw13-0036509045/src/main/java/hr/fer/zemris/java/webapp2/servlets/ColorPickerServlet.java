@@ -18,7 +18,7 @@ public class ColorPickerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Renderer renderer = (Renderer)getServletContext().getAttribute(ContextConstants.RENDERER);
+        Renderer renderer = (Renderer) getServletContext().getAttribute(ContextConstants.RENDERER);
         renderer.render(req, resp, "mainLayout.jsp", "colors.jsp");
     }
 }

@@ -28,7 +28,7 @@ public class TrigonometricServlet extends HttpServlet {
         int a = 0;
         int b = 360;
 
-        try{
+        try {
             a = Integer.parseInt(valueA);
         } catch (NumberFormatException | NullPointerException e) {
 
@@ -41,7 +41,7 @@ public class TrigonometricServlet extends HttpServlet {
         }
 
 //        swap if a - b > 0
-        if(a > b) {
+        if (a > b) {
             int temp = a;
             a = b;
             b = temp;
@@ -64,7 +64,7 @@ public class TrigonometricServlet extends HttpServlet {
         req.setAttribute("cosList", cosList);
 
 //        render
-        ((Renderer)getServletContext().getAttribute(ContextConstants.RENDERER))
+        ((Renderer) getServletContext().getAttribute(ContextConstants.RENDERER))
                 .render(req, resp, "mainLayout.jsp", "trigonometric.jsp");
     }
 
@@ -72,20 +72,20 @@ public class TrigonometricServlet extends HttpServlet {
      * Fills two lists with sin and cos values of angles in range [start, end].
      * Angles are in degrees.
      *
-     * @param start Starting number.
-     * @param end Ending number (inclusive).
+     * @param start   Starting number.
+     * @param end     Ending number (inclusive).
      * @param sinList List which will be filled with sin values.
      * @param cosList List which will be filled with cos values.
      * @throws IllegalArgumentException If  start > end.
-     * @throws NullPointerException If lists are {@code null}.
+     * @throws NullPointerException     If lists are {@code null}.
      */
     private void fillWithTrigonometricValues(int start, int end, List<Double> sinList, List<Double> cosList) {
         Objects.requireNonNull(sinList);
         Objects.requireNonNull(cosList);
-        if(start > end) {
+        if (start > end) {
             throw new IllegalArgumentException("Start must be greater or equal to end");
         }
-        for(int i = start; i <= end; i++) {
+        for (int i = start; i <= end; i++) {
             double angleRad = Math.toRadians(i);
             sinList.add(Math.sin(angleRad));
             cosList.add(Math.cos(angleRad));

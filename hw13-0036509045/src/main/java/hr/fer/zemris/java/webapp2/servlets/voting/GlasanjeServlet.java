@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class GlasanjeServlet extends HttpServlet {
         );
 
 //        render
-        ((Renderer)getServletContext().getAttribute(ContextConstants.RENDERER))
+        ((Renderer) getServletContext().getAttribute(ContextConstants.RENDERER))
                 .render(req, resp, "mainLayout.jsp", "glasanjeIndex.jsp");
     }
 }

@@ -1,7 +1,7 @@
 package hr.fer.zemris.java.webapp2.servlets;
 
-import hr.fer.zemris.java.webapp2.GlobalConstants;
 import hr.fer.zemris.java.webapp2.ContextConstants;
+import hr.fer.zemris.java.webapp2.GlobalConstants;
 import hr.fer.zemris.java.webapp2.services.Renderer;
 
 import javax.servlet.ServletException;
@@ -12,7 +12,6 @@ import java.io.IOException;
 
 /**
  * Index servlet that serves index.jsp page.
- *
  *
  * @author Jan Capek
  */
