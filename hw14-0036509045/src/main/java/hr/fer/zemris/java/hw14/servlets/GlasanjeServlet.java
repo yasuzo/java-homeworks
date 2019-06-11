@@ -1,6 +1,8 @@
 package hr.fer.zemris.java.hw14.servlets;
 
+import hr.fer.zemris.java.hw14.dao.DAO;
 import hr.fer.zemris.java.hw14.dao.DAOProvider;
+import hr.fer.zemris.java.hw14.models.Poll;
 import hr.fer.zemris.java.hw14.models.PollOption;
 
 import javax.servlet.ServletException;
@@ -30,10 +32,23 @@ public class GlasanjeServlet extends HttpServlet {
             return;
         }
 
+        DAO dao = DAOProvider.getDao();
+
+//        get poll
+        Poll poll = dao.getPoll(pollId);
+        if(poll == null) {
+            req.setAttribute("message", "Requested poll not found.");
+            req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
+            return;
+        }
+
 //        get options
-        List<PollOption> options = DAOProvider.getDao().getPollOptions(pollId).stream()
+        List<PollOption> options = dao.getPollOptions(pollId).stream()
                 .sorted(Comparator.comparingLong(PollOption::getId))
                 .collect(Collectors.toList());
+
+//        set attributes
+        req.setAttribute("poll", poll);
         req.setAttribute("options", options);
 //        render
         req.getRequestDispatcher("/WEB-INF/pages/glasanjeIndex.jsp").forward(req, resp);

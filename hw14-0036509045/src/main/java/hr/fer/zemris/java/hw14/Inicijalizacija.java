@@ -59,7 +59,6 @@ public class Inicijalizacija implements ServletContextListener {
             initDB(connection);
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -161,7 +160,7 @@ public class Inicijalizacija implements ServletContextListener {
 //        insert first poll
         PreparedStatement preparedStatement = dbConnection.prepareStatement(
                 "insert into Polls (title, message) values " +
-                        "('Glasanje 1', 'Od sljedećih bendova, koji Vam je bend najdraži? Kliknite na link kako biste glasali!')",
+                        "('Glasanje 1', 'Glasajte u pollu \"Glasanje 1\"')",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         preparedStatement.executeUpdate();
@@ -174,7 +173,7 @@ public class Inicijalizacija implements ServletContextListener {
 //        insert second poll
         preparedStatement = dbConnection.prepareStatement(
                 "insert into Polls (title, message) values " +
-                        "('Glasanje 2', 'Od sljedećih bendova, koji Vam je bend najdraži? Kliknite na link kako biste glasali!')",
+                        "('Glasanje 2', 'Glasajte u pollu \"Glasanje 2\"')",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         preparedStatement.executeUpdate();

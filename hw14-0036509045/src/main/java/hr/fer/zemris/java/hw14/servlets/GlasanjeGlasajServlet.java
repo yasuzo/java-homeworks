@@ -28,15 +28,6 @@ public class GlasanjeGlasajServlet extends HttpServlet {
             return;
         }
 
-        long pollId;
-        try {
-            pollId = Long.parseLong(req.getParameter("pollID"));
-        } catch (Exception e) {
-            req.setAttribute("message", "GET param 'pollID' is missing or invalid.");
-            req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
-            return;
-        }
-
         DAO dao = DAOProvider.getDao();
         PollOption option = dao.getPollOption(optionId);
         if(option == null) {
@@ -46,6 +37,6 @@ public class GlasanjeGlasajServlet extends HttpServlet {
         }
         option.setVoteCount(option.getVoteCount() + 1);
         dao.updatePollOption(option);
-        resp.sendRedirect(req.getContextPath() + "/servleti/glasanje-rezultati?pollID=" + pollId);
+        resp.sendRedirect(req.getContextPath() + "/servleti/glasanje-rezultati?pollID=" + option.getPollId());
     }
 }

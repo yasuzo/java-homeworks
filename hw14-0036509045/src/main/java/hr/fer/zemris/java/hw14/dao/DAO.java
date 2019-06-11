@@ -40,8 +40,17 @@ public interface DAO {
      * Returns a poll option with given id.
      *
      * @param optionId Id of the poll option that is to be retrieved.
-     * @return Poll option with given id.
+     * @return Poll option with given id if found; null otherwise.
      * @throws DAOException In case an error occurred.
      */
     PollOption getPollOption(long optionId);
+
+    /**
+     * Returns a poll with given id if there is any or null.
+     *
+     * @param pollId Id of the poll.
+     * @return Poll if found; null otherwise.
+     * @throws DAOException In case an error occurred.
+     */
+    Poll getPoll(long pollId);
 }

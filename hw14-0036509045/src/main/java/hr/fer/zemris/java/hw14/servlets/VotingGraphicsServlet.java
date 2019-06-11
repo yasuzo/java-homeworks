@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.hw14.servlets;
 
 import hr.fer.zemris.java.hw14.dao.DAOProvider;
+import hr.fer.zemris.java.hw14.models.Poll;
 import hr.fer.zemris.java.hw14.models.PollOption;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
@@ -34,14 +35,18 @@ public class VotingGraphicsServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
             return;
         }
-//        read band data
+
+//        get poll
+        Poll poll = DAOProvider.getDao().getPoll(pollId);
+
+//        read options
         List<PollOption> options = DAOProvider.getDao().getPollOptions(pollId);
 
         resp.setContentType("image/png");
         OutputStream outputStream = resp.getOutputStream();
 
         PieDataset dataset = createDataset(options);
-        JFreeChart chart = createChart(dataset, "Glasanje - poll " + pollId);
+        JFreeChart chart = createChart(dataset, poll == null ? "NonexistentPoll" : poll.getTitle());
 
         ChartUtils.writeChartAsPNG(outputStream, chart, 700, 400);
     }

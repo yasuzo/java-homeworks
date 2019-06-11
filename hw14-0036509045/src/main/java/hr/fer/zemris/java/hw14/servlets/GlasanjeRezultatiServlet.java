@@ -1,6 +1,7 @@
 package hr.fer.zemris.java.hw14.servlets;
 
 import hr.fer.zemris.java.hw14.dao.DAOProvider;
+import hr.fer.zemris.java.hw14.models.Poll;
 import hr.fer.zemris.java.hw14.models.PollOption;
 
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class GlasanjeRezultatiServlet extends HttpServlet {
             return;
         }
 
-//        read band data
+//        read options
         List<PollOption> sorted = DAOProvider.getDao().getPollOptions(pollId).stream()
                 .sorted(Comparator.comparingLong(PollOption::getVoteCount).reversed())
                 .collect(Collectors.toList());

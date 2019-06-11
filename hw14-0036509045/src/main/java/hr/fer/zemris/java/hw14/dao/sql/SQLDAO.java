@@ -149,4 +149,36 @@ public class SQLDAO implements DAO {
         }
         return null;
     }
+
+    @Override
+    public Poll getPoll(long pollId) {
+        Connection dbConnection = SQLConnectionProvider.getConnection();
+        try {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(
+                    "select id, title, message " +
+                            "from Polls " +
+                            "where id=?"
+            );
+            preparedStatement.setLong(1, pollId);
+            try {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                try {
+                    if (resultSet.next()) {
+                        Poll poll = new Poll(
+                                resultSet.getLong(1),
+                                resultSet.getString(2),
+                                resultSet.getString(3));
+                        return poll;
+                    }
+                } finally {
+                    resultSet.close();
+                }
+            } finally {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return null;
+    }
 }
