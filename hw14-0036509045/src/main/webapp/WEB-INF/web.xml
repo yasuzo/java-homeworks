@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"
+         metadata-complete="false">
+
+    <display-name>hw14</display-name>
+    <description>
+        hw14
+    </description>
+
+    <!-- voting -->
+    <servlet>
+        <servlet-name>Voting</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.GlasanjeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Voting</servlet-name>
+        <url-pattern>/servleti/glasanje</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-vote -->
+    <servlet>
+        <servlet-name>VotingVote</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.GlasanjeGlasajServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingVote</servlet-name>
+        <url-pattern>/servleti/glasanje-glasaj</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-results -->
+    <servlet>
+        <servlet-name>VotingResults</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.GlasanjeRezultatiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingResults</servlet-name>
+        <url-pattern>/servleti/glasanje-rezultati</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-graphics -->
+    <servlet>
+        <servlet-name>VotingGraphics</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.VotingGraphicsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingGraphics</servlet-name>
+        <url-pattern>/servleti/glasanje-grafika</url-pattern>
+    </servlet-mapping>
+
+    <!-- voting-xls -->
+    <servlet>
+        <servlet-name>VotingXls</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.VotingXlsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotingXls</servlet-name>
+        <url-pattern>/servleti/glasanje-xls</url-pattern>
+    </servlet-mapping>
+
+    <!-- polls servlet -->
+    <servlet>
+        <servlet-name>Polls</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.MainVotingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Polls</servlet-name>
+        <url-pattern>/servleti/index.html</url-pattern>
+    </servlet-mapping>
+
+    <!-- index servlet -->
+    <servlet>
+        <servlet-name>PollsRedirect</servlet-name>
+        <servlet-class>hr.fer.zemris.java.hw14.servlets.IndexVotingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PollsRedirect</servlet-name>
+        <url-pattern>/index.html</url-pattern>
+    </servlet-mapping>
+
+</web-app>
