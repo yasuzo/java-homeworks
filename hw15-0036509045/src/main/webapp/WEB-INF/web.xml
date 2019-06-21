@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="false">
+
+    <display-name>JPA web app</display-name>
+    <description>
+        JPA web app
+    </description>
+
+    <!-- JPA filter-->
+    <filter>
+        <filter-name>JPAFilter</filter-name>
+        <filter-class>hr.fer.zemris.java.hw15.dao.jpa.JPAFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JPAFilter</filter-name>
+        <url-pattern>/servleti/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Router filter -->
+    <filter>
+        <filter-name>RouterFilter</filter-name>
+        <filter-class>hr.fer.zemris.java.hw15.web.routing.HttpRouterFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RouterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>
+
