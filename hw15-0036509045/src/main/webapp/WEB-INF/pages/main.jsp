@@ -17,7 +17,7 @@
     <form method="post" action="<%= request.getContextPath() + "/servleti/main" %>">
         <div>
             <label>Nickname</label>
-            <input name="nick" type="text">
+            <input name="nick" type="text" value="${loginForm.nick}">
         </div>
         <div>
             <label>Password</label>
