@@ -1,0 +1,45 @@
+alps.jpg
+Picture of alps and a lake underneath.
+nature, mountain
+beach.jpeg
+Picture of a beach.
+nature, sunshine, sea
+bird.jpg
+Bird singing.
+animal, bird, nature
+black-hole.jpeg
+Picture of a black hole.
+universe, science
+cliffs.jpg
+Picture of cliffs.
+nature, rocks
+hedgehog.jpg
+Little hedgehog in the hand.
+animal, cute
+john-wick.jpg
+John Wick movie poster.
+movie, action
+leon-the-professional.jpg
+Leon the Professional movie poster.
+movie, action
+matrix.jpg
+The Matrix movie poster.
+movie, action
+owl.jpg
+Picture of an owl flying.
+nature, bird, animal
+puppy.jpg
+Cute puppy picture.
+animal, cute
+shawshank-redemption.jpg
+The Shawshank Redemption movie poster.
+movie, drama, mystery
+solar-system.jpg
+Solar system information image.
+universe, science
+sun.jpg
+Picture of the Sun.
+universe, science
+wolf-of-wall-street.png
+The Wolf of Wall Street movie poster.
+movie, drama, comedy
