@@ -31,7 +31,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Image servlet</servlet-name>
-        <url-pattern>/img</url-pattern>
+        <url-pattern>/image</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Thumbnail servlet</servlet-name>
+        <servlet-class>hr.zemris.fer.hw16.servlets.ThumbnailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Thumbnail servlet</servlet-name>
+        <url-pattern>/thumbnail</url-pattern>
     </servlet-mapping>
 
 </web-app>
