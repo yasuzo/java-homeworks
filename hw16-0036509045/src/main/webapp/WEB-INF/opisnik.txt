@@ -26,7 +26,7 @@ matrix.jpg
 The Matrix movie poster.
 movie, action
 owl.jpg
-Picture of an owl flying.
+Picture of an owl.
 nature, bird, animal
 puppy.jpg
 Cute puppy picture.
