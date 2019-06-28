@@ -46,7 +46,7 @@ function loadFullSizeImage(imageName) {
         let imageBox = document.getElementById("image-box");
         imageBox.innerHTML = "<h3>" + image.name + "</h3>";
         imageBox.innerHTML += "<img src='image?image=" + image.name + "'/>";
-        imageBox.innerHTML += "<p>" + image.description + "</p>"
+        imageBox.innerHTML += "<p>" + image.description + "</p>";
         imageBox.innerHTML += "<p> Tags: " + image.tags.join(", ") + "</p>";
     });
 }
