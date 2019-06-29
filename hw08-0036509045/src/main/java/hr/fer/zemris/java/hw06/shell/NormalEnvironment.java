@@ -161,7 +161,6 @@ public class NormalEnvironment implements Environment {
 
     @Override
     public void setSharedData(String key, Object value) {
-//        todo: Maybe nulls should not be allowed, for keys at least.
         sharedData.put(key, value);
     }
 }
