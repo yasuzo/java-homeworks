@@ -1,6 +1,6 @@
 package hr.fer.zemris.java.hw17.trazilica.commands;
 
-import com.yasuzo.search.DocumentIndexer;
+import com.yasuzo.search.SearchEngine;
 import com.yasuzo.shell.Environment;
 import com.yasuzo.shell.ShellCommand;
 import com.yasuzo.shell.ShellStatus;
@@ -51,14 +51,14 @@ public class TypeCommand implements ShellCommand {
         }
 
 //        get results from shared data
-        List<DocumentIndexer.SearchResult> results = (List<DocumentIndexer.SearchResult>) env.getSharedData("searchResults");
+        List<SearchEngine.SearchResult> results = (List<SearchEngine.SearchResult>) env.getSharedData("searchResults");
         if (results == null) {
             env.writeln("No query has been performed yet.");
             return ShellStatus.CONTINUE;
         }
 
 //        get wanted query result
-        DocumentIndexer.SearchResult wantedDocument;
+        SearchEngine.SearchResult wantedDocument;
         try {
             wantedDocument = results.get(index);
         } catch (IndexOutOfBoundsException e) {

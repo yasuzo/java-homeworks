@@ -9,7 +9,7 @@ import java.util.*;
  *
  * @author Jan Capek
  */
-public class DocumentIndexer {
+public class SearchEngine {
 
     private Vocabulary vocabulary;
 
@@ -49,7 +49,7 @@ public class DocumentIndexer {
      * @param vocabulary Vocabulary used by the indexer.
      * @throws NullPointerException If given vocabulary is {@code null}.
      */
-    public DocumentIndexer(Vocabulary vocabulary) {
+    public SearchEngine(Vocabulary vocabulary) {
         this.vocabulary = Objects.requireNonNull(vocabulary);
         allDocsTermFreq = new NVector<>(2000);
         tfDocumentVectors = new HashMap<>();

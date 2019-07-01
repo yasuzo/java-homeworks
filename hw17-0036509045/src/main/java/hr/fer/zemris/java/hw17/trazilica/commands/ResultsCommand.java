@@ -1,6 +1,6 @@
 package hr.fer.zemris.java.hw17.trazilica.commands;
 
-import com.yasuzo.search.DocumentIndexer;
+import com.yasuzo.search.SearchEngine;
 import com.yasuzo.shell.Environment;
 import com.yasuzo.shell.ShellCommand;
 import com.yasuzo.shell.ShellStatus;
@@ -34,7 +34,7 @@ public class ResultsCommand implements ShellCommand {
         }
 
 //        find results
-        List<DocumentIndexer.SearchResult> results = (List<DocumentIndexer.SearchResult>) env.getSharedData("searchResults");
+        List<SearchEngine.SearchResult> results = (List<SearchEngine.SearchResult>) env.getSharedData("searchResults");
         if (results == null) {
             env.writeln("No search has been performed yet.");
             return ShellStatus.CONTINUE;
@@ -45,7 +45,7 @@ public class ResultsCommand implements ShellCommand {
             env.writeln("No relevant documents found.");
         } else {
             int i = 0;
-            for (DocumentIndexer.SearchResult result : results) {
+            for (SearchEngine.SearchResult result : results) {
                 env.writeln(String.format("[%d] %s", i++, result.getDocumentKey()));
             }
         }

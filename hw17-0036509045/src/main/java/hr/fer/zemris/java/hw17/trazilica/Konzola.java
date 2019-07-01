@@ -1,6 +1,6 @@
 package hr.fer.zemris.java.hw17.trazilica;
 
-import com.yasuzo.search.DocumentIndexer;
+import com.yasuzo.search.SearchEngine;
 import com.yasuzo.search.Vocabulary;
 import com.yasuzo.shell.DefaultShell;
 import com.yasuzo.shell.Environment;
@@ -29,7 +29,7 @@ public class Konzola {
             return;
         }
 
-        DocumentIndexer indexer;
+        SearchEngine indexer;
         Vocabulary vocabulary;
         try {
             vocabulary = createVocabulary(Path.of(args[1]));
@@ -68,10 +68,10 @@ public class Konzola {
      * @throws IOException If directory could not be accessed.
      * @throws NullPointerException If any of the arguments is {@code null}.
      */
-    private static DocumentIndexer createIndexer(Path documentDirectory, Vocabulary vocabulary) throws IOException {
+    private static SearchEngine createIndexer(Path documentDirectory, Vocabulary vocabulary) throws IOException {
         Objects.requireNonNull(documentDirectory);
         Objects.requireNonNull(vocabulary);
-        DocumentIndexer indexer = new DocumentIndexer(vocabulary);
+        SearchEngine indexer = new SearchEngine(vocabulary);
         Stream<Path> pathStream = Files.list(documentDirectory);
         pathStream.forEach(path -> {
             try {

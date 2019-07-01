@@ -1,6 +1,6 @@
 package hr.fer.zemris.java.hw17.trazilica.commands;
 
-import com.yasuzo.search.DocumentIndexer;
+import com.yasuzo.search.SearchEngine;
 import com.yasuzo.shell.Environment;
 import com.yasuzo.shell.ShellCommand;
 import com.yasuzo.shell.ShellStatus;
@@ -28,14 +28,14 @@ public class QueryCommand implements ShellCommand {
     public ShellStatus executeCommand(Environment env, String arguments) {
         Objects.requireNonNull(arguments);
 
-        DocumentIndexer indexer = (DocumentIndexer) env.getSharedData("documentIndexer");
+        SearchEngine indexer = (SearchEngine) env.getSharedData("documentIndexer");
         if (indexer == null) {
             env.writeln("ERROR - Cannot execute a command at this time.");
             return ShellStatus.CONTINUE;
         }
 
 //        save results in shared data
-        SortedSet<DocumentIndexer.SearchResult> searchResults = indexer.findSimilar(arguments);
+        SortedSet<SearchEngine.SearchResult> searchResults = indexer.findSimilar(arguments);
         env.setSharedData("searchResults", new ArrayList<>(searchResults));
 
 //        print results
@@ -44,7 +44,7 @@ public class QueryCommand implements ShellCommand {
             env.writeln("No relevant documents found.");
         } else {
             int i = 0;
-            for (DocumentIndexer.SearchResult result : searchResults) {
+            for (SearchEngine.SearchResult result : searchResults) {
                 env.writeln(String.format("[%d] (%.5f) %s", i++, result.getSimilarity(), result.getDocumentKey()));
             }
         }
