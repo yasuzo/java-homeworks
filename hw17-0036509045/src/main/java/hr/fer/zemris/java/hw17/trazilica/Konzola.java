@@ -6,10 +6,7 @@ import com.yasuzo.shell.DefaultShell;
 import com.yasuzo.shell.Environment;
 import com.yasuzo.shell.NormalEnvironment;
 import com.yasuzo.shell.ShellIOException;
-import hr.fer.zemris.java.hw17.trazilica.commands.ExitCommand;
-import hr.fer.zemris.java.hw17.trazilica.commands.QueryCommand;
-import hr.fer.zemris.java.hw17.trazilica.commands.ResultsCommand;
-import hr.fer.zemris.java.hw17.trazilica.commands.TypeCommand;
+import hr.fer.zemris.java.hw17.trazilica.commands.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,6 +46,7 @@ public class Konzola {
         env.registerCommand("query", new QueryCommand());
         env.registerCommand("type", new TypeCommand());
         env.registerCommand("results", new ResultsCommand());
+        env.registerCommand("help", new HelpCommand());
 
         DefaultShell shell = new DefaultShell(env);
         try {
