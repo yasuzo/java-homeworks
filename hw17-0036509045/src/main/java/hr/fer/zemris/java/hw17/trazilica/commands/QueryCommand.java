@@ -28,18 +28,18 @@ public class QueryCommand implements ShellCommand {
     public ShellStatus executeCommand(Environment env, String arguments) {
         Objects.requireNonNull(arguments);
 
-        SearchEngine indexer = (SearchEngine) env.getSharedData("documentIndexer");
-        if (indexer == null) {
+        SearchEngine searchEngine = (SearchEngine) env.getSharedData("searchEngine");
+        if (searchEngine == null) {
             env.writeln("ERROR - Cannot execute a command at this time.");
             return ShellStatus.CONTINUE;
         }
 
 //        save results in shared data
-        SortedSet<SearchEngine.SearchResult> searchResults = indexer.findSimilar(arguments);
+        SortedSet<SearchEngine.SearchResult> searchResults = searchEngine.findSimilar(arguments);
         env.setSharedData("searchResults", new ArrayList<>(searchResults));
 
 //        print results
-        env.writeln("Query is: [" + String.join(", ", indexer.getQueryWords()) + "]");
+        env.writeln("Query is: [" + String.join(", ", searchEngine.getQueryWords()) + "]");
         if (searchResults.size() == 0) {
             env.writeln("No relevant documents found.");
         } else {

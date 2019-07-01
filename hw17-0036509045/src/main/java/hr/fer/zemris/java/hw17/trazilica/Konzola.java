@@ -29,11 +29,11 @@ public class Konzola {
             return;
         }
 
-        SearchEngine indexer;
+        SearchEngine searchEngine;
         Vocabulary vocabulary;
         try {
             vocabulary = createVocabulary(Path.of(args[1]));
-            indexer = createIndexer(Path.of(args[0]), vocabulary);
+            searchEngine = createSearchEngine(Path.of(args[0]), vocabulary);
         } catch (IOException e) {
             System.out.println("Given paths could not be accessed.");
             return;
@@ -41,7 +41,7 @@ public class Konzola {
 
         Scanner sc = new Scanner(System.in);
         Environment env = new NormalEnvironment(sc);
-        env.setSharedData("documentIndexer", indexer);
+        env.setSharedData("searchEngine", searchEngine);
         env.registerCommand("exit", new ExitCommand());
         env.registerCommand("query", new QueryCommand());
         env.registerCommand("type", new TypeCommand());
@@ -59,7 +59,7 @@ public class Konzola {
     }
 
     /**
-     * Creates a document indexer and fills it with documents read in given document directory.
+     * Creates a document search engine and fills it with documents read in given document directory.
      * Entities in the directory that are not readable will be ignored.
      *
      * @param documentDirectory Directory containing searchable documents.
@@ -68,19 +68,19 @@ public class Konzola {
      * @throws IOException If directory could not be accessed.
      * @throws NullPointerException If any of the arguments is {@code null}.
      */
-    private static SearchEngine createIndexer(Path documentDirectory, Vocabulary vocabulary) throws IOException {
+    private static SearchEngine createSearchEngine(Path documentDirectory, Vocabulary vocabulary) throws IOException {
         Objects.requireNonNull(documentDirectory);
         Objects.requireNonNull(vocabulary);
-        SearchEngine indexer = new SearchEngine(vocabulary);
+        SearchEngine searchEngine = new SearchEngine(vocabulary);
         Stream<Path> pathStream = Files.list(documentDirectory);
         pathStream.forEach(path -> {
             try {
-                indexer.addDocument(path.toString(), Files.readString(path));
+                searchEngine.addDocument(path.toString(), Files.readString(path));
             } catch (IOException ignorable) {
             }
         });
         pathStream.close();
-        return indexer;
+        return searchEngine;
     }
 
     /**

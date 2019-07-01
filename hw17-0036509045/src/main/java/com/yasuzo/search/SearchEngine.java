@@ -44,9 +44,9 @@ public class SearchEngine {
     private List<String> queryWords;
 
     /**
-     * Constructs a new document indexer.
+     * Constructs a new document search engine.
      *
-     * @param vocabulary Vocabulary used by the indexer.
+     * @param vocabulary Vocabulary used by the engine.
      * @throws NullPointerException If given vocabulary is {@code null}.
      */
     public SearchEngine(Vocabulary vocabulary) {
@@ -80,7 +80,7 @@ public class SearchEngine {
     }
 
     /**
-     * Adds a document that needs to be indexed.
+     * Adds a document that needs to be searchable.
      *
      * @param documentKey Key under which document's vocabulary vector will be stored.
      * @param content     Content of the document.
