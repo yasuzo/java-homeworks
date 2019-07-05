@@ -171,7 +171,7 @@ public class SearchEngine {
         idfVector = new NVector<>(allDocsTermFreq.numberOfDimensions());
         Double zeroValue = 0.0;
         for (int i = allDocsTermFreq.numberOfDimensions() - 1; i >= 0; i--) {
-            double idfValue = Math.log((double) tfDocumentVectors.size() / allDocsTermFreq.getCoordinateAt(i, 0));
+            double idfValue = Math.log((double) tfDocumentVectors.size() / allDocsTermFreq.getCoordinateAt(i, 0).doubleValue());
             idfVector.setCoordinateAt(i, zeroValue, coord -> idfValue);
         }
 

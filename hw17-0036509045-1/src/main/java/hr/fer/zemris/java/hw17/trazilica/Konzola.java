@@ -22,23 +22,29 @@ import java.util.stream.Stream;
  */
 public class Konzola {
     public static void main(String[] args) throws IOException {
-        if(args.length != 2) {
-            System.out.println("Invalid number of arguments! - Program takes two arguments:");
-            System.out.println("\t1) Directory in which documents are found that will need to be searched");
-            System.out.println("\t2) File with stop words");
+        if(args.length != 1 && args.length != 2) {
+            System.out.println("Invalid number of arguments! - Program takes one or two arguments:");
+            System.out.println("\t1) Directory which contains searchable documents.");
+            System.out.println("\t2) File with stop words. (optional)");
             return;
         }
 
+//        determine paths
+        Path stopWords = args.length == 1 ? Path.of("src/main/resources/stopwords_hr.txt") : Path.of(args[1]);
+        Path documentsDir = Path.of(args[0]);
+
+//        create search engine & vocabulary
         SearchEngine searchEngine;
         Vocabulary vocabulary;
         try {
-            vocabulary = createVocabulary(Path.of(args[1]));
-            searchEngine = createSearchEngine(Path.of(args[0]), vocabulary);
+            vocabulary = createVocabulary(stopWords);
+            searchEngine = createSearchEngine(documentsDir, vocabulary);
         } catch (IOException e) {
             System.out.println("Given paths could not be accessed.");
             return;
         }
 
+//        create environment and register commands
         Scanner sc = new Scanner(System.in);
         Environment env = new NormalEnvironment(sc);
         env.setSharedData("searchEngine", searchEngine);
@@ -48,6 +54,7 @@ public class Konzola {
         env.registerCommand("results", new ResultsCommand());
         env.registerCommand("help", new HelpCommand());
 
+//        create shell and start it
         DefaultShell shell = new DefaultShell(env);
         try {
             System.out.println("Velicina rijecnika je "  + vocabulary.wordCount() + " rijeci.\n");
